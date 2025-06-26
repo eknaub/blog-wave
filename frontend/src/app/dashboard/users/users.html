@@ -1,0 +1,7 @@
+@for(user of users; track user.id) {
+<div>
+  <h2>{{ user.username }}</h2>
+  <p>{{ user.email }}</p>
+  <p>Post Count: {{getPostCountForAuthor(user.id)}}</p>
+</div>
+}

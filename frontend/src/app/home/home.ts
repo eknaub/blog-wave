@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
   template: `
     <main>
       <h1>Welcome to the Home Page</h1>
-      @if (!isLoggedIn) {
+      @if (!isLoggedIn()) {
       <p>Please log in to access more features.</p>
       <a [routerLink]="['/login']">Login</a>
       <a [routerLink]="['/register']">Register</a>
@@ -19,9 +19,9 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
 })
 export class Home {
-  isLoggedIn = false;
+  isLoggedIn = signal(false);
 
   handleLogout() {
-    this.isLoggedIn = false;
+    this.isLoggedIn.set(false);
   }
 }

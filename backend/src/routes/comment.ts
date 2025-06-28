@@ -3,23 +3,23 @@ import { Routes } from "../utils/enums";
 import CommentController from "../controllers/comment";
 
 const router = Router();
-const postController = new CommentController();
+const commentController = new CommentController();
 
 router.get(
-  `${Routes.POSTS}/:postId/${Routes.COMMENTS}`,
-  postController.getComments.bind(postController)
+  `/:postId/${Routes.COMMENTS}`,
+  commentController.getComments.bind(commentController)
 );
 router.post(
-  `${Routes.POSTS}/:postId/${Routes.COMMENTS}`,
-  postController.postComment.bind(postController)
+  `/:postId/${Routes.COMMENTS}`,
+  commentController.postComment.bind(commentController)
 );
 router.put(
-  `${Routes.POSTS}/:postId/${Routes.COMMENTS}/:commentId`,
-  postController.putComment.bind(postController)
+  `/:postId/${Routes.COMMENTS}/:commentId`,
+  commentController.putComment.bind(commentController)
 );
 router.delete(
-  `${Routes.POSTS}/:postId/${Routes.COMMENTS}/:commentId`,
-  postController.deleteComment.bind(postController)
+  `/:postId/${Routes.COMMENTS}/:commentId`,
+  commentController.deleteComment.bind(commentController)
 );
 
 export default router;

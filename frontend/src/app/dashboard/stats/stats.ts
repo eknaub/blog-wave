@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { StatsService } from '../services/stats-service';
 
 @Component({
   selector: 'blog-stats',
@@ -6,4 +7,9 @@ import { Component } from '@angular/core';
   templateUrl: './stats.html',
   styleUrl: './stats.css',
 })
-export class Stats {}
+export class Stats {
+  statsService = inject(StatsService);
+
+  totalPosts = this.statsService.totalPosts;
+  totalUsers = this.statsService.totalUsers;
+}

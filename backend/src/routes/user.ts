@@ -5,14 +5,14 @@ import { Routes } from "../utils/enums";
 const router = Router();
 const userController = new UserController();
 
-router.get(Routes.USERS, userController.getUsers.bind(userController));
-router.post(Routes.USERS, userController.postUser.bind(userController));
+router.get(`/${Routes.USERS}`, userController.getUsers.bind(userController));
+router.post(`/${Routes.USERS}`, userController.postUser.bind(userController));
 router.put(
-  `${Routes.USERS}/:userId`,
+  `/${Routes.USERS}/:userId`,
   userController.putUser.bind(userController)
 );
 router.delete(
-  `${Routes.USERS}/:userId`,
+  `/${Routes.USERS}/:userId`,
   userController.deleteUser.bind(userController)
 );
 

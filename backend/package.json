@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@prisma/client": "^6.10.1",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
     "pg": "^8.16.2",
     "prisma": "^6.10.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.3",

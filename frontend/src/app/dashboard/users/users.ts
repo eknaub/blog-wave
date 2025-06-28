@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { BlogService } from '../services/blog-service';
 
@@ -14,7 +14,7 @@ export class Users {
 
   users = this.userService.getUsers();
 
-  getPostCountForAuthor(authorId: number) {
+  getPostCountByAuthor(authorId: number) {
     return this.blogService.getPostCountByAuthor(authorId);
   }
 }

@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { BlogService } from '../services/blog-service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-blog',
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './blog.html',
   styleUrl: './blog.css',
 })

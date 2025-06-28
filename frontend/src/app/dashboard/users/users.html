@@ -1,7 +1,13 @@
-@for(user of users; track user.id) {
+@if (users.hasValue()) { @for(user of users.value(); track user.id) {
 <div>
   <h2>{{ user.username }}</h2>
   <p>{{ user.email }}</p>
-  <p>Post Count: {{getPostCountForAuthor(user.id)}}</p>
+  <p>Post Count: {{ getPostCountByAuthor(user.id) }}</p>
 </div>
+} @empty {
+<p>No authors yet.</p>
+}} @else if (users.error()) {
+<div>Could not load authors</div>
+} @else if (users.isLoading()) {
+<div>Loading authors...</div>
 }

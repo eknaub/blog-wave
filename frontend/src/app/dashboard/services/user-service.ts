@@ -7,10 +7,5 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class UserService {
-  httpService = inject(HttpClient);
   users = httpResource<User[]>(() => `${environment.apiUrl}/users`);
-
-  getUsers() {
-    return this.users;
-  }
 }

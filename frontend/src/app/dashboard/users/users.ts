@@ -12,7 +12,7 @@ export class Users {
   userService = inject(UserService);
   blogService = inject(BlogService);
 
-  users = this.userService.getUsers();
+  users = this.userService.users;
 
   getPostCountByAuthor(authorId: number) {
     return this.blogService.getPostCountByAuthor(authorId);

@@ -10,13 +10,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BlogService {
-  httpService = inject(HttpClient);
-  posts = httpResource<Post[]>(() => `${environment.apiUrl}/posts`);
-  commentsCache = new Map<number, Observable<Comment[]>>();
+  private httpService = inject(HttpClient);
+  private commentsCache = new Map<number, Observable<Comment[]>>();
 
-  getPosts() {
-    return this.posts;
-  }
+  posts = httpResource<Post[]>(() => `${environment.apiUrl}/posts`);
 
   getCommentsByPostId(postId: number) {
     if (!this.commentsCache.has(postId)) {

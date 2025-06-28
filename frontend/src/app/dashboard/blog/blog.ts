@@ -11,7 +11,7 @@ import { AsyncPipe } from '@angular/common';
 export class Blog {
   blogService = inject(BlogService);
 
-  posts = this.blogService.getPosts();
+  posts = this.blogService.posts;
 
   getCommentsForPost(postId: number) {
     return this.blogService.getCommentsByPostId(postId);

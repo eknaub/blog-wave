@@ -6,16 +6,16 @@ import { UserService } from './user-service';
   providedIn: 'root',
 })
 export class StatsService {
-  blogService = inject(BlogService);
-  userService = inject(UserService);
+  private blogService = inject(BlogService);
+  private userService = inject(UserService);
 
   totalPosts = computed(() => {
-    const posts = this.blogService.getPosts();
+    const posts = this.blogService.posts;
     return posts.hasValue() ? posts.value()!.length : 0;
   });
 
   totalUsers = computed(() => {
-    const users = this.userService.getUsers();
+    const users = this.userService.users;
     return users.hasValue() ? users.value()!.length : 0;
   });
 }

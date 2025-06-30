@@ -56,7 +56,7 @@ class UserController {
       return;
     }
 
-    users.filter((user) => user.id !== userId);
+    users.slice(foundElemIdx, 1);
     res.status(200).json({ message: "User deleted successfully." });
   }
 }

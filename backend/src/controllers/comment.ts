@@ -89,7 +89,7 @@ class CommentController {
       return;
     }
 
-    comments.filter((comment) => comment.id !== commentId);
+    comments.slice(foundElemIdx, 1);
     res.status(200).json({ message: "Post deleted successfully." });
   }
 }

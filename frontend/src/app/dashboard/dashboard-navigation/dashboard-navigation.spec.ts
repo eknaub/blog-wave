@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardNavigation } from './dashboard-navigation';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('DashboardNavigation', () => {
   let component: DashboardNavigation;
@@ -8,9 +9,9 @@ describe('DashboardNavigation', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardNavigation]
-    })
-    .compileComponents();
+      imports: [DashboardNavigation],
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardNavigation);
     component = fixture.componentInstance;

@@ -21,9 +21,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -74,15 +72,36 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
+            "styles": ["src/styles.css"],
+            "codeCoverage": false,
+            "codeCoverageExclude": [
+              "src/**/*.spec.ts",
+              "src/**/*.d.ts",
+              "src/main.ts",
+              "src/test.ts"
             ]
+          },
+          "configurations": {
+            "coverage": {
+              "codeCoverage": true
+            },
+            "ci": {
+              "codeCoverage": true,
+              "watch": false
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
     }
   },
   "cli": {
-    "analytics": "f7955527-2c9b-4bb7-a897-357b51b76303"
+    "analytics": "f7955527-2c9b-4bb7-a897-357b51b76303",
+    "schematicCollections": ["angular-eslint"]
   }
 }

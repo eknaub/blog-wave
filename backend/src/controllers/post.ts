@@ -64,7 +64,7 @@ class PostController {
       return;
     }
 
-    posts.filter((post) => post.id !== postId);
+    posts.slice(foundElemIdx, 1);
     res.status(200).json({ message: "Post deleted successfully." });
   }
 }

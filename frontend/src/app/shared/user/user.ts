@@ -12,9 +12,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   `,
 })
 export class User {
-  @Input() userName: string = '';
-  @Input() email: string = '';
-  @Input() age: number = 0;
+  @Input() userName = '';
+  @Input() email = '';
+  @Input() age = 0;
   @Output() deleteUser: EventEmitter<string> = new EventEmitter<string>();
 
   handleDeleteUser() {

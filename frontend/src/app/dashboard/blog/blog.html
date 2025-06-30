@@ -1,28 +1,32 @@
-@if (posts.hasValue()) { @for(post of posts.value(); track post.id) {
-<div>
-  <h2>{{ post.title }}</h2>
-  <p>{{ post.content }}</p>
-  <p>Author: {{ post.authorId }}</p>
-
-  @defer () {@let comments$ = getCommentsForPost(post.id); @if (comments$ |
-  async; as comments) {
-  <div>
-    <h4>Comments ({{ comments.length }})</h4>
-    @for(comment of comments; track comment.id) {
+@if (posts.hasValue()) {
+  @for (post of posts.value(); track post.id) {
     <div>
-      <p>{{ comment.content }}</p>
-      <small>By User: {{ comment.authorId }}</small>
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.content }}</p>
+      <p>Author: {{ post.authorId }}</p>
+
+      @defer {
+        @let comments$ = getCommentsForPost(post.id);
+        @if (comments$ | async; as comments) {
+          <div>
+            <h4>Comments ({{ comments.length }})</h4>
+            @for (comment of comments; track comment.id) {
+              <div>
+                <p>{{ comment.content }}</p>
+                <small>By User: {{ comment.authorId }}</small>
+              </div>
+            } @empty {
+              <p>No comments yet.</p>
+            }
+          </div>
+        }
+      } @loading {
+        <div>Loading comments...</div>
+      }
     </div>
-    } @empty {
-    <p>No comments yet.</p>
-    }
-  </div>
-  } }@loading {
-  <div>Loading comments...</div>
   }
-</div>
-}} @else if (posts.isLoading()) {
-<div>Loading posts...</div>
+} @else if (posts.isLoading()) {
+  <div>Loading posts...</div>
 } @else if (posts.error()) {
-<div>Error loading posts: {{ posts.error() }}</div>
+  <div>Error loading posts: {{ posts.error() }}</div>
 }

@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { StatsService } from '../services/stats-service';
 
 @Component({
-  selector: 'blog-stats',
+  selector: 'app-blog-stats',
   imports: [],
   templateUrl: './stats.html',
   styleUrl: './stats.css',

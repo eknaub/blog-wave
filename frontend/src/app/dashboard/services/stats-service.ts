@@ -11,11 +11,11 @@ export class StatsService {
 
   totalPosts = computed(() => {
     const posts = this.blogService.posts;
-    return posts.hasValue() ? posts.value()!.length : 0;
+    return posts.hasValue() ? posts.value().length : 0;
   });
 
   totalUsers = computed(() => {
     const users = this.userService.users;
-    return users.hasValue() ? users.value()!.length : 0;
+    return users.hasValue() ? users.value().length : 0;
   });
 }

@@ -1,0 +1,32 @@
+# Coverage Configuration
+# This file contains settings for code coverage reporting
+
+# Minimum coverage thresholds
+statements: 80
+branches: 80
+functions: 80
+lines: 80
+
+# Files to exclude from coverage
+exclude:
+  - '**/*.spec.ts'
+  - '**/*.d.ts'
+  - 'src/main.ts'
+  - 'src/test.ts'
+  - 'src/environments/**'
+  - '**/*.mock.ts'
+
+# Directories to include
+include:
+  - 'src/app/**/*.ts'
+
+# Coverage reporters
+reporters:
+  - html
+  - text-summary
+  - lcov
+  - cobertura
+  - json
+
+# Output directory
+output-dir: './coverage/frontend'

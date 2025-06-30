@@ -7,12 +7,12 @@ import { RouterLink } from '@angular/router';
     <main>
       <h1>Welcome to the Home Page</h1>
       @if (!isLoggedIn()) {
-      <p>Please log in to access more features.</p>
-      <a [routerLink]="['/login']">Login</a>
-      <a [routerLink]="['/register']">Register</a>
+        <p>Please log in to access more features.</p>
+        <a [routerLink]="['/login']">Login</a>
+        <a [routerLink]="['/register']">Register</a>
       } @else {
-      <p>Welcome back</p>
-      <button (click)="handleLogout()">Log Out</button>
+        <p>Welcome back</p>
+        <button (click)="handleLogout()">Log Out</button>
       }
     </main>
   `,

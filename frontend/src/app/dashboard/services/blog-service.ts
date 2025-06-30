@@ -1,9 +1,8 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, resource } from '@angular/core';
 import { Post } from '../../shared/interfaces/post';
 import { Comment } from '../../shared/interfaces/comment';
-import { HttpClient, httpResource } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,13 +12,18 @@ export class BlogService {
   private httpService = inject(HttpClient);
   private commentsCache = new Map<number, Observable<Comment[]>>();
 
-  posts = httpResource<Post[]>(() => `${environment.apiUrl}/posts`);
+  posts = resource({
+    loader: async () => {
+      const response = await fetch(`${environment.apiUrl}/posts`);
+      return response.json() as Promise<Post[]>;
+    },
+  });
 
   getCommentsByPostId(postId: number) {
     if (!this.commentsCache.has(postId)) {
-      const comments$ = this.httpService
-        .get<Comment[]>(`${environment.apiUrl}/posts/${postId}/comments`)
-        .pipe(shareReplay(1));
+      const comments$ = this.httpService.get<Comment[]>(
+        `${environment.apiUrl}/posts/${postId}/comments`
+      );
       this.commentsCache.set(postId, comments$);
     }
     return this.commentsCache.get(postId);

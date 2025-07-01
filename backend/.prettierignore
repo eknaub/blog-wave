@@ -1,0 +1,12 @@
+# Ignore artifacts:
+dist/
+node_modules/
+coverage/
+
+# Ignore generated files:
+*.generated.*
+prisma/migrations/
+
+# Ignore config files:
+*.config.js
+jest.config.js

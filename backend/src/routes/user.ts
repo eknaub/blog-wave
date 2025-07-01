@@ -1,18 +1,30 @@
-import { Router } from "express";
-import UserController from "../controllers/user";
-import { Routes } from "../utils/enums";
+import { Router } from 'express';
+import UserController from '../controllers/user';
+import {
+  validateBody,
+  validateParams,
+  UserIdParamSchema,
+} from '../middleware/validation';
+import { UserCreateSchema, UserUpdateSchema } from '../utils/interfaces';
 
 const router = Router();
 const userController = new UserController();
 
-router.get(`/${Routes.USERS}`, userController.getUsers.bind(userController));
-router.post(`/${Routes.USERS}`, userController.postUser.bind(userController));
+router.get('/', userController.getUsers.bind(userController));
+router.post(
+  '/',
+  validateBody(UserCreateSchema),
+  userController.postUser.bind(userController)
+);
 router.put(
-  `/${Routes.USERS}/:userId`,
+  '/:userId',
+  validateParams(UserIdParamSchema),
+  validateBody(UserUpdateSchema),
   userController.putUser.bind(userController)
 );
 router.delete(
-  `/${Routes.USERS}/:userId`,
+  '/:userId',
+  validateParams(UserIdParamSchema),
   userController.deleteUser.bind(userController)
 );
 

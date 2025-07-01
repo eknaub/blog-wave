@@ -1,18 +1,36 @@
-import { Router } from "express";
-import { Routes } from "../utils/enums";
-import PostController from "../controllers/post";
+import { Router } from 'express';
+import PostController from '../controllers/post';
+import {
+  OptionalUserIdQuerySchema,
+  PostIdParamSchema,
+  validateBody,
+  validateParams,
+  validateQuery,
+} from '../middleware/validation';
+import { PostCreateSchema, PostUpdateSchema } from '../utils/interfaces';
 
 const router = Router();
 const postController = new PostController();
 
-router.get(`/${Routes.POSTS}`, postController.getPosts.bind(postController));
-router.post(`/${Routes.POSTS}`, postController.postPost.bind(postController));
+router.get(
+  '/',
+  validateQuery(OptionalUserIdQuerySchema),
+  postController.getPosts.bind(postController)
+);
+router.post(
+  '/',
+  validateBody(PostCreateSchema),
+  postController.postPost.bind(postController)
+);
 router.put(
-  `/${Routes.POSTS}/:postId`,
+  '/:postId',
+  validateParams(PostIdParamSchema),
+  validateBody(PostUpdateSchema),
   postController.putPost.bind(postController)
 );
 router.delete(
-  `/${Routes.POSTS}/:postId`,
+  '/:postId',
+  validateParams(PostIdParamSchema),
   postController.deletePost.bind(postController)
 );
 

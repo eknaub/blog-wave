@@ -1,63 +1,59 @@
-import { Request, Response } from "express";
-import { users } from "../utils/mockData";
-import { User } from "../utils/interfaces";
+import { Response } from 'express';
+import { users } from '../utils/mockData';
+import { User, UserUpdate } from '../utils/interfaces';
+import { ValidatedRequest } from '../middleware/validation';
 
 class UserController {
-  getUsers(req: Request, res: Response): void {
+  getUsers(req: ValidatedRequest, res: Response): void {
     const data = users;
-
     res.status(200).json(data);
   }
 
-  postUser(req: Request<{}, {}, User>, res: Response): void {
-    const newUser: User = req.body;
+  postUser(req: ValidatedRequest<User>, res: Response): void {
+    const validatedUser: User = req.validatedBody!;
 
-    if (users.some((user) => user.id === newUser.id)) {
-      res.status(400).json({ error: "User with this ID already exists." });
+    if (users.some(user => user.id === validatedUser.id)) {
+      res.status(400).json({ error: 'User with this ID already exists.' });
       return;
     }
 
-    if (!newUser.username || !newUser.email) {
-      res.status(400).json({ error: "Username and email are required." });
-      return;
-    }
-
-    users.push(newUser);
-
-    res.status(201).json(newUser);
+    users.push(validatedUser);
+    res.status(201).json(validatedUser);
   }
 
-  putUser(req: Request<{ userId: string }, {}, User>, res: Response): void {
-    const userId = Number(req.params.userId);
-    const updatedUser: User = req.body;
-    const foundElemIdx = users.findIndex((user) => user.id === userId);
+  putUser(
+    req: ValidatedRequest<UserUpdate, unknown, { userId: number }>,
+    res: Response
+  ): void {
+    const userId = req.validatedParams!.userId;
+    const updatedUser: UserUpdate = req.validatedBody!;
+
+    const foundElemIdx = users.findIndex(user => user.id === userId);
 
     if (foundElemIdx === -1) {
-      res.status(404).json({ error: "User not found." });
+      res.status(404).json({ error: 'User not found.' });
       return;
     }
 
-    if (!updatedUser.username || !updatedUser.email) {
-      res.status(400).json({ error: "Username and email are required." });
-      return;
-    }
-
-    users[foundElemIdx] = updatedUser;
-
+    users[foundElemIdx] = { id: userId, ...updatedUser };
     res.status(200).json(users[foundElemIdx]);
   }
 
-  deleteUser(req: Request<{ userId: string }, {}, User>, res: Response): void {
-    const userId = Number(req.params.userId);
-    const foundElemIdx = users.findIndex((user) => user.id === userId);
+  deleteUser(
+    req: ValidatedRequest<unknown, unknown, { userId: number }>,
+    res: Response
+  ): void {
+    const userId = req.validatedParams!.userId;
+
+    const foundElemIdx = users.findIndex(user => user.id === userId);
 
     if (foundElemIdx === -1) {
-      res.status(404).json({ error: "User not found." });
+      res.status(404).json({ error: 'User not found.' });
       return;
     }
 
-    users.slice(foundElemIdx, 1);
-    res.status(200).json({ message: "User deleted successfully." });
+    users.splice(foundElemIdx, 1);
+    res.status(200).json({ message: 'User deleted successfully.' });
   }
 }
 

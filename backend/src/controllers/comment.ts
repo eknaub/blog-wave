@@ -1,43 +1,32 @@
-import { Request, Response } from "express";
-import { comments } from "../utils/mockData";
-import { Comment } from "../utils/interfaces";
+import { Response } from 'express';
+import { comments } from '../utils/mockData';
+import { Comment, CommentUpdate } from '../utils/interfaces';
+import { ValidatedRequest } from '../middleware/validation';
 
 class CommentController {
   getComments(
-    req: Request<{ postId: string }, {}, Comment>,
+    req: ValidatedRequest<Comment, unknown, { postId: number }>,
     res: Response
   ): void {
-    const postId = Number(req.params.postId);
-
-    if (!postId) {
-      res.status(400).json({ error: "Post ID is required." });
-      return;
-    }
+    const postId = req.validatedParams!.postId;
 
     let data = comments;
     if (postId) {
-      data = comments.filter((comment) => comment.postId === postId);
+      data = comments.filter(comment => comment.postId === postId);
     }
 
     res.status(200).json(data);
   }
 
   postComment(
-    req: Request<{ postId: string }, {}, Comment>,
+    req: ValidatedRequest<Comment, unknown, { postId: number }>,
     res: Response
   ): void {
-    const postId = Number(req.params.postId);
-    const newComment: Comment = { ...req.body, postId };
+    const postId = req.validatedParams!.postId;
+    const newComment: Comment = { ...req.validatedBody!, postId };
 
-    if (comments.some((comment) => comment.id === newComment.id)) {
-      res.status(400).json({ error: "Comment with this ID already exists." });
-      return;
-    }
-
-    if (!newComment.content || !newComment.postId || !newComment.authorId) {
-      res
-        .status(400)
-        .json({ error: "Content, postId, and authorId are required." });
+    if (comments.some(comment => comment.id === newComment.id)) {
+      res.status(400).json({ error: 'Comment with this ID already exists.' });
       return;
     }
 
@@ -47,50 +36,56 @@ class CommentController {
   }
 
   putComment(
-    req: Request<{ postId: string; commentId: string }, {}, Comment>,
+    req: ValidatedRequest<
+      Comment,
+      unknown,
+      { postId: number; commentId: number }
+    >,
     res: Response
   ): void {
-    const postId = Number(req.params.postId);
-    const commentId = Number(req.params.commentId);
-    const updatedComment: Comment = req.body;
+    const postId = req.validatedParams!.postId;
+    const commentId = req.validatedParams!.commentId;
+
+    const updatedComment: CommentUpdate = req.validatedBody!;
     const foundElemIdx = comments.findIndex(
-      (comment) => comment.id === commentId
+      comment => comment.id === commentId && comment.postId === postId
     );
 
     if (foundElemIdx === -1) {
-      res.status(404).json({ error: "Comment not found." });
+      res.status(404).json({ error: 'Comment not found.' });
       return;
     }
 
-    if (!updatedComment.content || !updatedComment.authorId) {
-      res
-        .status(400)
-        .json({ error: "Content and authorId are required for update." });
-      return;
-    }
-
-    comments[foundElemIdx] = updatedComment;
+    comments[foundElemIdx] = {
+      id: commentId,
+      ...updatedComment,
+    };
 
     res.status(200).json(comments[foundElemIdx]);
   }
 
   deleteComment(
-    req: Request<{ postId: string; commentId: string }, {}, Comment>,
+    req: ValidatedRequest<
+      Comment,
+      unknown,
+      { postId: number; commentId: number }
+    >,
     res: Response
   ): void {
-    const postId = Number(req.params.postId);
-    const commentId = Number(req.params.commentId);
+    const postId = req.validatedParams!.postId;
+    const commentId = req.validatedParams!.commentId;
+
     const foundElemIdx = comments.findIndex(
-      (comment) => comment.id === commentId
+      comment => comment.id === commentId && comment.postId === postId
     );
 
     if (foundElemIdx === -1) {
-      res.status(404).json({ error: "Comment not found." });
+      res.status(404).json({ error: 'Comment not found.' });
       return;
     }
 
-    comments.slice(foundElemIdx, 1);
-    res.status(200).json({ message: "Post deleted successfully." });
+    comments.splice(foundElemIdx, 1);
+    res.status(200).json({ message: 'Comment deleted successfully.' });
   }
 }
 

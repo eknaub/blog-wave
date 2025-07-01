@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { RouteNames } from '../shared/interfaces/routes';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +12,8 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink, MatButtonModule, MatCardModule, MatIconModule],
 })
 export class Home {
+  readonly RouteNames = RouteNames;
+
   isLoggedIn = signal(false);
 
   handleLogout() {

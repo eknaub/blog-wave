@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
+import { RouteNames } from '../../shared/interfaces/routes';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +30,8 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class Login {
+  readonly RouteNames = RouteNames;
+
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),

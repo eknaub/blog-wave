@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
+import { RouteNames } from '../../shared/interfaces/routes';
 
 @Component({
   selector: 'app-register',
@@ -29,6 +30,8 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class Register {
+  readonly RouteNames = RouteNames;
+
   registerForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),

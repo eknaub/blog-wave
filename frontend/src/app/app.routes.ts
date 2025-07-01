@@ -6,6 +6,9 @@ import { Register } from './auth/register/register';
 import { Login } from './auth/login/login';
 import { Stats } from './dashboard/features/stats/stats';
 import { Blog } from './dashboard/features/blog/blog';
+import { Settings } from './user-menu/settings/settings';
+import { Profile } from './user-menu/profile/profile';
+import { RouteNames } from './shared/interfaces/routes';
 
 export const routes: Routes = [
   {
@@ -14,31 +17,41 @@ export const routes: Routes = [
     component: Home,
   },
   {
-    path: 'login',
+    path: RouteNames.LOGIN,
     title: 'Login',
     component: Login,
   },
   {
-    path: 'register',
+    path: RouteNames.REGISTER,
     title: 'Register',
     component: Register,
   },
   {
-    path: 'dashboard',
+    path: RouteNames.PROFILE,
+    title: 'Profile',
+    component: Profile,
+  },
+  {
+    path: RouteNames.SETTINGS,
+    title: 'Settings',
+    component: Settings,
+  },
+  {
+    path: RouteNames.DASHBOARD,
     title: 'Dashboard',
     component: Dashboard,
     children: [
       {
-        path: '',
+        path: RouteNames.HOME,
         component: Stats,
       },
       {
-        path: 'users',
+        path: RouteNames.USERS,
         title: 'Authors',
         component: Users,
       },
       {
-        path: 'blog',
+        path: RouteNames.BLOG,
         title: 'Blog',
         component: Blog,
       },

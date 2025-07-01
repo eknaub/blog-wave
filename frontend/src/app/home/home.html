@@ -20,11 +20,19 @@
     </mat-card-content>
     <mat-card-actions>
       @if (!isLoggedIn()) {
-        <button mat-raised-button color="primary" [routerLink]="['/login']">
+        <button
+          mat-raised-button
+          color="primary"
+          [routerLink]="'/' + RouteNames.LOGIN"
+        >
           <mat-icon>login</mat-icon>
           Login
         </button>
-        <button mat-raised-button color="accent" [routerLink]="['/register']">
+        <button
+          mat-raised-button
+          color="accent"
+          [routerLink]="'/' + RouteNames.REGISTER"
+        >
           <mat-icon>app_registration</mat-icon>
           Register
         </button>

@@ -9,6 +9,7 @@ import {
   MatDrawerContent,
 } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouteNames } from '../../../shared/interfaces/routes';
 
 @Component({
   selector: 'app-blog-dashboard-navigation',
@@ -27,4 +28,6 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
     MatButtonModule,
   ],
 })
-export class DashboardNavigation {}
+export class DashboardNavigation {
+  readonly RouteNames = RouteNames;
+}

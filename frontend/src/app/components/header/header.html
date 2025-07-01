@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="header">
-  <a class="brand" routerLink="/">
+  <a class="brand" [routerLink]="'/' + RouteNames.HOME">
     <mat-icon>article</mat-icon>
     <span>Blog API</span>
   </a>
@@ -7,14 +7,18 @@
   <nav>
     <a
       matButton
-      routerLink="/"
+      [routerLink]="'/' + RouteNames.HOME"
       routerLinkActive="active-link"
       [routerLinkActiveOptions]="{ exact: true }"
     >
       <mat-icon>home</mat-icon>
       Home
     </a>
-    <a mat-button routerLink="/dashboard" routerLinkActive="active-link">
+    <a
+      mat-button
+      [routerLink]="'/' + RouteNames.DASHBOARD"
+      routerLinkActive="active-link"
+    >
       <mat-icon>dashboard</mat-icon>
       Dashboard
     </a>
@@ -25,11 +29,11 @@
       <mat-icon>account_circle</mat-icon>
     </button>
     <mat-menu #userMenu="matMenu">
-      <button mat-menu-item>
+      <button mat-menu-item routerLink="/profile">
         <mat-icon>person</mat-icon>
         <span>Profile</span>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item routerLink="/settings">
         <mat-icon>settings</mat-icon>
         <span>Settings</span>
       </button>

@@ -43,7 +43,9 @@
     <mat-divider />
     <mat-card-actions class="register-actions">
       <p>Already have an account?</p>
-      <a mat-button color="accent" routerLink="/login">Sign In</a>
+      <a mat-button color="accent" [routerLink]="'/' + RouteNames.LOGIN"
+        >Sign In</a
+      >
     </mat-card-actions>
   </mat-card>
 </div>

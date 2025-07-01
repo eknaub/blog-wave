@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { RouteNames } from '../../shared/interfaces/routes';
 
 @Component({
   selector: 'app-header',
@@ -20,4 +21,6 @@ import { MatDividerModule } from '@angular/material/divider';
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
-export class Header {}
+export class Header {
+  readonly RouteNames = RouteNames;
+}

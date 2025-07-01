@@ -4,7 +4,7 @@
     <mat-nav-list class="dashboard-nav-list">
       <a
         mat-list-item
-        routerLink="/dashboard"
+        [routerLink]="'/' + RouteNames.DASHBOARD"
         routerLinkActive="active-nav-item"
         [routerLinkActiveOptions]="{ exact: true }"
         class="dashboard-nav-item"
@@ -15,7 +15,7 @@
 
       <a
         mat-list-item
-        routerLink="/dashboard/users"
+        [routerLink]="'/' + RouteNames.DASHBOARD + '/' + RouteNames.USERS"
         routerLinkActive="active-nav-item"
         class="dashboard-nav-item"
       >
@@ -25,7 +25,7 @@
 
       <a
         mat-list-item
-        routerLink="/dashboard/blog"
+        [routerLink]="'/' + RouteNames.DASHBOARD + '/' + RouteNames.BLOG"
         routerLinkActive="active-nav-item"
         class="dashboard-nav-item"
       >

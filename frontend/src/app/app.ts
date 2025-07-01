@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from './shared/header/header';
+import { Header } from './components/header/header';
 import { GlobalLoadingComponent } from './shared/components/global-loading.component';
 
 @Component({

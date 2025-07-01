@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { BlogService } from '../services/blog-service';
 import { AsyncPipe } from '@angular/common';
+import { DashboardContentWrapper } from '../../shared/dashboard-content-wrapper/dashboard-content-wrapper';
+import { BlogService } from '../../services/blog-service';
 
 @Component({
   selector: 'app-blog',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, DashboardContentWrapper],
   templateUrl: './blog.html',
   styleUrl: './blog.css',
 })

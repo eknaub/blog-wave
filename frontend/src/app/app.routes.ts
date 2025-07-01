@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { Home } from './home/home';
 import { Dashboard } from './dashboard/dashboard';
-import { Users } from './dashboard/users/users';
-import { Blog } from './dashboard/blog/blog';
-import { DashboardMain } from './dashboard/dashboard-main/dashboard-main';
+import { Users } from './dashboard/features/users/users';
 import { Register } from './auth/register/register';
 import { Login } from './auth/login/login';
+import { Stats } from './dashboard/features/stats/stats';
+import { Blog } from './dashboard/features/blog/blog';
 
 export const routes: Routes = [
   {
@@ -30,7 +30,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: DashboardMain,
+        component: Stats,
       },
       {
         path: 'users',

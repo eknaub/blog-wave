@@ -1,5 +1,10 @@
 .dashboard-navigator-container {
-  height: 100vh;
+  height: calc(100vh - 64px);
+}
+
+.dashboard-content {
+  overflow-y: auto;
+  height: 100%;
 }
 
 .dashboard-drawer {

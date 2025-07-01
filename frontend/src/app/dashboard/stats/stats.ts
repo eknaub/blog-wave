@@ -1,12 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
 import { StatsService } from '../services/stats-service';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-blog-stats',
   templateUrl: './stats.html',
   styleUrl: './stats.css',
-  imports: [MatProgressSpinner],
 })
 export class Stats {
   statsService = inject(StatsService);

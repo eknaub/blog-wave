@@ -1,7 +1,7 @@
-import { inject, Injectable, resource } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Post } from '../../shared/interfaces/post';
 import { Comment } from '../../shared/interfaces/comment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, httpResource } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
@@ -12,12 +12,9 @@ export class BlogService {
   private httpService = inject(HttpClient);
   private commentsCache = new Map<number, Observable<Comment[]>>();
 
-  posts = resource({
-    loader: async () => {
-      const response = await fetch(`${environment.apiUrl}/posts`);
-      return response.json() as Promise<Post[]>;
-    },
-  });
+  posts = httpResource<Post[]>(() => ({
+    url: `${environment.apiUrl}/posts`,
+  }));
 
   getCommentsByPostId(postId: number) {
     if (!this.commentsCache.has(postId)) {

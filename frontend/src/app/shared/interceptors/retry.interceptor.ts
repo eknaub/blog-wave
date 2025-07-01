@@ -1,8 +1,13 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { timer } from 'rxjs';
-import { retry } from 'rxjs/operators';
+import { finalize, retry } from 'rxjs/operators';
+import { LoadingService } from '../services/loading.service';
 
 export const retryInterceptor: HttpInterceptorFn = (req, next) => {
+  const loadingService = inject(LoadingService);
+  loadingService.setLoading(true);
+
   const retryDelay = 2000;
   const retryMaxAttempts = 2;
 
@@ -13,7 +18,11 @@ export const retryInterceptor: HttpInterceptorFn = (req, next) => {
     req.headers.has('skip-retry');
 
   if (skipRetry) {
-    return next(req);
+    return next(req).pipe(
+      finalize(() => {
+        loadingService.setLoading(false);
+      })
+    );
   }
 
   return next(req).pipe(
@@ -29,6 +38,9 @@ export const retryInterceptor: HttpInterceptorFn = (req, next) => {
         }
         throw error;
       },
+    }),
+    finalize(() => {
+      loadingService.setLoading(false);
     })
   );
 };

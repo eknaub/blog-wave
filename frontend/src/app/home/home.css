@@ -1,0 +1,28 @@
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.welcome-card {
+  max-width: 50%;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.welcome-card mat-card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .home-container {
+    padding: 16px;
+  }
+
+  .welcome-card {
+    margin: 0;
+  }
+}

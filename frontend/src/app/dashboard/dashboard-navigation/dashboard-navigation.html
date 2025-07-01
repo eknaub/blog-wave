@@ -1,6 +1,40 @@
-<div>
-  <ul>
-    <li><a routerLink="/dashboard/users">Authors</a></li>
-    <li><a routerLink="/dashboard/blog">Blog</a></li>
-  </ul>
-</div>
+<mat-drawer-container class="dashboard-navigator-container">
+  <mat-drawer mode="side" opened class="dashboard-drawer">
+    <mat-divider></mat-divider>
+    <mat-nav-list class="dashboard-nav-list">
+      <a
+        mat-list-item
+        routerLink="/dashboard"
+        routerLinkActive="active-nav-item"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="dashboard-nav-item"
+      >
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Stats</span>
+      </a>
+
+      <a
+        mat-list-item
+        routerLink="/dashboard/users"
+        routerLinkActive="active-nav-item"
+        class="dashboard-nav-item"
+      >
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>Authors</span>
+      </a>
+
+      <a
+        mat-list-item
+        routerLink="/dashboard/blog"
+        routerLinkActive="active-nav-item"
+        class="dashboard-nav-item"
+      >
+        <mat-icon matListItemIcon>article</mat-icon>
+        <span matListItemTitle>Blog Posts</span>
+      </a>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content class="dashboard-content">
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

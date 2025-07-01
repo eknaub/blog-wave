@@ -1,8 +1,52 @@
-<form [formGroup]="loginForm" (ngSubmit)="handleLogin()">
-  <label for="username">Username:</label>
-  <input id="username" formControlName="username" />
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title><h1>Welcome Back</h1></mat-card-title>
+      <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
+    </mat-card-header>
 
-  <label for="password">Password:</label>
-  <input id="password" type="password" formControlName="password" />
-  <button type="submit" [disabled]="!loginForm.valid">Log In</button>
-</form>
+    <mat-card-content>
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="handleLogin()"
+        class="login-form"
+      >
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            formControlName="username"
+            placeholder="Enter your username"
+          />
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+          />
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="loginForm.invalid"
+        >
+          <mat-icon>login</mat-icon>
+          Sign In
+        </button>
+      </form>
+    </mat-card-content>
+    <mat-divider />
+    <mat-card-actions class="login-actions">
+      <p>Don't have an account?</p>
+      <a mat-button color="accent" routerLink="/register">Create Account</a>
+    </mat-card-actions>
+  </mat-card>
+</div>

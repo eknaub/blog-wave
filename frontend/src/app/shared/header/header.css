@@ -1,0 +1,24 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.header button[matIconButton] {
+  color: white;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: color 0.2s ease;
+  color: rgba(255, 255, 255, 1);
+  text-decoration: none;
+}
+
+.brand:hover {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.75);
+}

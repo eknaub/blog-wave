@@ -1,3 +1,4 @@
+<h1>Authors</h1>
 @if (users.hasValue()) {
   @for (user of users.value(); track user.id) {
     <div>
@@ -9,7 +10,13 @@
     <p>No authors yet.</p>
   }
 } @else if (users.error()) {
-  <div>Could not load authors</div>
+  <div class="error">
+    <p>Error loading authors: {{ users.error() }}</p>
+  </div>
 } @else if (users.isLoading()) {
-  <div>Loading authors...</div>
+  <mat-progress-spinner
+    mode="indeterminate"
+    diameter="50"
+    strokeWidth="5"
+  ></mat-progress-spinner>
 }

@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { BlogService } from '../services/blog-service';
 import { AsyncPipe } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-blog',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, MatProgressSpinner],
   templateUrl: './blog.html',
   styleUrl: './blog.css',
 })

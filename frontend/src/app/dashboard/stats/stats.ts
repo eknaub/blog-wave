@@ -1,15 +1,23 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { StatsService } from '../services/stats-service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-blog-stats',
-  imports: [],
   templateUrl: './stats.html',
   styleUrl: './stats.css',
+  imports: [MatProgressSpinner],
 })
 export class Stats {
   statsService = inject(StatsService);
+  stats = this.statsService;
 
-  totalPosts = this.statsService.totalPosts;
-  totalUsers = this.statsService.totalUsers;
+  totalPosts = this.statsService.posts;
+  totalUsers = this.statsService.users;
+  hasErrors = computed(() => {
+    return (
+      this.statsService.blogServiceError() ||
+      this.statsService.userServiceError()
+    );
+  });
 }

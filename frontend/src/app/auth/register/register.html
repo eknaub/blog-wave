@@ -1,18 +1,49 @@
-<form [formGroup]="registerForm" (ngSubmit)="handleRegister()">
-  <label for="username">Username:</label>
-  <input id="username" formControlName="username" />
+<div class="register-container">
+  <mat-card class="register-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h1>Create Account</h1>
+      </mat-card-title>
+      <mat-card-subtitle>Sign up to start your journey</mat-card-subtitle>
+    </mat-card-header>
 
-  <label for="email">Email:</label>
-  <input id="email" type="email" formControlName="email" />
-
-  <label for="password">Password:</label>
-  <input id="password" type="password" formControlName="password" />
-
-  <label for="confirmPassword">Confirm Password:</label>
-  <input
-    id="confirmPassword"
-    type="password"
-    formControlName="confirmPassword"
-  />
-  <button type="submit" [disabled]="!registerForm.valid">Register</button>
-</form>
+    <mat-card-content>
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="handleRegister()"
+        class="register-form"
+      >
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input type="text" matInput formControlName="username" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input type="email" matInput formControlName="email" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input type="password" matInput formControlName="password" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input type="password" matInput formControlName="confirmPassword" />
+        </mat-form-field>
+        <mat-divider />
+        <button
+          matButton="filled"
+          type="submit"
+          [disabled]="!registerForm.valid"
+        >
+          <mat-icon>person_add</mat-icon>
+          Register
+        </button>
+      </form>
+    </mat-card-content>
+    <mat-divider />
+    <mat-card-actions class="register-actions">
+      <p>Already have an account?</p>
+      <a mat-button color="accent" routerLink="/login">Sign In</a>
+    </mat-card-actions>
+  </mat-card>
+</div>

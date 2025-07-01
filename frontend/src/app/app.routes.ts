@@ -9,6 +9,7 @@ import { Blog } from './dashboard/features/blog/blog';
 import { Settings } from './user-menu/settings/settings';
 import { Profile } from './user-menu/profile/profile';
 import { RouteNames } from './shared/interfaces/routes';
+import { AuthGuard } from './core/auth-guard';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,7 @@ export const routes: Routes = [
     path: RouteNames.PROFILE,
     title: 'Profile',
     component: Profile,
+    canActivate: [AuthGuard],
   },
   {
     path: RouteNames.SETTINGS,
@@ -40,6 +42,7 @@ export const routes: Routes = [
     path: RouteNames.DASHBOARD,
     title: 'Dashboard',
     component: Dashboard,
+    canActivate: [AuthGuard],
     children: [
       {
         path: RouteNames.HOME,

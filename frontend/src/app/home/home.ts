@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { RouteNames } from '../shared/interfaces/routes';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -13,10 +14,11 @@ import { RouteNames } from '../shared/interfaces/routes';
 })
 export class Home {
   readonly RouteNames = RouteNames;
+  protected authService = inject(AuthService);
 
-  isLoggedIn = signal(false);
+  isLoggedIn = computed(() => this.authService.isAuthenticated());
 
   handleLogout() {
-    this.isLoggedIn.set(false);
+    this.authService.logout();
   }
 }

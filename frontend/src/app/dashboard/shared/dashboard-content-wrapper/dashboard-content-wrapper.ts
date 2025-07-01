@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-content-wrapper',
@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './dashboard-content-wrapper.css',
 })
 export class DashboardContentWrapper {
-  @Input() title?: string;
-  @Input() subtitle?: string;
+  title = input.required<string>();
+  subtitle = input<string>();
 }

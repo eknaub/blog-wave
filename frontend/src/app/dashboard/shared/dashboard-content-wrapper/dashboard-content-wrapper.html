@@ -1,7 +1,7 @@
 <div class="dashboard-content-wrapper">
-  <h1>{{ title }}</h1>
-  @if (subtitle) {
-    <h4>{{ subtitle }}</h4>
+  <h1>{{ title() }}</h1>
+  @if (subtitle()) {
+    <h4>{{ subtitle() }}</h4>
   }
   <ng-content />
 </div>

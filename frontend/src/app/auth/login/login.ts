@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { RouteNames } from '../../shared/interfaces/routes';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +31,7 @@ import { RouteNames } from '../../shared/interfaces/routes';
   ],
 })
 export class Login {
+  private authService = inject(AuthService);
   readonly RouteNames = RouteNames;
 
   loginForm = new FormGroup({
@@ -38,7 +40,23 @@ export class Login {
   });
 
   handleLogin() {
+    this.loginForm.markAllAsTouched();
+
+    if (this.loginForm.invalid) {
+      console.error('Form is invalid');
+      return;
+    }
+
     const { username, password } = this.loginForm.value;
-    console.log('Logging in with', { username, password });
+
+    if (!username || !password) {
+      console.error('Username and password are required');
+      return;
+    }
+
+    this.authService.login({
+      username: username,
+      password: password,
+    });
   }
 }

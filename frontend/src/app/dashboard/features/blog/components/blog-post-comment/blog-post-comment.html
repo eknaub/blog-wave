@@ -1,0 +1,17 @@
+@defer {
+  @if (comments() | async; as comments) {
+    <div>
+      <h4>Comments ({{ comments.length }})</h4>
+      @for (comment of comments; track comment.id) {
+        <div>
+          <p>{{ comment.content }}</p>
+          <small>By User: {{ comment.authorId }}</small>
+        </div>
+      } @empty {
+        <p>No comments yet.</p>
+      }
+    </div>
+  }
+} @loading {
+  <div>Loading comments...</div>
+}

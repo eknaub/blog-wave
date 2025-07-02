@@ -12,10 +12,6 @@
     }
 
     @if (!stats.isLoading() && !hasErrors()) {
-      <div class="stats">
-        <h3>Total Posts: {{ totalPosts() }}</h3>
-        <h3>Total Users: {{ totalUsers() }}</h3>
-      </div>
-    }
-  </div></app-dashboard-content-wrapper
->
+      <app-stats-card />
+    }</div
+></app-dashboard-content-wrapper>

@@ -1,0 +1,6 @@
+<div>
+  <h2>{{ post().title }}</h2>
+  <p>{{ post().content }}</p>
+  <p>Author: {{ post().authorId }}</p>
+  <app-blog-post-comment [postId]="post().id"></app-blog-post-comment>
+</div>

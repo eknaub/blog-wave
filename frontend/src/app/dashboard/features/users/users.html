@@ -1,11 +1,7 @@
 <app-dashboard-content-wrapper title="Authors">
   @if (users.hasValue()) {
     @for (user of users.value(); track user.id) {
-      <div>
-        <h2>{{ user.username }}</h2>
-        <p>{{ user.email }}</p>
-        <p>Post Count: {{ getPostCountByAuthor(user.id) }}</p>
-      </div>
+      <app-user-card [user]="user" />
     } @empty {
       <p>No authors yet.</p>
     }

@@ -64,6 +64,11 @@ export const PostWithRelationsSchema = PostSchema.extend({
   comments: z.array(CommentSchema).optional(),
 });
 
+export const LoginSchema = z.object({
+  username: z.string().min(1, 'Username is required').trim(),
+  password: z.string().min(1, 'Password is required').trim(),
+});
+
 export type User = z.infer<typeof UserSchema>;
 export type UserCreate = z.infer<typeof UserCreateSchema>;
 export type UserUpdate = z.infer<typeof UserUpdateSchema>;
@@ -77,3 +82,5 @@ export type PostWithRelations = z.infer<typeof PostWithRelationsSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
 export type CommentCreate = z.infer<typeof CommentCreateSchema>;
 export type CommentUpdate = z.infer<typeof CommentUpdateSchema>;
+
+export type Login = z.infer<typeof LoginSchema>;

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
+import { sendError } from '../utils/response';
 
 interface ValidatedRequest<TBody = any, TQuery = any, TParams = any>
   extends Request {
@@ -15,16 +16,22 @@ export function validateBody<T>(schema: z.ZodSchema<T>) {
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
-        res.status(400).json({
-          error: 'Validation failed',
-          details: error.errors.map(err => ({
-            field: err.path.join('.'),
-            message: err.message,
-            code: err.code,
-          })),
-        });
+        const errorDetails = error.errors.map(err => ({
+          field: err.path.join('.'),
+          message: err.message,
+          code: err.code,
+        }));
+
+        sendError(
+          res,
+          'Validation failed',
+          400,
+          errorDetails.map(detail => `${detail.field}: ${detail.message}`)
+        );
       } else {
-        res.status(500).json({ error: 'Internal server error' });
+        sendError(res, 'Internal server error', 500, [
+          error instanceof Error ? error.message : String(error),
+        ]);
       }
     }
   };
@@ -37,16 +44,22 @@ export function validateParams(schema: z.ZodTypeAny) {
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
-        res.status(400).json({
-          error: 'Parameter validation failed',
-          details: error.errors.map(err => ({
-            field: err.path.join('.'),
-            message: err.message,
-            code: err.code,
-          })),
-        });
+        const errorDetails = error.errors.map(err => ({
+          field: err.path.join('.'),
+          message: err.message,
+          code: err.code,
+        }));
+
+        sendError(
+          res,
+          'Parameter validation failed',
+          400,
+          errorDetails.map(detail => `${detail.field}: ${detail.message}`)
+        );
       } else {
-        res.status(500).json({ error: 'Internal server error' });
+        sendError(res, 'Internal server error', 500, [
+          error instanceof Error ? error.message : String(error),
+        ]);
       }
     }
   };
@@ -59,16 +72,22 @@ export function validateQuery<T>(schema: z.ZodSchema<T>) {
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
-        res.status(400).json({
-          error: 'Query validation failed',
-          details: error.errors.map(err => ({
-            field: err.path.join('.'),
-            message: err.message,
-            code: err.code,
-          })),
-        });
+        const errorDetails = error.errors.map(err => ({
+          field: err.path.join('.'),
+          message: err.message,
+          code: err.code,
+        }));
+
+        sendError(
+          res,
+          'Query validation failed',
+          400,
+          errorDetails.map(detail => `${detail.field}: ${detail.message}`)
+        );
       } else {
-        res.status(500).json({ error: 'Internal server error' });
+        sendError(res, 'Internal server error', 500, [
+          error instanceof Error ? error.message : String(error),
+        ]);
       }
     }
   };

@@ -2,6 +2,15 @@ import { Response } from 'express';
 import { Post, PostUpdate } from '../utils/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
+import {
+  sendConflict,
+  sendCreated,
+  sendDeleted,
+  sendError,
+  sendNotFound,
+  sendSuccess,
+  sendUpdated,
+} from '../utils/response';
 
 class PostController {
   async getPosts(
@@ -18,9 +27,11 @@ class PostController {
         posts = posts.filter(post => post.author_id === userId);
       }
 
-      res.status(200).json(posts);
+      sendSuccess(res, posts, 'Posts retrieved successfully');
     } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      sendError(res, 'Failed to retrieve posts', 500, [errorMessage]);
     }
   }
 
@@ -32,7 +43,10 @@ class PostController {
       });
 
       if (foundPost) {
-        res.status(400).json({ error: 'Post with this ID already exists.' });
+        sendConflict(
+          res,
+          'Post with this ID already exists. Please use a different ID.'
+        );
         return;
       }
 
@@ -41,7 +55,10 @@ class PostController {
       });
 
       if (!foundAuthor) {
-        res.status(404).json({ error: 'Author not found.' });
+        sendNotFound(
+          res,
+          'Author not found. Please provide a valid author ID.'
+        );
         return;
       }
 
@@ -55,9 +72,11 @@ class PostController {
         },
       });
 
-      res.status(201).json(createdPost);
+      sendCreated(res, createdPost, 'Post created successfully');
     } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      sendError(res, 'Failed to create post', 500, [errorMessage]);
     }
   }
 
@@ -73,7 +92,7 @@ class PostController {
       });
 
       if (!foundPost) {
-        res.status(404).json({ error: 'Post not found.' });
+        sendNotFound(res, 'Post not found. Please provide a valid post ID.');
         return;
       }
 
@@ -87,9 +106,11 @@ class PostController {
         },
       });
 
-      res.status(200).json(updatedPost);
+      sendUpdated(res, updatedPost, 'Post updated successfully');
     } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      sendError(res, 'Failed to update post', 500, [errorMessage]);
     }
   }
 
@@ -97,29 +118,35 @@ class PostController {
     req: ValidatedRequest<Post, unknown, { postId: number }>,
     res: Response
   ): Promise<void> {
-    const postId = req.validatedParams!.postId;
-    const foundPost = await prisma.posts.findFirst({
-      where: { id: postId },
-    });
+    try {
+      const postId = req.validatedParams!.postId;
+      const foundPost = await prisma.posts.findFirst({
+        where: { id: postId },
+      });
 
-    if (!foundPost) {
-      res.status(404).json({ error: 'Post not found.' });
-      return;
+      if (!foundPost) {
+        sendNotFound(res, 'Post not found. Please provide a valid post ID.');
+        return;
+      }
+
+      const deletedPost = await prisma.posts.delete({
+        select: {
+          id: true,
+          title: true,
+          content: true,
+          author_id: true,
+          created_at: true,
+          updated_at: true,
+        },
+        where: { id: postId },
+      });
+
+      sendDeleted(res, deletedPost, 'Post deleted successfully');
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      sendError(res, 'Failed to delete post', 500, [errorMessage]);
     }
-
-    const deletedPost = await prisma.posts.delete({
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        author_id: true,
-        created_at: true,
-        updated_at: true,
-      },
-      where: { id: postId },
-    });
-
-    res.status(200).json(deletedPost);
   }
 
   async publishPost(
@@ -134,7 +161,7 @@ class PostController {
       });
 
       if (!foundPost) {
-        res.status(404).json({ error: 'Post not found.' });
+        sendNotFound(res, 'Post not found. Please provide a valid post ID.');
         return;
       }
 
@@ -146,9 +173,17 @@ class PostController {
         },
       });
 
-      res.status(200).json(updatedPost);
+      sendUpdated(
+        res,
+        updatedPost,
+        'Post publication status updated successfully'
+      );
     } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      sendError(res, 'Failed to update post publication status', 500, [
+        errorMessage,
+      ]);
     }
   }
 }

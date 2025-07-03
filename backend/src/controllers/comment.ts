@@ -1,8 +1,14 @@
 import { Response } from 'express';
-import { comments } from '../utils/mockData';
 import { Comment, CommentUpdate } from '../utils/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
+import {
+  sendCreated,
+  sendDeleted,
+  sendNotFound,
+  sendSuccess,
+  sendUpdated,
+} from '../utils/response';
 
 class CommentController {
   async getComments(
@@ -17,9 +23,13 @@ class CommentController {
         },
       });
 
-      res.status(200).json(comments);
+      sendSuccess(res, comments, 'Comments retrieved successfully');
     } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      res
+        .status(500)
+        .json({ error: 'Failed to retrieve comments', details: errorMessage });
     }
   }
 
@@ -41,9 +51,13 @@ class CommentController {
         },
       });
 
-      res.status(201).json(createdComment);
+      sendCreated(res, createdComment, 'Comment created successfully');
     } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      res
+        .status(500)
+        .json({ error: 'Failed to create comment', details: errorMessage });
     }
   }
 
@@ -67,7 +81,7 @@ class CommentController {
       });
 
       if (!foundComment) {
-        res.status(404).json({ error: 'Comment not found.' });
+        sendNotFound(res, 'Comment not found');
         return;
       }
 
@@ -81,9 +95,13 @@ class CommentController {
         },
       });
 
-      res.status(200).json(updatedComment);
+      sendUpdated(res, updatedComment, 'Comment updated successfully');
     } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      res
+        .status(500)
+        .json({ error: 'Failed to update comment', details: errorMessage });
     }
   }
 
@@ -106,7 +124,7 @@ class CommentController {
       });
 
       if (!foundComment) {
-        res.status(404).json({ error: 'Comment not found.' });
+        sendNotFound(res, 'Comment not found');
         return;
       }
 
@@ -116,9 +134,13 @@ class CommentController {
         },
       });
 
-      res.status(200).json(deletedComment);
+      sendDeleted(res, deletedComment, 'Comment deleted successfully');
     } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      res
+        .status(500)
+        .json({ error: 'Failed to delete comment', details: errorMessage });
     }
   }
 }

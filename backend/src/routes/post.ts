@@ -12,6 +12,7 @@ import {
   PostPublishSchema,
   PostUpdateSchema,
 } from '../utils/interfaces';
+import { requireAuth } from '../middleware/auth';
 
 const router = Router();
 const postController = new PostController();
@@ -23,23 +24,27 @@ router.get(
 );
 router.post(
   '/',
+  requireAuth,
   validateBody(PostCreateSchema),
   postController.postPost.bind(postController)
 );
 router.put(
   '/:postId',
+  requireAuth,
   validateParams(PostIdParamSchema),
   validateBody(PostUpdateSchema),
   postController.putPost.bind(postController)
 );
 router.patch(
   '/:postId/publish',
+  requireAuth,
   validateParams(PostIdParamSchema),
   validateBody(PostPublishSchema),
   postController.publishPost.bind(postController)
 );
 router.delete(
   '/:postId',
+  requireAuth,
   validateParams(PostIdParamSchema),
   postController.deletePost.bind(postController)
 );

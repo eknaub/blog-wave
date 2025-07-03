@@ -1,55 +1,25 @@
 import { Response } from 'express';
-import { User, UserUpdate } from '../utils/interfaces';
+import { UserUpdate } from '../utils/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
 import bcrypt from 'bcrypt';
+import {
+  sendDeleted,
+  sendError,
+  sendNotFound,
+  sendSuccess,
+  sendUpdated,
+} from '../utils/response';
 
 class UserController {
   async getUsers(req: ValidatedRequest, res: Response): Promise<void> {
     try {
       const data = await prisma.users.findMany();
-      res.status(200).json(data);
+      sendSuccess(res, data, 'Users retrieved successfully');
     } catch (error) {
-      res.status(500).json({ error });
-    }
-  }
-
-  async postUser(req: ValidatedRequest<User>, res: Response): Promise<void> {
-    try {
-      const validatedUser: User = req.validatedBody!;
-      const foundUser = await prisma.users.findFirst({
-        select: {
-          id: true,
-          username: true,
-          email: true,
-        },
-        where: { email: validatedUser.email },
-      });
-      const passwordHash = await bcrypt.hash(validatedUser.password, 12);
-
-      if (foundUser) {
-        res.status(400).json({ error: 'User with this email already exists.' });
-        return;
-      }
-
-      const createdUser = await prisma.users.create({
-        data: {
-          ...validatedUser,
-          password: passwordHash,
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-      });
-
-      res.status(201).json({
-        id: createdUser.id,
-        username: createdUser.username,
-        email: createdUser.email,
-        createdAt: createdUser.created_at,
-        updatedAt: createdUser.updated_at,
-      });
-    } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      sendError(res, 'Failed to retrieve users', 500, [errorMessage]);
     }
   }
 
@@ -70,7 +40,7 @@ class UserController {
       });
 
       if (!foundUser) {
-        res.status(404).json({ error: 'User not found.' });
+        sendNotFound(res, 'User not found');
         return;
       }
 
@@ -92,9 +62,11 @@ class UserController {
         },
       });
 
-      res.status(200).json(updatedUser);
+      sendUpdated(res, updatedUser, 'User updated successfully');
     } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      sendError(res, 'Failed to update user', 500, [errorMessage]);
     }
   }
 
@@ -112,7 +84,7 @@ class UserController {
       });
 
       if (!foundUser) {
-        res.status(404).json({ error: 'User not found.' });
+        sendNotFound(res, 'User not found');
         return;
       }
 
@@ -127,9 +99,11 @@ class UserController {
         where: { id: userId },
       });
 
-      res.status(200).json(deletedUser);
+      sendDeleted(res, deletedUser, 'User deleted successfully');
     } catch (error) {
-      res.status(500).json({ error });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      sendError(res, 'Failed to delete user', 500, [errorMessage]);
     }
   }
 }

@@ -5,7 +5,9 @@
       @for (comment of comments; track comment.id) {
         <div>
           <p>{{ comment.content }}</p>
-          <small>By User: {{ comment.authorId }}</small>
+          <small>By User: {{ comment.author_id }}</small>
+          <small>Created at: {{ comment.created_at | date: 'medium' }}</small>
+          <small>Updated at: {{ comment.updated_at | date: 'medium' }}</small>
         </div>
       } @empty {
         <p>No comments yet.</p>

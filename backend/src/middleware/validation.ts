@@ -65,7 +65,7 @@ export function validateParams(schema: z.ZodTypeAny) {
   };
 }
 
-export function validateQuery<T>(schema: z.ZodSchema<T>) {
+export function validateQuery(schema: z.ZodTypeAny) {
   return (req: ValidatedRequest, res: Response, next: NextFunction): void => {
     try {
       req.validatedQuery = schema.parse(req.query);
@@ -161,7 +161,22 @@ export const PostAndCommentIdParamSchema = z.object({
 });
 
 export const OptionalUserIdQuerySchema = z.object({
-  userId: z.string().optional(),
+  userId: z
+    .string()
+    .optional()
+    .transform((val, ctx) => {
+      if (!val) return undefined;
+
+      const parsed = Number(val);
+      if (isNaN(parsed) || parsed <= 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'User ID must be a positive number',
+        });
+        return z.NEVER;
+      }
+      return parsed;
+    }),
 });
 
 export type { ValidatedRequest };

@@ -83,7 +83,18 @@ class AuthController {
           sendError(res, 'Login failed', 500, [err.message]);
           return;
         }
-        sendSuccess(res, user, 'Login successful', 200);
+        sendSuccess(
+          res,
+          {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+          },
+          'Login successful',
+          200
+        );
         return;
       });
     })(req, res, next);

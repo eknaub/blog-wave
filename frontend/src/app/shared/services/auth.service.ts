@@ -1,17 +1,12 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { RouteNames } from '../interfaces/routes';
+import { User } from '../interfaces/user';
+import { BaseHttpService } from './http.service';
 
 export interface LoginCredentials {
   username: string;
   password: string;
-}
-
-export interface User {
-  id: string;
-  username: string;
-  email?: string;
 }
 
 @Injectable({
@@ -21,6 +16,7 @@ export class AuthService {
   private router = inject(Router);
   private currentUserSignal = signal<User | null>(null);
   public currentUser$ = this.currentUserSignal.asReadonly();
+  private baseHttp = inject(BaseHttpService);
 
   constructor() {
     this.checkExistingAuth();
@@ -28,18 +24,18 @@ export class AuthService {
 
   async login(credentials: LoginCredentials): Promise<boolean> {
     try {
-      console.log('Attempting login with', credentials);
-
       if (credentials.username && credentials.password) {
-        const user: User = {
-          id: '1',
-          username: credentials.username,
-          email: `${credentials.username}@example.com`,
-        };
+        const response = await this.baseHttp
+          .post<User>('/auth/login', credentials)
+          .toPromise();
 
-        this.setCurrentUser(user);
-        this.router.navigate([RouteNames.DASHBOARD]);
-        return true;
+        if (response) {
+          this.setCurrentUser(response);
+          this.router.navigate([RouteNames.DASHBOARD]);
+          return true;
+        }
+
+        return false;
       }
 
       return false;
@@ -49,10 +45,16 @@ export class AuthService {
     }
   }
 
-  logout(): void {
-    this.currentUserSignal.set(null);
-    localStorage.removeItem('currentUser');
-    this.router.navigate([RouteNames.LOGIN]);
+  async logout(): Promise<void> {
+    try {
+      await this.baseHttp.post('/auth/logout', {}).toPromise();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      this.currentUserSignal.set(null);
+      localStorage.removeItem('currentUser');
+      this.router.navigate([RouteNames.LOGIN]);
+    }
   }
 
   isAuthenticated(): boolean {
@@ -81,19 +83,23 @@ export class AuthService {
     }
   }
 
-  register(credentials: LoginCredentials): Promise<boolean> {
-    return new Promise((resolve) => {
+  async register(credentials: LoginCredentials): Promise<boolean> {
+    try {
       console.log('Registering user with', credentials);
-      if (credentials.username && credentials.password) {
-        const user: User = {
-          id: '2',
-          username: credentials.username,
-          email: `${credentials.username}@example.com`,
-        };
-        this.setCurrentUser(user);
+
+      const response = await this.baseHttp
+        .post<User>('/auth/register', credentials)
+        .toPromise();
+      if (response) {
+        this.setCurrentUser(response);
         this.router.navigate([RouteNames.DASHBOARD]);
-        resolve(true);
+        return true;
       }
-    });
+
+      return false;
+    } catch (error) {
+      console.error('Registration error:', error);
+      return false;
+    }
   }
 }

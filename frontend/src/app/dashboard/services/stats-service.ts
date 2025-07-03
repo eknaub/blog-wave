@@ -9,21 +9,20 @@ export class StatsService {
   private blogService = inject(BlogService);
   private userService = inject(UserService);
 
-  blogServiceError = computed(() => this.blogService.posts.error());
-  userServiceError = computed(() => this.userService.users.error());
+  blogServiceError = computed(() => this.blogService.postsError());
+  userServiceError = computed(() => this.userService.usersError());
 
   isLoading = computed(
-    () =>
-      this.blogService.posts.isLoading() || this.userService.users.isLoading()
+    () => this.blogService.postsLoading() || this.userService.usersLoading()
   );
 
   posts = computed(() => {
     const posts = this.blogService.posts;
-    return posts.hasValue() ? posts.value().length : 0;
+    return posts().length;
   });
 
   users = computed(() => {
     const users = this.userService.users;
-    return users.hasValue() ? users.value().length : 0;
+    return users().length;
   });
 }

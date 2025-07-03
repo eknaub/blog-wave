@@ -12,4 +12,6 @@ import { BlogPost } from './components/blog-post/blog-post';
 export class Blog {
   blogService = inject(BlogService);
   posts = this.blogService.posts;
+  postsLoading = this.blogService.postsLoading;
+  postsError = this.blogService.postsError;
 }

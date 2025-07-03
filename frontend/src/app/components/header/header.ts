@@ -27,4 +27,8 @@ export class Header {
   protected authService = inject(AuthService);
 
   isLoggedIn = computed(() => this.authService.isAuthenticated());
+
+  logout() {
+    this.authService.logout();
+  }
 }

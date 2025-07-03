@@ -2,6 +2,7 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { NotificationService } from '../services/notification.service';
+import { ApiResponse } from '../interfaces/response';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const notificationService = inject(NotificationService);
@@ -11,38 +12,32 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       let errorMessage = 'An unexpected error occurred';
 
       if (error.error instanceof ErrorEvent) {
-        // Client-side error
         errorMessage = `Network error: ${error.error.message}`;
       } else {
-        // Server-side error
-        switch (error.status) {
-          case 400:
-            errorMessage = 'Bad request. Please check your input.';
-            break;
-          case 401:
-            errorMessage = 'Unauthorized. Please log in again.';
-            break;
-          case 403:
-            errorMessage = "Access forbidden. You don't have permission.";
-            break;
-          case 404:
-            errorMessage = 'Resource not found.';
-            break;
-          case 500:
-            errorMessage = 'Internal server error. Please try again later.';
-            break;
-          case 502:
-            errorMessage = 'Bad gateway. Server is temporarily unavailable.';
-            break;
-          case 503:
-            errorMessage = 'Service unavailable. Please try again later.';
-            break;
-          case 0:
-            errorMessage =
-              'Network connection failed. Please check your internet connection.';
-            break;
-          default:
-            errorMessage = `HTTP Error ${error.status}: ${error.statusText}`;
+        if (error.error && typeof error.error === 'object') {
+          const apiError = error.error as ApiResponse;
+
+          const errorMessages: string[] = [];
+
+          if (apiError.error) {
+            errorMessages.push(apiError.error);
+          }
+
+          if (apiError.errors && apiError.errors.length > 0) {
+            errorMessages.push(...apiError.errors);
+          }
+
+          if (apiError.message && !apiError.error && !apiError.errors?.length) {
+            errorMessages.push(apiError.message);
+          }
+
+          if (errorMessages.length > 0) {
+            errorMessage = errorMessages.join('; ');
+          } else {
+            errorMessage = getDefaultErrorMessage(error.status);
+          }
+        } else {
+          errorMessage = getDefaultErrorMessage(error.status);
         }
       }
 
@@ -60,3 +55,26 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     })
   );
 };
+
+function getDefaultErrorMessage(status: number): string {
+  switch (status) {
+    case 400:
+      return 'Bad request. Please check your input.';
+    case 401:
+      return 'Unauthorized. Please log in again.';
+    case 403:
+      return "Access forbidden. You don't have permission.";
+    case 404:
+      return 'Resource not found.';
+    case 500:
+      return 'Internal server error. Please try again later.';
+    case 502:
+      return 'Bad gateway. Server is temporarily unavailable.';
+    case 503:
+      return 'Service unavailable. Please try again later.';
+    case 0:
+      return 'Network connection failed. Please check your internet connection.';
+    default:
+      return `HTTP Error ${status}: An error occurred`;
+  }
+}

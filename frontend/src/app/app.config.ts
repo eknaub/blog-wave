@@ -14,6 +14,7 @@ import { loggingInterceptor } from './shared/interceptors/logging.interceptor';
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
 import { retryInterceptor } from './shared/interceptors/retry.interceptor';
 import { loadingInterceptor } from './shared/interceptors/loading.interceptor';
+import { credentialsInterceptor } from './shared/interceptors/credentials.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withFetch(),
       withInterceptors([
+        credentialsInterceptor,
         loggingInterceptor,
         errorInterceptor,
         loadingInterceptor,

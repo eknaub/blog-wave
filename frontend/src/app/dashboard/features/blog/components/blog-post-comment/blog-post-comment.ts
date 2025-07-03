@@ -1,10 +1,10 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
 import { BlogService } from '../../../../services/blog-service';
 
 @Component({
   selector: 'app-blog-post-comment',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, CommonModule],
   templateUrl: './blog-post-comment.html',
   styleUrl: './blog-post-comment.css',
 })

@@ -1,15 +1,15 @@
 <app-dashboard-content-wrapper title="Blog Posts">
-  @if (posts.hasValue()) {
-    @for (post of posts.value(); track post.id) {
+  @if (!postsLoading()) {
+    @for (post of posts(); track post.id) {
       <app-blog-post [post]="post"></app-blog-post>
     } @empty {
       <div class="no-posts">
         <p>No blog posts available.</p>
       </div>
     }
-  } @else if (posts.error()) {
+  } @else if (postsError()) {
     <div class="error">
-      <p>{{ posts.error() }}</p>
+      <p>{{ postsError() }}</p>
     </div>
   }
 </app-dashboard-content-wrapper>

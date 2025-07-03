@@ -12,4 +12,6 @@ import { UserCard } from './components/user-card/user-card';
 export class Users {
   userService = inject(UserService);
   users = this.userService.users;
+  usersLoading = this.userService.usersLoading;
+  usersError = this.userService.usersError;
 }

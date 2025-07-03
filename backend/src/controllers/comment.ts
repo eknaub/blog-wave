@@ -2,90 +2,124 @@ import { Response } from 'express';
 import { comments } from '../utils/mockData';
 import { Comment, CommentUpdate } from '../utils/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
+import prisma from '../prisma/client';
 
 class CommentController {
-  getComments(
+  async getComments(
     req: ValidatedRequest<Comment, unknown, { postId: number }>,
     res: Response
-  ): void {
-    const postId = req.validatedParams!.postId;
+  ): Promise<void> {
+    try {
+      const postId = req.validatedParams!.postId;
+      const comments = await prisma.comments.findMany({
+        where: {
+          post_id: postId,
+        },
+      });
 
-    let data = comments;
-    if (postId) {
-      data = comments.filter(comment => comment.postId === postId);
+      res.status(200).json(comments);
+    } catch (error) {
+      res.status(500).json({ error });
     }
-
-    res.status(200).json(data);
   }
 
-  postComment(
+  async postComment(
     req: ValidatedRequest<Comment, unknown, { postId: number }>,
     res: Response
-  ): void {
-    const postId = req.validatedParams!.postId;
-    const newComment: Comment = { ...req.validatedBody!, postId };
+  ): Promise<void> {
+    try {
+      const postId = req.validatedParams!.postId;
+      const validatedComment: Comment = { ...req.validatedBody!, postId };
 
-    if (comments.some(comment => comment.id === newComment.id)) {
-      res.status(400).json({ error: 'Comment with this ID already exists.' });
-      return;
+      const createdComment = await prisma.comments.create({
+        data: {
+          content: validatedComment.content,
+          post_id: validatedComment.postId,
+          author_id: validatedComment.authorId,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+      });
+
+      res.status(201).json(createdComment);
+    } catch (error) {
+      res.status(500).json({ error });
     }
-
-    comments.push(newComment);
-
-    res.status(201).json(newComment);
   }
 
-  putComment(
+  async putComment(
     req: ValidatedRequest<
       Comment,
       unknown,
       { postId: number; commentId: number }
     >,
     res: Response
-  ): void {
-    const postId = req.validatedParams!.postId;
-    const commentId = req.validatedParams!.commentId;
+  ): Promise<void> {
+    try {
+      const postId = req.validatedParams!.postId;
+      const commentId = req.validatedParams!.commentId;
+      const validatedComment: CommentUpdate = req.validatedBody!;
+      const foundComment = await prisma.comments.findFirst({
+        where: {
+          id: commentId,
+          post_id: postId,
+        },
+      });
 
-    const updatedComment: CommentUpdate = req.validatedBody!;
-    const foundElemIdx = comments.findIndex(
-      comment => comment.id === commentId && comment.postId === postId
-    );
+      if (!foundComment) {
+        res.status(404).json({ error: 'Comment not found.' });
+        return;
+      }
 
-    if (foundElemIdx === -1) {
-      res.status(404).json({ error: 'Comment not found.' });
-      return;
+      const updatedComment = await prisma.comments.update({
+        where: {
+          id: commentId,
+        },
+        data: {
+          content: validatedComment.content,
+          updated_at: new Date(),
+        },
+      });
+
+      res.status(200).json(updatedComment);
+    } catch (error) {
+      res.status(500).json({ error });
     }
-
-    comments[foundElemIdx] = {
-      id: commentId,
-      ...updatedComment,
-    };
-
-    res.status(200).json(comments[foundElemIdx]);
   }
 
-  deleteComment(
+  async deleteComment(
     req: ValidatedRequest<
       Comment,
       unknown,
       { postId: number; commentId: number }
     >,
     res: Response
-  ): void {
-    const postId = req.validatedParams!.postId;
-    const commentId = req.validatedParams!.commentId;
+  ): Promise<void> {
+    try {
+      const postId = req.validatedParams!.postId;
+      const commentId = req.validatedParams!.commentId;
+      const foundComment = await prisma.comments.findFirst({
+        where: {
+          id: commentId,
+          post_id: postId,
+        },
+      });
 
-    const foundElemIdx = comments.findIndex(
-      comment => comment.id === commentId && comment.postId === postId
-    );
+      if (!foundComment) {
+        res.status(404).json({ error: 'Comment not found.' });
+        return;
+      }
 
-    if (foundElemIdx === -1) {
-      res.status(404).json({ error: 'Comment not found.' });
-      return;
+      const deletedComment = await prisma.comments.delete({
+        where: {
+          id: commentId,
+        },
+      });
+
+      res.status(200).json(deletedComment);
+    } catch (error) {
+      res.status(500).json({ error });
     }
-
-    comments.splice(foundElemIdx, 1);
-    res.status(200).json({ message: 'Comment deleted successfully.' });
   }
 }
 

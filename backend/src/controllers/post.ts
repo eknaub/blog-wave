@@ -1,75 +1,155 @@
 import { Response } from 'express';
-import { posts } from '../utils/mockData';
 import { Post, PostUpdate } from '../utils/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
+import prisma from '../prisma/client';
 
 class PostController {
-  getPosts(
+  async getPosts(
     req: ValidatedRequest<unknown, { userId: number | undefined }>,
     res: Response
-  ): void {
-    const userId = req.validatedQuery!.userId;
-    let data = posts;
+  ): Promise<void> {
+    try {
+      const userId = req.validatedQuery!.userId;
+      let posts = await prisma.posts.findMany({
+        where: userId ? { author_id: userId } : undefined,
+      });
 
-    if (userId) {
-      data = posts.filter(post => post.authorId === userId);
+      if (userId) {
+        posts = posts.filter(post => post.author_id === userId);
+      }
+
+      res.status(200).json(posts);
+    } catch (error) {
+      res.status(500).json({ error });
     }
-
-    res.status(200).json(data);
   }
 
-  postPost(req: ValidatedRequest<Post>, res: Response): void {
-    const newPost: Post = req.validatedBody!;
+  async postPost(req: ValidatedRequest<Post>, res: Response): Promise<void> {
+    try {
+      const validatedPost: Post = req.validatedBody!;
+      const foundPost = await prisma.posts.findFirst({
+        where: { id: validatedPost.id },
+      });
 
-    if (posts.some(post => post.id === newPost.id)) {
-      res.status(400).json({ error: 'Post with this ID already exists.' });
-      return;
+      if (foundPost) {
+        res.status(400).json({ error: 'Post with this ID already exists.' });
+        return;
+      }
+
+      const foundAuthor = await prisma.users.findFirst({
+        where: { id: validatedPost.authorId },
+      });
+
+      if (!foundAuthor) {
+        res.status(404).json({ error: 'Author not found.' });
+        return;
+      }
+
+      const createdPost = await prisma.posts.create({
+        data: {
+          title: validatedPost.title,
+          content: validatedPost.content,
+          author_id: validatedPost.authorId,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+      });
+
+      res.status(201).json(createdPost);
+    } catch (error) {
+      res.status(500).json({ error });
     }
-
-    posts.push(newPost);
-    res.status(201).json(newPost);
   }
 
-  putPost(
+  async putPost(
     req: ValidatedRequest<Post, unknown, { postId: number }>,
     res: Response
-  ): void {
-    const postId = req.validatedParams!.postId;
-    const updatedPost: PostUpdate = req.validatedBody!;
-    const foundElemIdx = posts.findIndex(post => post.id === postId);
+  ): Promise<void> {
+    try {
+      const postId = req.validatedParams!.postId;
+      const validatedPost: PostUpdate = req.validatedBody!;
+      const foundPost = await prisma.posts.findFirst({
+        where: { id: postId },
+      });
 
-    if (foundElemIdx === -1) {
+      if (!foundPost) {
+        res.status(404).json({ error: 'Post not found.' });
+        return;
+      }
+
+      const updatedPost = await prisma.posts.update({
+        where: { id: postId },
+        data: {
+          title: validatedPost.title,
+          content: validatedPost.content,
+          author_id: validatedPost.authorId,
+          updated_at: new Date(),
+        },
+      });
+
+      res.status(200).json(updatedPost);
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  }
+
+  async deletePost(
+    req: ValidatedRequest<Post, unknown, { postId: number }>,
+    res: Response
+  ): Promise<void> {
+    const postId = req.validatedParams!.postId;
+    const foundPost = await prisma.posts.findFirst({
+      where: { id: postId },
+    });
+
+    if (!foundPost) {
       res.status(404).json({ error: 'Post not found.' });
       return;
     }
 
-    posts[foundElemIdx] = { id: postId, ...updatedPost };
+    const deletedPost = await prisma.posts.delete({
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        author_id: true,
+        created_at: true,
+        updated_at: true,
+      },
+      where: { id: postId },
+    });
 
-    res.status(200).json(posts[foundElemIdx]);
+    res.status(200).json(deletedPost);
   }
 
-  deletePost(
+  async publishPost(
     req: ValidatedRequest<Post, unknown, { postId: number }>,
     res: Response
-  ): void {
-    const postId = req.validatedParams!.postId;
+  ): Promise<void> {
+    try {
+      const postId = req.validatedParams!.postId;
+      const { published } = req.validatedBody!;
+      const foundPost = await prisma.posts.findFirst({
+        where: { id: postId },
+      });
 
-    if (isNaN(postId) || postId <= 0) {
-      res
-        .status(400)
-        .json({ error: 'Invalid post ID. Must be a positive number.' });
-      return;
+      if (!foundPost) {
+        res.status(404).json({ error: 'Post not found.' });
+        return;
+      }
+
+      const updatedPost = await prisma.posts.update({
+        where: { id: postId },
+        data: {
+          published,
+          updated_at: new Date(),
+        },
+      });
+
+      res.status(200).json(updatedPost);
+    } catch (error) {
+      res.status(500).json({ error });
     }
-
-    const foundElemIdx = posts.findIndex(post => post.id === postId);
-
-    if (foundElemIdx === -1) {
-      res.status(404).json({ error: 'Post not found.' });
-      return;
-    }
-
-    posts.splice(foundElemIdx, 1);
-    res.status(200).json({ message: 'Post deleted successfully.' });
   }
 }
 

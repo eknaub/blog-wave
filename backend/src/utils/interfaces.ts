@@ -40,6 +40,10 @@ export const PostCreateSchema = PostSchema.omit({
   updatedAt: true,
 });
 
+export const PostPublishSchema = z.object({
+  published: z.boolean(),
+});
+
 export const CommentCreateSchema = CommentSchema.omit({
   id: true,
   createdAt: true,

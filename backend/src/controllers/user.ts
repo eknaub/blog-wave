@@ -18,12 +18,12 @@ class UserController {
     try {
       const validatedUser: User = req.validatedBody!;
       const foundUser = await prisma.users.findFirst({
-        where: { email: validatedUser.email },
         select: {
           id: true,
           username: true,
           email: true,
         },
+        where: { email: validatedUser.email },
       });
       const passwordHash = await bcrypt.hash(validatedUser.password, 12);
 
@@ -61,10 +61,12 @@ class UserController {
       const userId = req.validatedParams!.userId;
       const validatedUser: UserUpdate = req.validatedBody!;
       const foundUser = await prisma.users.findFirst({
-        where: { id: userId },
         select: {
           id: true,
+          username: true,
+          email: true,
         },
+        where: { id: userId },
       });
 
       if (!foundUser) {
@@ -73,6 +75,13 @@ class UserController {
       }
 
       const updatedUser = await prisma.users.update({
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          created_at: true,
+          updated_at: true,
+        },
         where: { id: userId },
         data: {
           ...validatedUser,
@@ -80,13 +89,6 @@ class UserController {
           password: validatedUser.password
             ? await bcrypt.hash(validatedUser.password, 12)
             : undefined,
-        },
-        select: {
-          id: true,
-          username: true,
-          email: true,
-          created_at: true,
-          updated_at: true,
         },
       });
 
@@ -103,10 +105,10 @@ class UserController {
     try {
       const userId = req.validatedParams!.userId;
       const foundUser = await prisma.users.findFirst({
-        where: { id: userId },
         select: {
           id: true,
         },
+        where: { id: userId },
       });
 
       if (!foundUser) {
@@ -115,7 +117,6 @@ class UserController {
       }
 
       const deletedUser = await prisma.users.delete({
-        where: { id: userId },
         select: {
           id: true,
           username: true,
@@ -123,6 +124,7 @@ class UserController {
           created_at: true,
           updated_at: true,
         },
+        where: { id: userId },
       });
 
       res.status(200).json(deletedUser);

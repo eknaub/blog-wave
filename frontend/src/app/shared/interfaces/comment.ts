@@ -3,4 +3,6 @@ export interface Comment {
   content: string;
   postId: number;
   authorId: number;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -1,59 +1,134 @@
 import { Response } from 'express';
-import { users } from '../utils/mockData';
 import { User, UserUpdate } from '../utils/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
+import prisma from '../prisma/client';
+import bcrypt from 'bcrypt';
 
 class UserController {
-  getUsers(req: ValidatedRequest, res: Response): void {
-    const data = users;
-    res.status(200).json(data);
-  }
-
-  postUser(req: ValidatedRequest<User>, res: Response): void {
-    const validatedUser: User = req.validatedBody!;
-
-    if (users.some(user => user.id === validatedUser.id)) {
-      res.status(400).json({ error: 'User with this ID already exists.' });
-      return;
+  async getUsers(req: ValidatedRequest, res: Response): Promise<void> {
+    try {
+      const data = await prisma.users.findMany();
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ error });
     }
-
-    users.push(validatedUser);
-    res.status(201).json(validatedUser);
   }
 
-  putUser(
+  async postUser(req: ValidatedRequest<User>, res: Response): Promise<void> {
+    try {
+      const validatedUser: User = req.validatedBody!;
+      const foundUser = await prisma.users.findFirst({
+        where: { email: validatedUser.email },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+        },
+      });
+      const passwordHash = await bcrypt.hash(validatedUser.password, 12);
+
+      if (foundUser) {
+        res.status(400).json({ error: 'User with this email already exists.' });
+        return;
+      }
+
+      const createdUser = await prisma.users.create({
+        data: {
+          ...validatedUser,
+          password: passwordHash,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+      });
+
+      res.status(201).json({
+        id: createdUser.id,
+        username: createdUser.username,
+        email: createdUser.email,
+        createdAt: createdUser.created_at,
+        updatedAt: createdUser.updated_at,
+      });
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  }
+
+  async putUser(
     req: ValidatedRequest<UserUpdate, unknown, { userId: number }>,
     res: Response
-  ): void {
-    const userId = req.validatedParams!.userId;
-    const updatedUser: UserUpdate = req.validatedBody!;
+  ): Promise<void> {
+    try {
+      const userId = req.validatedParams!.userId;
+      const validatedUser: UserUpdate = req.validatedBody!;
+      const foundUser = await prisma.users.findFirst({
+        where: { id: userId },
+        select: {
+          id: true,
+        },
+      });
 
-    const foundElemIdx = users.findIndex(user => user.id === userId);
+      if (!foundUser) {
+        res.status(404).json({ error: 'User not found.' });
+        return;
+      }
 
-    if (foundElemIdx === -1) {
-      res.status(404).json({ error: 'User not found.' });
-      return;
+      const updatedUser = await prisma.users.update({
+        where: { id: userId },
+        data: {
+          ...validatedUser,
+          updated_at: new Date(),
+          password: validatedUser.password
+            ? await bcrypt.hash(validatedUser.password, 12)
+            : undefined,
+        },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          created_at: true,
+          updated_at: true,
+        },
+      });
+
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      res.status(500).json({ error });
     }
-
-    users[foundElemIdx] = { id: userId, ...updatedUser };
-    res.status(200).json(users[foundElemIdx]);
   }
 
-  deleteUser(
+  async deleteUser(
     req: ValidatedRequest<unknown, unknown, { userId: number }>,
     res: Response
-  ): void {
-    const userId = req.validatedParams!.userId;
+  ): Promise<void> {
+    try {
+      const userId = req.validatedParams!.userId;
+      const foundUser = await prisma.users.findFirst({
+        where: { id: userId },
+        select: {
+          id: true,
+        },
+      });
 
-    const foundElemIdx = users.findIndex(user => user.id === userId);
+      if (!foundUser) {
+        res.status(404).json({ error: 'User not found.' });
+        return;
+      }
 
-    if (foundElemIdx === -1) {
-      res.status(404).json({ error: 'User not found.' });
-      return;
+      const deletedUser = await prisma.users.delete({
+        where: { id: userId },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          created_at: true,
+          updated_at: true,
+        },
+      });
+
+      res.status(200).json(deletedUser);
+    } catch (error) {
+      res.status(500).json({ error });
     }
-
-    users.splice(foundElemIdx, 1);
-    res.status(200).json({ message: 'User deleted successfully.' });
   }
 }
 

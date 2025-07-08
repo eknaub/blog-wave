@@ -70,6 +70,7 @@ export class Register {
     this.authService.register({
       username,
       password,
+      email,
     });
   }
 }

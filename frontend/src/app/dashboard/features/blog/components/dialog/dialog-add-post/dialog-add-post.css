@@ -1,0 +1,65 @@
+.dialog-content {
+  min-width: 400px;
+  max-width: 600px;
+  padding: 24px;
+}
+
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-field {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.content-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 16px;
+}
+
+.cancel-btn {
+  color: #666;
+}
+
+.submit-btn {
+  min-width: 120px;
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+h2[mat-dialog-title] {
+  font-weight: 500;
+  color: #333;
+}
+
+@media (max-width: 600px) {
+  .dialog-content {
+    min-width: 280px;
+    padding: 16px;
+  }
+
+  .dialog-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .cancel-btn,
+  .submit-btn {
+    width: 100%;
+  }
+}

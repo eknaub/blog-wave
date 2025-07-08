@@ -1,8 +1,14 @@
 export interface Comment {
   id: number;
   content: string;
-  post_id: number;
-  author_id: number;
-  created_at: Date;
-  updated_at: Date;
+  postId: number;
+  authorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface CommentCreate {
+  content: string;
+  postId: number;
+  authorId: number;
 }

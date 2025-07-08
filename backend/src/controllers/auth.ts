@@ -43,15 +43,15 @@ class AuthController {
           username: validatedUser.username,
           email: validatedUser.email,
           password: hashedPassword,
-          created_at: new Date(),
-          updated_at: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         select: {
           id: true,
           username: true,
           email: true,
-          created_at: true,
-          updated_at: true,
+          createdAt: true,
+          updatedAt: true,
         },
       });
 

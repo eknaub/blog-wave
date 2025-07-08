@@ -13,6 +13,11 @@
 }
 
 .post-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-header-container {
   padding: 2rem 2rem 1rem;
   border-bottom: 1px solid #e9ecef;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
@@ -53,29 +58,6 @@
   }
 }
 
-.post-author {
-  font-weight: 500;
-  color: #495057;
-
-  i {
-    color: #007bff;
-  }
-}
-
-.post-date {
-  i {
-    color: #28a745;
-  }
-}
-
-.post-updated {
-  color: #17a2b8;
-
-  i {
-    color: #17a2b8;
-  }
-}
-
 .post-content {
   padding: 2rem;
 }
@@ -100,7 +82,7 @@
     border-radius: 8px;
   }
 
-  .post-header {
+  .post-header-container {
     padding: 1.5rem 1.5rem 1rem;
   }
 
@@ -128,7 +110,7 @@
 }
 
 @media (max-width: 480px) {
-  .post-header {
+  .post-header-container {
     padding: 1rem;
   }
 

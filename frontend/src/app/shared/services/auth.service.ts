@@ -9,6 +9,12 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface RegisterCredentials {
+  username: string;
+  password: string;
+  email: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -83,10 +89,8 @@ export class AuthService {
     }
   }
 
-  async register(credentials: LoginCredentials): Promise<boolean> {
+  async register(credentials: RegisterCredentials): Promise<boolean> {
     try {
-      console.log('Registering user with', credentials);
-
       const response = await this.baseHttp
         .post<User>('/auth/register', credentials)
         .toPromise();

@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Create New Post</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="postForm" id="postForm" class="post-form">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Title</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="title"
+        placeholder="Enter post title"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Content</mat-label>
+      <textarea
+        matInput
+        formControlName="content"
+        rows="6"
+        placeholder="Write your post content here..."
+        class="content-textarea"
+      >
+      </textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions">
+  <button mat-button (click)="onNoClick()" class="cancel-btn">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    form="postForm"
+    (click)="onSubmit()"
+    [disabled]="postForm.invalid"
+    class="submit-btn"
+  >
+    Create Post
+  </button>
+</mat-dialog-actions>

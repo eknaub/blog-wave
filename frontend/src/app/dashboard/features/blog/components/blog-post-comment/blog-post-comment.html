@@ -1,5 +1,5 @@
 @defer {
-  @if (comments() | async; as comments) {
+  @if (comments(); as comments) {
     <mat-accordion>
       <mat-expansion-panel
         (opened)="panelState.set(true)"
@@ -13,31 +13,66 @@
             <div class="comment-card">
               <div class="comment-content">
                 <p class="comment-text">{{ comment.content }}</p>
+                @if (comment.authorId === currentUser?.id) {
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="deleteComment(comment.id)"
+                    class="delete-btn"
+                    matTooltip="Delete comment"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
               </div>
               <div class="comment-meta">
-                <span class="comment-author">
-                  <i class="fas fa-user"></i>
-                  User: {{ comment.author_id }}
-                </span>
-                <span class="comment-date">
-                  <i class="fas fa-clock"></i>
-                  {{ comment.created_at | date: 'medium' }}
-                </span>
-                @if (comment.updated_at !== comment.created_at) {
-                  <span class="comment-updated">
-                    <i class="fas fa-edit"></i>
-                    Updated: {{ comment.updated_at | date: 'medium' }}
-                  </span>
+                <mat-chip disableRipple>
+                  User: {{ comment.authorId }}
+                </mat-chip>
+                <mat-chip disableRipple>
+                  {{ comment.createdAt | date: 'medium' }}
+                </mat-chip>
+                @if (comment.updatedAt !== comment.createdAt) {
+                  <mat-chip disableRipple>
+                    Updated: {{ comment.updatedAt | date: 'medium' }}
+                  </mat-chip>
                 }
               </div>
             </div>
           } @empty {
             <div class="no-comments">
-              <i class="fas fa-comment-slash"></i>
               <p>No comments yet. Be the first to comment!</p>
             </div>
           }
         </div>
+        <form
+          [formGroup]="commentForm"
+          (ngSubmit)="submitComment()"
+          class="comment-form"
+        >
+          <mat-form-field appearance="outline" class="comment-input">
+            <mat-label>Add a comment</mat-label>
+            <textarea
+              matInput
+              type="text"
+              formControlName="comment"
+              rows="3"
+              placeholder="Enter your comment here..."
+              class="comment-textarea"
+            ></textarea>
+          </mat-form-field>
+          <div class="form-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="commentForm.invalid"
+              class="submit-btn"
+            >
+              Submit Comment
+            </button>
+          </div>
+        </form>
       </mat-expansion-panel>
     </mat-accordion>
   }

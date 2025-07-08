@@ -20,11 +20,11 @@ class PostController {
     try {
       const userId = req.validatedQuery!.userId;
       let posts = await prisma.posts.findMany({
-        where: userId ? { author_id: userId } : undefined,
+        where: userId ? { authorId: userId } : undefined,
       });
 
       if (userId) {
-        posts = posts.filter(post => post.author_id === userId);
+        posts = posts.filter(post => post.authorId === userId);
       }
 
       sendSuccess(res, posts, 'Posts retrieved successfully');
@@ -38,17 +38,6 @@ class PostController {
   async postPost(req: ValidatedRequest<Post>, res: Response): Promise<void> {
     try {
       const validatedPost: Post = req.validatedBody!;
-      const foundPost = await prisma.posts.findFirst({
-        where: { id: validatedPost.id },
-      });
-
-      if (foundPost) {
-        sendConflict(
-          res,
-          'Post with this ID already exists. Please use a different ID.'
-        );
-        return;
-      }
 
       const foundAuthor = await prisma.users.findFirst({
         where: { id: validatedPost.authorId },
@@ -66,9 +55,9 @@ class PostController {
         data: {
           title: validatedPost.title,
           content: validatedPost.content,
-          author_id: validatedPost.authorId,
-          created_at: new Date(),
-          updated_at: new Date(),
+          authorId: validatedPost.authorId,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       });
 
@@ -101,8 +90,8 @@ class PostController {
         data: {
           title: validatedPost.title,
           content: validatedPost.content,
-          author_id: validatedPost.authorId,
-          updated_at: new Date(),
+          authorId: validatedPost.authorId,
+          updatedAt: new Date(),
         },
       });
 
@@ -134,9 +123,9 @@ class PostController {
           id: true,
           title: true,
           content: true,
-          author_id: true,
-          created_at: true,
-          updated_at: true,
+          authorId: true,
+          createdAt: true,
+          updatedAt: true,
         },
         where: { id: postId },
       });
@@ -169,7 +158,7 @@ class PostController {
         where: { id: postId },
         data: {
           published,
-          updated_at: new Date(),
+          updatedAt: new Date(),
         },
       });
 

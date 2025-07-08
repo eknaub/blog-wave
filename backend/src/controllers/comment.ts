@@ -19,7 +19,7 @@ class CommentController {
       const postId = req.validatedParams!.postId;
       const comments = await prisma.comments.findMany({
         where: {
-          post_id: postId,
+          postId: postId,
         },
       });
 
@@ -44,10 +44,10 @@ class CommentController {
       const createdComment = await prisma.comments.create({
         data: {
           content: validatedComment.content,
-          post_id: validatedComment.postId,
-          author_id: validatedComment.authorId,
-          created_at: new Date(),
-          updated_at: new Date(),
+          postId: validatedComment.postId,
+          authorId: validatedComment.authorId,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       });
 
@@ -76,7 +76,7 @@ class CommentController {
       const foundComment = await prisma.comments.findFirst({
         where: {
           id: commentId,
-          post_id: postId,
+          postId: postId,
         },
       });
 
@@ -91,7 +91,7 @@ class CommentController {
         },
         data: {
           content: validatedComment.content,
-          updated_at: new Date(),
+          updatedAt: new Date(),
         },
       });
 
@@ -119,7 +119,7 @@ class CommentController {
       const foundComment = await prisma.comments.findFirst({
         where: {
           id: commentId,
-          post_id: postId,
+          postId: postId,
         },
       });
 

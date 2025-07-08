@@ -49,13 +49,13 @@ class UserController {
           id: true,
           username: true,
           email: true,
-          created_at: true,
-          updated_at: true,
+          createdAt: true,
+          updatedAt: true,
         },
         where: { id: userId },
         data: {
           ...validatedUser,
-          updated_at: new Date(),
+          updatedAt: new Date(),
           password: validatedUser.password
             ? await bcrypt.hash(validatedUser.password, 12)
             : undefined,
@@ -93,8 +93,8 @@ class UserController {
           id: true,
           username: true,
           email: true,
-          created_at: true,
-          updated_at: true,
+          createdAt: true,
+          updatedAt: true,
         },
         where: { id: userId },
       });

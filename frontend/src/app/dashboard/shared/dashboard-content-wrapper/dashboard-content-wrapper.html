@@ -1,7 +1,14 @@
 <div class="dashboard-content-wrapper">
-  <h1>{{ title() }}</h1>
-  @if (subtitle()) {
-    <h4>{{ subtitle() }}</h4>
-  }
-  <ng-content />
+  <header class="dashboard-header">
+    <div class="header-container">
+      <h1 class="header-title">{{ title() }}</h1>
+      @if (subtitle()) {
+        <p class="header-subtitle">{{ subtitle() }}</p>
+      }
+    </div>
+    <div class="header-divider"></div>
+  </header>
+  <main class="dashboard-main">
+    <ng-content />
+  </main>
 </div>

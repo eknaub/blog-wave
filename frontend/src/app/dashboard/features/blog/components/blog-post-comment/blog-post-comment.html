@@ -1,19 +1,49 @@
 @defer {
   @if (comments() | async; as comments) {
-    <div>
-      <h4>Comments ({{ comments.length }})</h4>
-      @for (comment of comments; track comment.id) {
-        <div>
-          <p>{{ comment.content }}</p>
-          <small>By User: {{ comment.author_id }}</small>
-          <small>Created at: {{ comment.created_at | date: 'medium' }}</small>
-          <small>Updated at: {{ comment.updated_at | date: 'medium' }}</small>
+    <mat-accordion>
+      <mat-expansion-panel
+        (opened)="panelState.set(true)"
+        (closed)="panelState.set(false)"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title> Comments ({{ comments.length }}) </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="comments-list">
+          @for (comment of comments; track comment.id) {
+            <div class="comment-card">
+              <div class="comment-content">
+                <p class="comment-text">{{ comment.content }}</p>
+              </div>
+              <div class="comment-meta">
+                <span class="comment-author">
+                  <i class="fas fa-user"></i>
+                  User: {{ comment.author_id }}
+                </span>
+                <span class="comment-date">
+                  <i class="fas fa-clock"></i>
+                  {{ comment.created_at | date: 'medium' }}
+                </span>
+                @if (comment.updated_at !== comment.created_at) {
+                  <span class="comment-updated">
+                    <i class="fas fa-edit"></i>
+                    Updated: {{ comment.updated_at | date: 'medium' }}
+                  </span>
+                }
+              </div>
+            </div>
+          } @empty {
+            <div class="no-comments">
+              <i class="fas fa-comment-slash"></i>
+              <p>No comments yet. Be the first to comment!</p>
+            </div>
+          }
         </div>
-      } @empty {
-        <p>No comments yet.</p>
-      }
-    </div>
+      </mat-expansion-panel>
+    </mat-accordion>
   }
 } @loading {
-  <div>Loading comments...</div>
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading comments...</p>
+  </div>
 }

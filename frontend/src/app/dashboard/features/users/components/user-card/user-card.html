@@ -1,5 +1,19 @@
-<div>
-  <h2>{{ user().username }}</h2>
-  <p>{{ user().email }}</p>
-  <p>Post Count: {{ postCount() }}</p>
+<div class="user-card">
+  <div class="user-avatar">
+    <div class="avatar-placeholder">
+      {{ user().username.charAt(0).toUpperCase() }}
+    </div>
+  </div>
+
+  <div class="user-info">
+    <h2 class="username">{{ user().username }}</h2>
+    <p class="email">{{ user().email }}</p>
+
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-number">{{ postCount() }}</span>
+        <span class="stat-label">Posts</span>
+      </div>
+    </div>
+  </div>
 </div>

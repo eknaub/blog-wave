@@ -1,0 +1,146 @@
+.blog-post {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.post-header {
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.post-title {
+  margin: 0 0 1rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #212529;
+  letter-spacing: -0.02em;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(108, 117, 125, 0.1);
+    border-radius: 20px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: rgba(108, 117, 125, 0.15);
+    }
+
+    i {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.post-author {
+  font-weight: 500;
+  color: #495057;
+
+  i {
+    color: #007bff;
+  }
+}
+
+.post-date {
+  i {
+    color: #28a745;
+  }
+}
+
+.post-updated {
+  color: #17a2b8;
+
+  i {
+    color: #17a2b8;
+  }
+}
+
+.post-content {
+  padding: 2rem;
+}
+
+.post-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #495057;
+  margin: 0;
+  text-align: justify;
+  word-spacing: 0.1em;
+}
+
+.post-footer {
+  border-top: 1px solid #e9ecef;
+  background: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+  .blog-post {
+    margin: 1rem;
+    border-radius: 8px;
+  }
+
+  .post-header {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+
+  .post-title {
+    font-size: 1.75rem;
+  }
+
+  .post-meta {
+    flex-direction: column;
+    gap: 0.75rem;
+
+    span {
+      align-self: flex-start;
+    }
+  }
+
+  .post-content {
+    padding: 1.5rem;
+  }
+
+  .post-text {
+    font-size: 1rem;
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-header {
+    padding: 1rem;
+  }
+
+  .post-title {
+    font-size: 1.5rem;
+  }
+
+  .post-content {
+    padding: 1rem;
+  }
+
+  .post-meta {
+    font-size: 0.85rem;
+  }
+}

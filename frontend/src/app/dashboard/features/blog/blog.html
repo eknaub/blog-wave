@@ -1,7 +1,13 @@
 <app-dashboard-content-wrapper title="Blog Posts">
   @if (!postsLoading()) {
     @for (post of posts(); track post.id) {
-      <app-blog-post [post]="post"></app-blog-post>
+      @defer (on viewport) {
+        <app-blog-post [post]="post"></app-blog-post>
+      } @placeholder {
+        <div class="loading-placeholder">
+          <p>Loading post...</p>
+        </div>
+      }
     } @empty {
       <div class="no-posts">
         <p>No blog posts available.</p>

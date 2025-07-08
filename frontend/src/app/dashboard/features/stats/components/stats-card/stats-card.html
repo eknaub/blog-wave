@@ -1,4 +1,28 @@
-<div>
-  <h3>Total Posts: {{ totalPosts() }}</h3>
-  <h3>Total Users: {{ totalUsers() }}</h3>
+<div class="stats-container">
+  <div
+    mat-list-item
+    [routerLink]="'/' + RouteNames.DASHBOARD + '/' + RouteNames.BLOG"
+    class="stat-card"
+  >
+    <div class="stat-icon">
+      <mat-icon>article</mat-icon>
+    </div>
+    <div>
+      <h3 class="stat-title">Total Posts</h3>
+      <p class="stat-value">{{ totalPosts() }}</p>
+    </div>
+  </div>
+  <div
+    mat-list-item
+    [routerLink]="'/' + RouteNames.DASHBOARD + '/' + RouteNames.USERS"
+    class="stat-card"
+  >
+    <div class="stat-icon">
+      <mat-icon>comment</mat-icon>
+    </div>
+    <div>
+      <h3 class="stat-title">Total Users</h3>
+      <p class="stat-value">{{ totalUsers() }}</p>
+    </div>
+  </div>
 </div>

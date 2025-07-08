@@ -8,9 +8,8 @@ describe('DashboardContentWrapper', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardContentWrapper]
-    })
-    .compileComponents();
+      imports: [DashboardContentWrapper],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardContentWrapper);
     component = fixture.componentInstance;

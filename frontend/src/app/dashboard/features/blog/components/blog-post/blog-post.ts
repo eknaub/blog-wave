@@ -6,6 +6,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { BlogService } from '../../../../services/blog-service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { LoggerService } from '../../../../../shared/services/logger.service';
 
 @Component({
   selector: 'app-blog-post',
@@ -23,14 +24,15 @@ export class BlogPost {
   post = input.required<Post>();
   blogService = inject(BlogService);
   currentUser = this.blogService.currentUser;
+  logger = inject(LoggerService);
 
   deletePost = () => {
     this.blogService.deletePost(this.post().id).subscribe({
       next: () => {
-        console.log('Post deleted successfully');
+        this.logger.log('Post deleted successfully');
       },
       error: (error) => {
-        console.error('Failed to delete post:', error);
+        this.logger.error(`Failed to delete post: ${error}`);
       },
     });
   };

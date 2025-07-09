@@ -3,9 +3,11 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { NotificationService } from '../services/notification.service';
 import { ApiResponse } from '../interfaces/response';
+import { LoggerService } from '../services/logger.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const notificationService = inject(NotificationService);
+  const logger = inject(LoggerService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -41,14 +43,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
       }
 
-      console.error('HTTP Error Interceptor:', {
-        url: req.url,
-        method: req.method,
-        status: error.status,
-        message: errorMessage,
-        error: error,
-      });
-
+      logger.error(`HTTP Error: ${errorMessage}`);
       notificationService.showNotification(errorMessage);
 
       return throwError(() => new Error(errorMessage));

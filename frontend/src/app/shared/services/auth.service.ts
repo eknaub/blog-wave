@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouteNames } from '../interfaces/routes';
 import { User } from '../interfaces/user';
 import { BaseHttpService } from './http.service';
+import { LoggerService } from './logger.service';
 
 export interface LoginCredentials {
   username: string;
@@ -23,6 +24,7 @@ export class AuthService {
   private currentUserSignal = signal<User | null>(null);
   public currentUser$ = this.currentUserSignal.asReadonly();
   private baseHttp = inject(BaseHttpService);
+  logger = inject(LoggerService);
 
   constructor() {
     this.checkExistingAuth();
@@ -46,7 +48,7 @@ export class AuthService {
 
       return false;
     } catch (error) {
-      console.error('Login error:', error);
+      this.logger.error(`Login failed: ${error}`);
       return false;
     }
   }
@@ -55,7 +57,7 @@ export class AuthService {
     try {
       await this.baseHttp.post('/auth/logout', {}).toPromise();
     } catch (error) {
-      console.error('Logout error:', error);
+      this.logger.error(`Login failed: ${error}`);
     } finally {
       this.currentUserSignal.set(null);
       localStorage.removeItem('currentUser');
@@ -83,7 +85,7 @@ export class AuthService {
         const user = JSON.parse(storedUser);
         this.currentUserSignal.set(user);
       } catch (error) {
-        console.error('Error parsing stored user:', error);
+        this.logger.error(`Error parsing stored user: ${error}`);
         localStorage.removeItem('currentUser');
       }
     }
@@ -102,7 +104,7 @@ export class AuthService {
 
       return false;
     } catch (error) {
-      console.error('Registration error:', error);
+      this.logger.error(`Registration failed: ${error}`);
       return false;
     }
   }

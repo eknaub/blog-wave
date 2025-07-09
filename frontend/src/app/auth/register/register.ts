@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { RouteNames } from '../../shared/interfaces/routes';
 import { AuthService } from '../../shared/services/auth.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 @Component({
   selector: 'app-register',
@@ -33,6 +34,7 @@ import { AuthService } from '../../shared/services/auth.service';
 export class Register {
   readonly RouteNames = RouteNames;
   private authService = inject(AuthService);
+  logger = inject(LoggerService);
 
   registerForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -53,17 +55,17 @@ export class Register {
 
     this.registerForm.markAllAsTouched();
     if (this.registerForm.invalid) {
-      console.error('Form is invalid');
+      this.logger.error('Form is invalid');
       return;
     }
 
     if (!username || !email || !password || !confirmPassword) {
-      console.error('All fields are required');
+      this.logger.error('All fields are required');
       return;
     }
 
     if (password !== confirmPassword) {
-      console.error('Passwords do not match');
+      this.logger.error('Passwords do not match');
       return;
     }
 

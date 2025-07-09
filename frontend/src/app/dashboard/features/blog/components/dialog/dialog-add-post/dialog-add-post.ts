@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BlogService } from '../../../../../services/blog-service';
 import { MatDividerModule } from '@angular/material/divider';
+import { LoggerService } from '../../../../../../shared/services/logger.service';
 
 @Component({
   selector: 'app-dialog-add-post',
@@ -36,6 +37,7 @@ import { MatDividerModule } from '@angular/material/divider';
 })
 export class DialogAddPost {
   blogService = inject(BlogService);
+  logger = inject(LoggerService);
   readonly dialogRef = inject(MatDialogRef<DialogAddPost>);
   postForm = new FormGroup({
     title: new FormControl('', [Validators.required]),
@@ -55,11 +57,11 @@ export class DialogAddPost {
         .uploadPost(postData.title ?? '', postData.content ?? '')
         .subscribe({
           next: (post) => {
-            console.log('Post created successfully:', post);
+            this.logger.log(`Post created successfully: ${post}`);
             this.postForm.reset();
           },
           error: (error) => {
-            console.error('Failed to create post:', error);
+            this.logger.error(`Failed to create post: ${error}`);
           },
         });
     }

@@ -1,15 +1,8 @@
 import { Routes } from '@angular/router';
-import { Home } from './home/home';
-import { Dashboard } from './dashboard/dashboard';
-import { Users } from './dashboard/features/users/users';
-import { Register } from './auth/register/register';
-import { Login } from './auth/login/login';
-import { Stats } from './dashboard/features/stats/stats';
-import { Blog } from './dashboard/features/blog/blog';
-import { Settings } from './user-menu/settings/settings';
-import { Profile } from './user-menu/profile/profile';
 import { RouteNames } from './shared/interfaces/routes';
 import { AuthGuard } from './core/auth-guard';
+import { Home } from './home/home';
+import { NotFound } from './components/not-found/not-found';
 
 export const routes: Routes = [
   {
@@ -20,44 +13,56 @@ export const routes: Routes = [
   {
     path: RouteNames.LOGIN,
     title: 'Login',
-    component: Login,
+    loadComponent: () => import('./auth/login/login').then((m) => m.Login),
   },
   {
     path: RouteNames.REGISTER,
     title: 'Register',
-    component: Register,
+    loadComponent: () =>
+      import('./auth/register/register').then((m) => m.Register),
   },
   {
     path: RouteNames.PROFILE,
     title: 'Profile',
-    component: Profile,
+    loadComponent: () =>
+      import('./user-menu/profile/profile').then((m) => m.Profile),
     canActivate: [AuthGuard],
   },
   {
     path: RouteNames.SETTINGS,
     title: 'Settings',
-    component: Settings,
+    loadComponent: () =>
+      import('./user-menu/settings/settings').then((m) => m.Settings),
   },
   {
     path: RouteNames.DASHBOARD,
     title: 'Dashboard',
-    component: Dashboard,
-    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./dashboard/dashboard').then((m) => m.Dashboard),
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: RouteNames.HOME,
-        component: Stats,
+        loadComponent: () =>
+          import('./dashboard/features/stats/stats').then((m) => m.Stats),
       },
       {
         path: RouteNames.USERS,
         title: 'Authors',
-        component: Users,
+        loadComponent: () =>
+          import('./dashboard/features/users/users').then((m) => m.Users),
       },
       {
         path: RouteNames.BLOG,
         title: 'Blog',
-        component: Blog,
+        loadComponent: () =>
+          import('./dashboard/features/blog/blog').then((m) => m.Blog),
       },
     ],
+  },
+  {
+    path: '**',
+    title: 'Oops! Page not found',
+    component: NotFound,
   },
 ];

@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import { BaseHttpService } from '../../shared/services/http.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,7 @@ export class BlogService {
   authService = inject(AuthService);
   currentUser = this.authService.getCurrentUser();
   notificationService = inject(NotificationService);
+  logger = inject(LoggerService);
 
   constructor() {
     this.loadPosts();
@@ -53,7 +55,11 @@ export class BlogService {
 
     this.baseHttp.get<Comment[]>(`/posts/${postId}/comments`).subscribe({
       next: (comments) => commentsSignal.set(comments),
-      error: (error) => console.error('Failed to load comments:', error),
+      error: (error) => {
+        this.logger.error(
+          `Failed to load comments for post ${postId}: ${error.message}`
+        );
+      },
     });
   }
 

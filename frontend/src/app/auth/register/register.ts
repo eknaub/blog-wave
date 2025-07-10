@@ -1,20 +1,24 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { RouteNames } from '../../shared/interfaces/routes';
 import { AuthService } from '../../shared/services/auth.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { CommonModule } from '@angular/common';
+import { FormValidators } from '../../shared/utils/validators';
 
 @Component({
   selector: 'app-register',
@@ -29,25 +33,60 @@ import { LoggerService } from '../../shared/services/logger.service';
     MatCardModule,
     MatIconModule,
     RouterLink,
+    MatError,
+    CommonModule,
+    MatIconModule,
   ],
 })
 export class Register {
   readonly RouteNames = RouteNames;
   private authService = inject(AuthService);
   logger = inject(LoggerService);
+  hidePassword = true;
+  hideConfirmPassword = true;
 
-  registerForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
-    confirmPassword: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
-  });
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.hideConfirmPassword = !this.hideConfirmPassword;
+  }
+
+  registerForm = new FormGroup(
+    {
+      username: new FormControl('', [...FormValidators.username]),
+      email: new FormControl('', [...FormValidators.email]),
+      password: new FormControl('', [...FormValidators.password]),
+      confirmPassword: new FormControl('', [...FormValidators.password]),
+    },
+    {
+      validators: this.matchValidator('password', 'confirmPassword'),
+    }
+  );
+
+  matchValidator(
+    controlName: string,
+    matchingControlName: string
+  ): ValidatorFn {
+    return (abstractControl: AbstractControl) => {
+      const control = abstractControl.get(controlName);
+      const matchingControl = abstractControl.get(matchingControlName);
+
+      if (matchingControl!.errors && !matchingControl!.errors?.['mismatch']) {
+        return null;
+      }
+
+      if (control!.value !== matchingControl!.value) {
+        const error = { mismatch: 'Passwords do not match.' };
+        matchingControl!.setErrors(error);
+        return error;
+      } else {
+        matchingControl!.setErrors(null);
+        return null;
+      }
+    };
+  }
 
   handleRegister() {
     const { username, email, password, confirmPassword } =

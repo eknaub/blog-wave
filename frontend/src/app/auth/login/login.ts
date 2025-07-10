@@ -8,13 +8,15 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { RouteNames } from '../../shared/interfaces/routes';
 import { AuthService } from '../../shared/services/auth.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { CommonModule } from '@angular/common';
+import { FormValidators } from '../../shared/utils/validators';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +31,8 @@ import { LoggerService } from '../../shared/services/logger.service';
     MatCardModule,
     MatIconModule,
     RouterLink,
+    MatError,
+    CommonModule,
   ],
 })
 export class Login {
@@ -37,8 +41,8 @@ export class Login {
   readonly RouteNames = RouteNames;
 
   loginForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
+    username: new FormControl('', [...FormValidators.username]),
+    password: new FormControl('', [...FormValidators.password]),
   });
 
   handleLogin() {

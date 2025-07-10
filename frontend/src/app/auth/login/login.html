@@ -18,8 +18,14 @@
             placeholder="Enter your username"
           />
           <mat-icon matSuffix>person</mat-icon>
+          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+            Username is required.
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('username')?.hasError('pattern')">
+            Username must be 3-20 characters long and can include letters,
+            numbers, and underscores.
+          </mat-error>
         </mat-form-field>
-
         <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
           <input
@@ -29,8 +35,14 @@
             placeholder="Enter your password"
           />
           <mat-icon matSuffix>lock</mat-icon>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            Password is required.
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('pattern')">
+            Password must be at least 6 characters long and include at least one
+            uppercase letter, one lowercase letter, and one number.
+          </mat-error>
         </mat-form-field>
-
         <button
           mat-raised-button
           color="primary"

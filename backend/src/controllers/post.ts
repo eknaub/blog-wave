@@ -3,7 +3,6 @@ import { Post, PostUpdate } from '../utils/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
 import {
-  sendConflict,
   sendCreated,
   sendDeleted,
   sendError,
@@ -21,6 +20,15 @@ class PostController {
       const userId = req.validatedQuery!.userId;
       let posts = await prisma.posts.findMany({
         where: userId ? { authorId: userId } : undefined,
+        include: {
+          users: {
+            select: {
+              id: true,
+              username: true,
+              email: true,
+            },
+          },
+        },
       });
 
       if (userId) {

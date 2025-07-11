@@ -1,6 +1,6 @@
 import { Validators } from '@angular/forms';
 
-export const FormValidators = {
+export const AuthInputValidators = {
   username: [
     Validators.required,
     Validators.pattern(/^[a-zA-Z0-9_]{3,20}$/),
@@ -14,4 +14,28 @@ export const FormValidators = {
     Validators.maxLength(50),
   ],
   email: [Validators.required, Validators.email, Validators.maxLength(100)],
-} as const;
+};
+
+export const PostInputValidators = {
+  title: [
+    Validators.required,
+    Validators.pattern(/^[\w\s-]{1,255}$/),
+    Validators.minLength(1),
+    Validators.maxLength(255),
+  ],
+  content: [
+    Validators.required,
+    Validators.pattern(/^[\s\S]{1,5000}$/),
+    Validators.minLength(1),
+    Validators.maxLength(5000),
+  ],
+};
+
+export const CommentInputValidators = {
+  comment: [
+    Validators.required,
+    Validators.pattern(/^[\s\S]{1,1000}$/),
+    Validators.minLength(1),
+    Validators.maxLength(1000),
+  ],
+};

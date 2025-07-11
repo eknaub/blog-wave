@@ -2,17 +2,53 @@ import { z } from 'zod';
 
 export const UserSchema = z.object({
   id: z.number().int().positive(),
-  username: z.string().min(1, 'Username is required').max(50).trim(),
-  email: z.string().email('Invalid email format').max(255).trim(),
-  password: z.string().min(1, 'Password is required').max(255).trim(),
+  username: z
+    .string()
+    .min(3, 'Username must be at least 3 characters')
+    .max(20, 'Username must be at most 20 characters')
+    .regex(
+      /^[a-zA-Z0-9_]{3,20}$/,
+      'Username can only contain letters, numbers, and underscores'
+    )
+    .trim(),
+  email: z
+    .string()
+    .email('Invalid email format')
+    .max(100, 'Email must be at most 100 characters')
+    .trim(),
+  password: z
+    .string()
+    .min(6, 'Password must be at least 6 characters')
+    .max(50, 'Password must be at most 50 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,50}$/,
+      'Password must contain at least one lowercase letter, one uppercase letter, and one number'
+    )
+    .trim(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
 
 export const PostSchema = z.object({
   id: z.number().int().positive(),
-  title: z.string().min(1, 'Title is required').max(255).trim(),
-  content: z.string().min(1, 'Content is required').trim(),
+  title: z
+    .string()
+    .min(1, 'Title is required')
+    .max(255, 'Title must be at most 255 characters')
+    .regex(
+      /^[\w\s-]{1,255}$/,
+      'Title must be alphanumeric and can include spaces and hyphens'
+    )
+    .trim(),
+  content: z
+    .string()
+    .min(1, 'Content is required')
+    .max(5000, 'Content must be at most 5000 characters')
+    .regex(
+      /^[\s\S]{1,5000}$/,
+      'Content must be at least 1 character long and can include any characters'
+    )
+    .trim(),
   authorId: z.number().int().positive(),
   published: z.boolean().default(false),
   createdAt: z.date(),
@@ -21,7 +57,15 @@ export const PostSchema = z.object({
 
 export const CommentSchema = z.object({
   id: z.number().int().positive(),
-  content: z.string().min(1, 'Content is required').trim(),
+  content: z
+    .string()
+    .min(1, 'Content is required')
+    .max(1000, 'Content must be at most 1000 characters')
+    .regex(
+      /^[\s\S]{1,1000}$/,
+      'Content must be at least 1 character long and can include any characters'
+    )
+    .trim(),
   postId: z.number().int().positive(),
   authorId: z.number().int().positive(),
   createdAt: z.date(),

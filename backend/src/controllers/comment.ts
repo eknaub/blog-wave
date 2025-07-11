@@ -21,6 +21,15 @@ class CommentController {
         where: {
           postId: postId,
         },
+        include: {
+          users: {
+            select: {
+              id: true,
+              username: true,
+              email: true,
+            },
+          },
+        },
       });
 
       sendSuccess(res, comments, 'Comments retrieved successfully');

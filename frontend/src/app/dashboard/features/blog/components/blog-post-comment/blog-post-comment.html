@@ -27,7 +27,7 @@
               </div>
               <div class="comment-meta">
                 <mat-chip disableRipple>
-                  User: {{ comment.authorId }}
+                  User: {{ comment.users.username }}
                 </mat-chip>
                 <mat-chip disableRipple>
                   {{ comment.createdAt | date: 'medium' }}
@@ -60,6 +60,24 @@
               placeholder="Enter your comment here..."
               class="comment-textarea"
             ></textarea>
+            <mat-icon matSuffix>comment</mat-icon>
+            <mat-error *ngIf="commentForm.get('comment')?.hasError('required')">
+              Comment is required.
+            </mat-error>
+            <mat-error
+              *ngIf="commentForm.get('comment')?.hasError('minlength')"
+            >
+              Comment must be at least 1 character long.
+            </mat-error>
+            <mat-error
+              *ngIf="commentForm.get('comment')?.hasError('maxlength')"
+            >
+              Comment cannot exceed 1000 characters.
+            </mat-error>
+            <mat-error *ngIf="commentForm.get('comment')?.hasError('pattern')">
+              Comment must be at least 1 character long and can include any
+              characters.
+            </mat-error>
           </mat-form-field>
           <div class="form-actions">
             <button

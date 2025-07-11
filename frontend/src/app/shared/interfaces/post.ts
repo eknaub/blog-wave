@@ -6,6 +6,11 @@ export interface Post {
   published: boolean;
   createdAt: Date;
   updatedAt: Date;
+  users: {
+    id: number;
+    username: string;
+    email: string;
+  };
 }
 
 export interface PostCreate {

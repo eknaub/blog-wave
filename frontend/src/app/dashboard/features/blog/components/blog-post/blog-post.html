@@ -15,7 +15,7 @@
       }
     </div>
     <div class="post-meta">
-      <mat-chip disableRipple> By User {{ post().authorId }} </mat-chip>
+      <mat-chip disableRipple> By User {{ post().users.username }} </mat-chip>
       <mat-chip disableRipple>
         {{ post().createdAt | date: 'medium' }}
       </mat-chip>

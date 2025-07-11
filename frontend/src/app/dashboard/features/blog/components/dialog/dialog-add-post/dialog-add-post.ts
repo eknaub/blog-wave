@@ -4,7 +4,6 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -18,6 +17,8 @@ import { MatInputModule } from '@angular/material/input';
 import { BlogService } from '../../../../../services/blog-service';
 import { MatDividerModule } from '@angular/material/divider';
 import { LoggerService } from '../../../../../../shared/services/logger.service';
+import { PostInputValidators } from '../../../../../../shared/utils/validators';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dialog-add-post',
@@ -31,6 +32,7 @@ import { LoggerService } from '../../../../../../shared/services/logger.service'
     MatDialogModule,
     ReactiveFormsModule,
     MatDividerModule,
+    CommonModule,
   ],
   templateUrl: './dialog-add-post.html',
   styleUrl: './dialog-add-post.css',
@@ -40,8 +42,8 @@ export class DialogAddPost {
   logger = inject(LoggerService);
   readonly dialogRef = inject(MatDialogRef<DialogAddPost>);
   postForm = new FormGroup({
-    title: new FormControl('', [Validators.required]),
-    content: new FormControl('', [Validators.required]),
+    title: new FormControl('', [...PostInputValidators.title]),
+    content: new FormControl('', [...PostInputValidators.content]),
   });
 
   onNoClick(): void {

@@ -5,6 +5,8 @@ import { User } from '../interfaces/user';
 import { BaseHttpService } from './http.service';
 import { LoggerService } from './logger.service';
 
+export const LOCAL_STORAGE_CURRENT_USER_KEY = 'currentUser';
+
 export interface LoginCredentials {
   username: string;
   password: string;
@@ -60,7 +62,7 @@ export class AuthService {
       this.logger.error(`Login failed: ${error}`);
     } finally {
       this.currentUserSignal.set(null);
-      localStorage.removeItem('currentUser');
+      localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
       this.router.navigate([RouteNames.LOGIN]);
     }
   }
@@ -75,18 +77,18 @@ export class AuthService {
 
   private setCurrentUser(user: User): void {
     this.currentUserSignal.set(user);
-    localStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.setItem(LOCAL_STORAGE_CURRENT_USER_KEY, JSON.stringify(user));
   }
 
   private checkExistingAuth(): void {
-    const storedUser = localStorage.getItem('currentUser');
+    const storedUser = localStorage.getItem(LOCAL_STORAGE_CURRENT_USER_KEY);
     if (storedUser) {
       try {
         const user = JSON.parse(storedUser);
         this.currentUserSignal.set(user);
       } catch (error) {
         this.logger.error(`Error parsing stored user: ${error}`);
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
       }
     }
   }

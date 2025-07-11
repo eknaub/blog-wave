@@ -5,6 +5,11 @@ export interface Comment {
   authorId: number;
   createdAt: Date;
   updatedAt: Date;
+  users: {
+    id: number;
+    username: string;
+    email: string;
+  };
 }
 
 export interface CommentCreate {

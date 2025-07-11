@@ -18,10 +18,10 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { LoggerService } from '../../../../../shared/services/logger.service';
+import { CommentInputValidators } from '../../../../../shared/utils/validators';
 
 @Component({
   selector: 'app-blog-post-comment',
@@ -47,7 +47,7 @@ export class BlogPostComment implements OnInit {
   logger = inject(LoggerService);
 
   commentForm = new FormGroup({
-    comment: new FormControl('', [Validators.required]),
+    comment: new FormControl('', [...CommentInputValidators.comment]),
   });
 
   ngOnInit() {

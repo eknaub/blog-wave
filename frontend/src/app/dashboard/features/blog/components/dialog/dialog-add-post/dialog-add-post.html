@@ -10,8 +10,16 @@
         formControlName="title"
         placeholder="Enter post title"
       />
+      <mat-error *ngIf="postForm.get('title')?.hasError('required')">
+        Title is required.
+      </mat-error>
+      <mat-error *ngIf="postForm.get('title')?.hasError('maxlength')">
+        Title cannot exceed 100 characters.
+      </mat-error>
+      <mat-error *ngIf="postForm.get('title')?.hasError('pattern')">
+        Title must be alphanumeric and can include spaces and hyphens.
+      </mat-error>
     </mat-form-field>
-
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Content</mat-label>
       <textarea
@@ -21,6 +29,15 @@
         placeholder="Write your post content here..."
         class="content-textarea"
       >
+      <mat-error *ngIf="postForm.get('content')?.hasError('required')">
+        Content is required.
+      </mat-error>
+      <mat-error *ngIf="postForm.get('content')?.hasError('maxlength')">
+        Content cannot exceed 5000 characters.
+      </mat-error>
+      <mat-error *ngIf="postForm.get('content')?.hasError('pattern')">
+        Content must be at least 1 character long and can include any characters.
+      </mat-error>
       </textarea>
     </mat-form-field>
   </form>

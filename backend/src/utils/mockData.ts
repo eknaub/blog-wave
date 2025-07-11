@@ -1,6 +1,6 @@
 import { Comment, Post, User } from './interfaces';
 
-export let users: User[] = [
+export const users: User[] = [
   {
     id: 1,
     username: 'alice',
@@ -67,7 +67,7 @@ export let users: User[] = [
   },
 ];
 
-export let posts: Post[] = [
+export const posts: Post[] = [
   {
     id: 1,
     title: 'Getting Started with Angular',
@@ -150,7 +150,7 @@ export let posts: Post[] = [
   },
 ];
 
-export let comments: Comment[] = [
+export const comments: Comment[] = [
   {
     id: 1,
     content: 'Great introduction to Angular! Very helpful for beginners.',

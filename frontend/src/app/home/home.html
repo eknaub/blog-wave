@@ -22,6 +22,7 @@
     <mat-card-actions>
       @if (!isLoggedIn()) {
         <button
+          name="login"
           mat-raised-button
           color="primary"
           [routerLink]="'/' + RouteNames.LOGIN"
@@ -30,6 +31,7 @@
           Login
         </button>
         <button
+          name="register"
           mat-raised-button
           color="accent"
           [routerLink]="'/' + RouteNames.REGISTER"
@@ -38,7 +40,12 @@
           Register
         </button>
       } @else {
-        <button mat-raised-button color="warn" (click)="handleLogout()">
+        <button
+          name="logout"
+          mat-raised-button
+          color="warn"
+          (click)="handleLogout()"
+        >
           <mat-icon>logout</mat-icon>
           Log Out
         </button>

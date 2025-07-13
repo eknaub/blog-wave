@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouteNames } from '../../shared/interfaces/routes';
 import { AuthService } from '../../shared/services/auth.service';
+import { NavigationService } from '../../shared/services/navigation.service';
 
 @Component({
   selector: 'app-header',
@@ -25,10 +26,15 @@ import { AuthService } from '../../shared/services/auth.service';
 export class Header {
   readonly RouteNames = RouteNames;
   protected authService = inject(AuthService);
+  private navigationService = inject(NavigationService);
 
   isLoggedIn = computed(() => this.authService.isAuthenticated());
 
   logout() {
     this.authService.logout();
+  }
+
+  navigateTo(route: RouteNames) {
+    this.navigationService.navigateTo(route);
   }
 }

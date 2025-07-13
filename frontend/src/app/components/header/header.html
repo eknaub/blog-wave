@@ -1,5 +1,9 @@
 <mat-toolbar color="primary" class="header">
-  <a [name]="'homeLogoLink'" class="brand" [routerLink]="'/' + RouteNames.HOME">
+  <a
+    [name]="'homeLogoLink'"
+    class="brand"
+    [routerLink]="['/', RouteNames.HOME]"
+  >
     <mat-icon>article</mat-icon>
     <span>Blog API</span>
   </a>
@@ -34,12 +38,20 @@
     </button>
     <mat-menu #userMenu="matMenu">
       @if (isLoggedIn()) {
-        <button [name]="'menuProfile'" mat-menu-item routerLink="/profile">
+        <button
+          [name]="'menuProfile'"
+          mat-menu-item
+          (click)="navigateTo(RouteNames.PROFILE)"
+        >
           <mat-icon>person</mat-icon>
           <span>Profile</span>
         </button>
       }
-      <button [name]="'menuSettings'" mat-menu-item routerLink="/settings">
+      <button
+        [name]="'menuSettings'"
+        mat-menu-item
+        (click)="navigateTo(RouteNames.SETTINGS)"
+      >
         <mat-icon>settings</mat-icon>
         <span>Settings</span>
       </button>

@@ -4,6 +4,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
+import { click } from '../../shared/testing';
 
 describe('Register', () => {
   let component: Register;
@@ -226,8 +227,8 @@ describe('Register', () => {
       'button[name="confirmPasswordToggle"]'
     );
 
-    togglePasswordButton.click();
-    toggleConfirmPasswordButton.click();
+    click(togglePasswordButton);
+    click(toggleConfirmPasswordButton);
 
     expect(component.toggleConfirmPasswordVisibility).toHaveBeenCalled();
     expect(component.togglePasswordVisibility).toHaveBeenCalled();

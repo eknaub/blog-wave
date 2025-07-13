@@ -9,6 +9,8 @@ import { AuthService } from '../../shared/services/auth.service';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
+import { click } from '../../shared/testing';
+import { RouteNames } from '../../shared/interfaces/routes';
 
 describe('Header', () => {
   let component: Header;
@@ -114,5 +116,17 @@ describe('Header', () => {
 
     const itemText = await menuItems[0].getText();
     expect(itemText).toBe('settingsSettings');
+  });
+
+  it('should navigation routes have correct links', () => {
+    spyOn(authService, 'isAuthenticated').and.returnValue(true);
+    createComponent();
+
+    const navLinks = fixture.nativeElement.querySelectorAll('a');
+
+    expect(navLinks.length).toBe(3);
+    expect(navLinks[0].getAttribute('href')).toBe(`/${RouteNames.HOME}`);
+    expect(navLinks[1].getAttribute('href')).toBe(`/${RouteNames.HOME}`);
+    expect(navLinks[2].getAttribute('href')).toBe(`/${RouteNames.DASHBOARD}`);
   });
 });

@@ -5,6 +5,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
+import { click } from '../../shared/testing';
 
 describe('Login', () => {
   let component: Login;
@@ -156,7 +157,7 @@ describe('Login', () => {
     const toggleButton = fixture.nativeElement.querySelector(
       'button[name="togglePassword"]'
     );
-    toggleButton.click();
+    click(toggleButton);
     expect(component.togglePasswordVisibility).toHaveBeenCalled();
   });
 });

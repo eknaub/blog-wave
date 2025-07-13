@@ -4,6 +4,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { Post } from '../../../../../shared/interfaces/post';
+import { of, throwError } from 'rxjs';
 
 describe('BlogPost', () => {
   let component: BlogPost;
@@ -42,5 +43,47 @@ describe('BlogPost', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('deletePost', () => {
+    it('should delete a post', () => {
+      const mockPost: Post = {
+        id: 1,
+        title: 'Test Post',
+        content: 'This is a test post.',
+        authorId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        published: true,
+        users: {
+          id: 1,
+          username: 'Test Author',
+          email: 'user@example.com',
+        },
+      };
+
+      spyOn(component.blogService, 'deletePost').and.returnValue(of(mockPost));
+      spyOn(component.logger, 'log');
+
+      component.deletePost();
+
+      expect(component.blogService.deletePost).toHaveBeenCalledWith(1);
+      expect(component.logger.log).toHaveBeenCalledWith(
+        'Post deleted successfully'
+      );
+    });
+
+    it('should handle post deletion error', () => {
+      spyOn(component.logger, 'error');
+      spyOn(component.blogService, 'deletePost').and.returnValue(
+        throwError(() => new Error('Failed to delete post'))
+      );
+
+      component.deletePost();
+
+      expect(component.logger.error).toHaveBeenCalledWith(
+        'Failed to delete post: Error: Failed to delete post'
+      );
+    });
   });
 });

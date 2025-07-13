@@ -23,7 +23,7 @@ export class UserService {
         this.usersLoading.set(false);
       },
       error: (error) => {
-        this.usersError.set(error.message || 'Failed to load users');
+        this.usersError.set(error.message);
         this.usersLoading.set(false);
       },
     });

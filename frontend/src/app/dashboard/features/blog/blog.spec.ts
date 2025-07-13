@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DialogAddPost } from './components/dialog/dialog-add-post/dialog-add-post';
 import { MatDialog } from '@angular/material/dialog';
+import { By } from '@angular/platform-browser';
 
 describe('Blog', () => {
   let component: Blog;
@@ -41,9 +42,9 @@ describe('Blog', () => {
   });
 
   it('should open dialog when button is clicked', () => {
-    const button = fixture.nativeElement.querySelector('button');
+    const button = fixture.debugElement.query(By.css('.add-comment-btn'));
 
-    button.click();
+    button.triggerEventHandler('click');
 
     expect(mockDialog.open).toHaveBeenCalledWith(DialogAddPost);
   });

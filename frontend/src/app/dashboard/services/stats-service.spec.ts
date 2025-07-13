@@ -22,4 +22,16 @@ describe('StatsService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should be state loading if posts are loading', () => {
+    spyOn(service['blogService'], 'postsLoading').and.returnValue(true);
+    spyOn(service['userService'], 'usersLoading').and.returnValue(false);
+    expect(service.isLoading()).toBeTrue();
+  });
+
+  it('should be state loading if users are loading', () => {
+    spyOn(service['blogService'], 'postsLoading').and.returnValue(false);
+    spyOn(service['userService'], 'usersLoading').and.returnValue(true);
+    expect(service.isLoading()).toBeTrue();
+  });
 });

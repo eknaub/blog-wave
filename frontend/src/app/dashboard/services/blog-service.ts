@@ -36,7 +36,7 @@ export class BlogService {
         this.postsLoading.set(false);
       },
       error: (error) => {
-        this.postsError.set(error.message || 'Failed to load posts');
+        this.postsError.set(error.message);
         this.postsLoading.set(false);
       },
     });
@@ -87,13 +87,14 @@ export class BlogService {
     );
   }
 
-  deletePost(postId: number): Observable<void> {
+  deletePost(postId: number): Observable<Post> {
     return this.baseHttp.delete<Post>(`/posts/${postId}`).pipe(
-      map(() => {
+      map((post) => {
         this.posts.update((posts) =>
           posts.filter((post) => post.id !== postId)
         );
         this.notificationService.showNotification('Post deleted successfully');
+        return post;
       })
     );
   }
@@ -119,6 +120,8 @@ export class BlogService {
           const commentsSignal = this.commentsSignals.get(postId);
           if (commentsSignal) {
             commentsSignal.update((comments) => [...comments, comment]);
+          } else {
+            this.commentsSignals.set(postId, signal([comment]));
           }
           this.notificationService.showNotification(
             'Comment added successfully'
@@ -128,11 +131,11 @@ export class BlogService {
       );
   }
 
-  deleteComment(postId: number, commentId: number): Observable<void> {
+  deleteComment(postId: number, commentId: number): Observable<Comment> {
     return this.baseHttp
       .delete<Comment>(`/posts/${postId}/comments/${commentId}`)
       .pipe(
-        map(() => {
+        map((comment) => {
           const commentsSignal = this.commentsSignals.get(postId);
           if (commentsSignal) {
             commentsSignal.update((comments) =>
@@ -142,6 +145,7 @@ export class BlogService {
           this.notificationService.showNotification(
             'Comment deleted successfully'
           );
+          return comment;
         })
       );
   }

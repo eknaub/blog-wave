@@ -51,7 +51,6 @@ export class DialogAddPost {
   }
 
   onSubmit(): void {
-    this.dialogRef.close();
     this.postForm.markAllAsTouched();
     const postData = this.postForm.value;
 
@@ -69,6 +68,7 @@ export class DialogAddPost {
       next: () => {
         this.logger.log(`Post created successfully`);
         this.postForm.reset();
+        this.dialogRef.close();
       },
       error: () => {
         this.logger.error(`Failed to create post`);

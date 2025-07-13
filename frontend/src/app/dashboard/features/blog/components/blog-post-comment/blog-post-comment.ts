@@ -61,25 +61,23 @@ export class BlogPostComment implements OnInit {
   submitComment = () => {
     this.commentForm.markAllAsTouched();
 
-    if (this.commentForm.valid) {
-      this.blogService
-        .uploadCommentToPost(
-          this.postId(),
-          this.commentForm.value.comment ?? ''
-        )
-        .subscribe({
-          next: (comment) => {
-            this.logger.log(`Comment uploaded successfully: ${comment}`);
-            this.commentForm.reset();
-          },
-          error: (error) => {
-            this.logger.error(`Failed to upload comment: ${error}`);
-          },
-        });
-      this.commentForm.reset();
-    } else {
+    if (!this.commentForm.valid || !this.commentForm.value.comment) {
       this.logger.error('Comment form is invalid');
+      return;
     }
+
+    this.blogService
+      .uploadCommentToPost(this.postId(), this.commentForm.value.comment)
+      .subscribe({
+        next: (comment) => {
+          this.logger.log(`Comment uploaded successfully: ${comment}`);
+          this.commentForm.reset();
+        },
+        error: (error) => {
+          this.logger.error(`Failed to upload comment: ${error}`);
+        },
+      });
+    this.commentForm.reset();
   };
 
   deleteComment = (commentId: number) => {

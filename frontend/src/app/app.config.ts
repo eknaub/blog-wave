@@ -10,11 +10,12 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { loggingInterceptor } from './shared/interceptors/logging.interceptor';
+//import { loggingInterceptor } from './shared/interceptors/logging.interceptor';
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
 import { retryInterceptor } from './shared/interceptors/retry.interceptor';
 import { loadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { credentialsInterceptor } from './shared/interceptors/credentials.interceptor';
+import { performanceInterceptor } from './shared/interceptors/performance.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +26,8 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([
         credentialsInterceptor,
-        loggingInterceptor,
+        performanceInterceptor,
+        //loggingInterceptor,
         errorInterceptor,
         loadingInterceptor,
         retryInterceptor,

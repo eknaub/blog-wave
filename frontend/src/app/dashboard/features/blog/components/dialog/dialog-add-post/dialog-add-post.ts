@@ -53,19 +53,26 @@ export class DialogAddPost {
   onSubmit(): void {
     this.dialogRef.close();
     this.postForm.markAllAsTouched();
-    if (this.postForm.valid) {
-      const postData = this.postForm.value;
-      this.blogService
-        .uploadPost(postData.title ?? '', postData.content ?? '')
-        .subscribe({
-          next: (post) => {
-            this.logger.log(`Post created successfully: ${post}`);
-            this.postForm.reset();
-          },
-          error: (error) => {
-            this.logger.error(`Failed to create post: ${error}`);
-          },
-        });
+    const postData = this.postForm.value;
+
+    if (!postData.title || !postData.content) {
+      this.logger.error('Title and content are required');
+      return;
     }
+
+    if (this.postForm.invalid) {
+      this.logger.error('Form is invalid');
+      return;
+    }
+
+    this.blogService.uploadPost(postData.title, postData.content).subscribe({
+      next: () => {
+        this.logger.log(`Post created successfully`);
+        this.postForm.reset();
+      },
+      error: () => {
+        this.logger.error(`Failed to create post`);
+      },
+    });
   }
 }

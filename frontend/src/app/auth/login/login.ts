@@ -48,15 +48,15 @@ export class Login {
   handleLogin() {
     this.loginForm.markAllAsTouched();
 
-    if (this.loginForm.invalid) {
-      this.logger.error('Form is invalid');
-      return;
-    }
-
     const { username, password } = this.loginForm.value;
 
     if (!username || !password) {
       this.logger.error('Username and password are required');
+      return;
+    }
+
+    if (this.loginForm.invalid) {
+      this.logger.error('Form is invalid');
       return;
     }
 

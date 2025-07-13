@@ -43,7 +43,6 @@ export class Register {
   logger = inject(LoggerService);
   hidePassword = true;
   hideConfirmPassword = true;
-  unusedVariable = 'test';
 
   togglePasswordVisibility() {
     this.hidePassword = !this.hidePassword;
@@ -89,22 +88,18 @@ export class Register {
   }
 
   handleRegister() {
+    this.registerForm.markAllAsTouched();
+
     const { username, email, password, confirmPassword } =
       this.registerForm.value;
-
-    this.registerForm.markAllAsTouched();
-    if (this.registerForm.invalid) {
-      this.logger.error('Form is invalid');
-      return;
-    }
 
     if (!username || !email || !password || !confirmPassword) {
       this.logger.error('All fields are required');
       return;
     }
 
-    if (password !== confirmPassword) {
-      this.logger.error('Passwords do not match');
+    if (this.registerForm.invalid) {
+      this.logger.error('Form is invalid');
       return;
     }
 

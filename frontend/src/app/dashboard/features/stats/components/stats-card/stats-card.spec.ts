@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatsCard } from './stats-card';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
 
 describe('StatsCard', () => {
   let component: StatsCard;
@@ -9,6 +13,12 @@ describe('StatsCard', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [StatsCard],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(StatsCard);

@@ -58,12 +58,11 @@ export class AuthService {
   async logout(): Promise<void> {
     try {
       await this.baseHttp.post('/auth/logout', {}).toPromise();
-    } catch (error) {
-      this.logger.error(`Login failed: ${error}`);
-    } finally {
       this.currentUserSignal.set(null);
       localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
       this.router.navigate([RouteNames.LOGIN]);
+    } catch (error) {
+      this.logger.error(`Logout failed: ${error}`);
     }
   }
 
@@ -95,15 +94,16 @@ export class AuthService {
 
   async register(credentials: RegisterCredentials): Promise<boolean> {
     try {
-      const response = await this.baseHttp
-        .post<User>('/auth/register', credentials)
-        .toPromise();
-      if (response) {
-        this.setCurrentUser(response);
-        this.router.navigate([RouteNames.DASHBOARD]);
-        return true;
+      if (credentials.username && credentials.password && credentials.email) {
+        const response = await this.baseHttp
+          .post<User>('/auth/register', credentials)
+          .toPromise();
+        if (response) {
+          this.setCurrentUser(response);
+          this.router.navigate([RouteNames.DASHBOARD]);
+          return true;
+        }
       }
-
       return false;
     } catch (error) {
       this.logger.error(`Registration failed: ${error}`);

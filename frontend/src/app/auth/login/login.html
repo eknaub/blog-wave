@@ -16,6 +16,7 @@
             matInput
             formControlName="username"
             placeholder="Enter your username"
+            type="text"
           />
           <mat-icon matSuffix>person</mat-icon>
           <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
@@ -35,6 +36,7 @@
             placeholder="Enter your password"
           />
           <button
+            name="togglePassword"
             matSuffix
             matIconButton
             aria-label="Show/hide Password"

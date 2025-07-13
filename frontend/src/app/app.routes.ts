@@ -3,6 +3,7 @@ import { RouteNames } from './shared/interfaces/routes';
 import { AuthGuard } from './core/auth-guard';
 import { Home } from './home/home';
 import { NotFound } from './components/not-found/not-found';
+import { GuestGuard } from './core/guest-guard';
 
 export const routes: Routes = [
   {
@@ -14,12 +15,14 @@ export const routes: Routes = [
     path: RouteNames.LOGIN,
     title: 'Login',
     loadComponent: () => import('./auth/login/login').then((m) => m.Login),
+    canActivate: [GuestGuard],
   },
   {
     path: RouteNames.REGISTER,
     title: 'Register',
     loadComponent: () =>
       import('./auth/register/register').then((m) => m.Register),
+    canActivate: [GuestGuard],
   },
   {
     path: RouteNames.PROFILE,

@@ -1,8 +1,12 @@
 <div class="login-container">
   <mat-card class="login-card">
     <mat-card-header>
-      <mat-card-title><h1>Welcome Back</h1></mat-card-title>
-      <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
+      <mat-card-title
+        ><h1 i18n="@@login.welcome">Welcome Back</h1></mat-card-title
+      >
+      <mat-card-subtitle i18n="@@login.subtitle"
+        >Sign in to your account</mat-card-subtitle
+      >
     </mat-card-header>
     <mat-card-content>
       <form
@@ -11,34 +15,43 @@
         class="login-form"
       >
         <mat-form-field appearance="outline">
-          <mat-label>Username</mat-label>
+          <mat-label i18n="@@login.username.label">Username</mat-label>
           <input
             matInput
             formControlName="username"
+            i18n-placeholder="@@login.username.placeholder"
             placeholder="Enter your username"
             type="text"
           />
           <mat-icon matSuffix>person</mat-icon>
-          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+          <mat-error
+            *ngIf="loginForm.get('username')?.hasError('required')"
+            i18n="@@login.username.required"
+          >
             Username is required.
           </mat-error>
-          <mat-error *ngIf="loginForm.get('username')?.hasError('pattern')">
+          <mat-error
+            *ngIf="loginForm.get('username')?.hasError('pattern')"
+            i18n="@@login.username.pattern"
+          >
             Username must be 3-20 characters long and can include letters,
             numbers, and underscores.
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label i18n="@@login.password.label">Password</mat-label>
           <input
             matInput
             [type]="hidePassword ? 'password' : 'text'"
             formControlName="password"
+            i18n-placeholder="@@login.password.placeholder"
             placeholder="Enter your password"
           />
           <button
             name="togglePassword"
             matSuffix
             matIconButton
+            i18n-aria-label="@@login.password.toggle"
             aria-label="Show/hide Password"
             (click)="togglePasswordVisibility()"
           >
@@ -47,10 +60,16 @@
             }}</mat-icon>
           </button>
           <mat-icon matSuffix>lock</mat-icon>
-          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          <mat-error
+            *ngIf="loginForm.get('password')?.hasError('required')"
+            i18n="@@login.password.required"
+          >
             Password is required.
           </mat-error>
-          <mat-error *ngIf="loginForm.get('password')?.hasError('pattern')">
+          <mat-error
+            *ngIf="loginForm.get('password')?.hasError('pattern')"
+            i18n="@@login.password.pattern"
+          >
             Password must be at least 6 characters long and include at least one
             uppercase letter, one lowercase letter, and one number.
           </mat-error>
@@ -62,16 +81,16 @@
           [disabled]="loginForm.invalid"
         >
           <mat-icon>login</mat-icon>
-          Sign In
+          <span i18n="@@login.submit">Sign In</span>
         </button>
       </form>
     </mat-card-content>
     <mat-divider />
     <mat-card-actions class="login-actions">
-      <p>Don't have an account?</p>
-      <a mat-button color="accent" [routerLink]="'/' + RouteNames.REGISTER"
-        >Create Account</a
-      >
+      <p i18n="@@login.no-account">Don't have an account?</p>
+      <a mat-button color="accent" [routerLink]="'/' + RouteNames.REGISTER">
+        <span i18n="@@login.create-account">Create Account</span>
+      </a>
     </mat-card-actions>
   </mat-card>
 </div>

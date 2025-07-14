@@ -1,12 +1,16 @@
-<app-dashboard-content-wrapper title="Stats"
+<app-dashboard-content-wrapper title="Stats" i18n-title="@@stats.page-title"
   ><div>
     @if (hasErrors() && !stats.isLoading()) {
       <div class="error">
         @if (stats.blogServiceError()) {
-          <p>Error loading blog stats: {{ stats.blogServiceError() }}</p>
+          <p i18n="@@stats.blog-error">
+            Error loading blog stats: {{ stats.blogServiceError() }}
+          </p>
         }
         @if (stats.userServiceError()) {
-          <p>Error loading user stats: {{ stats.userServiceError() }}</p>
+          <p i18n="@@stats.user-error">
+            Error loading user stats: {{ stats.userServiceError() }}
+          </p>
         }
       </div>
     }

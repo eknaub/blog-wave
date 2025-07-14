@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:de": "ng serve --configuration=de",
     "build": "ng build",
+    "build:de": "ng build --configuration=de",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:coverage": "ng test --code-coverage",
@@ -34,6 +36,7 @@
     "@angular/build": "^20.0.3",
     "@angular/cli": "^20.0.3",
     "@angular/compiler-cli": "^20.0.0",
+    "@angular/localize": "^20.0.4",
     "@eslint/js": "^9.30.0",
     "@types/jasmine": "~5.1.0",
     "angular-eslint": "20.1.1",

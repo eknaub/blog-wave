@@ -15,7 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { RouteNames } from '../../shared/interfaces/routes';
 import { AuthService } from '../../shared/services/auth.service';
-import { LoggerService } from '../../shared/services/logger.service';
+import { NotificationService } from '../../shared/services/notification.service';
 import { CommonModule } from '@angular/common';
 import { AuthInputValidators } from '../../shared/utils/validators';
 
@@ -40,7 +40,7 @@ import { AuthInputValidators } from '../../shared/utils/validators';
 export class Register {
   readonly RouteNames = RouteNames;
   private authService = inject(AuthService);
-  logger = inject(LoggerService);
+  private notificationService = inject(NotificationService);
   hidePassword = true;
   hideConfirmPassword = true;
 
@@ -77,7 +77,9 @@ export class Register {
       }
 
       if (control!.value !== matchingControl!.value) {
-        const error = { mismatch: 'Passwords do not match.' };
+        const error = {
+          mismatch: $localize`:@@register.password-mismatch:Passwords do not match.`,
+        };
         matchingControl!.setErrors(error);
         return error;
       } else {
@@ -94,12 +96,16 @@ export class Register {
       this.registerForm.value;
 
     if (!username || !email || !password || !confirmPassword) {
-      this.logger.error('All fields are required');
+      this.notificationService.showNotification(
+        $localize`:@@register.all-fields-required:All fields are required`
+      );
       return;
     }
 
     if (this.registerForm.invalid) {
-      this.logger.error('Form is invalid');
+      this.notificationService.showNotification(
+        $localize`:@@register.form-invalid:Please correct the form errors`
+      );
       return;
     }
 

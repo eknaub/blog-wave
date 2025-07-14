@@ -56,8 +56,11 @@ export class BlogService {
     this.baseHttp.get<Comment[]>(`/posts/${postId}/comments`).subscribe({
       next: (comments) => commentsSignal.set(comments),
       error: (error) => {
+        this.notificationService.showNotification(
+          $localize`:@@blog-post-comment.load-comments-error:Failed to load comments`
+        );
         this.logger.error(
-          `Failed to load comments for post ${postId}: ${error.message}`
+          `Failed to load comments for post ${postId}: ${error}`
         );
       },
     });
@@ -81,7 +84,9 @@ export class BlogService {
     return this.baseHttp.post<Post>('/posts', newPost).pipe(
       map((post) => {
         this.posts.update((posts) => [...posts, post]);
-        this.notificationService.showNotification('Post created successfully');
+        this.notificationService.showNotification(
+          $localize`:@@blog-service.post-upload-success:Post uploaded successfully`
+        );
         return post;
       })
     );
@@ -93,7 +98,9 @@ export class BlogService {
         this.posts.update((posts) =>
           posts.filter((post) => post.id !== postId)
         );
-        this.notificationService.showNotification('Post deleted successfully');
+        this.notificationService.showNotification(
+          $localize`:@@blog-service.post-delete-success:Post deleted successfully`
+        );
         return post;
       })
     );
@@ -124,7 +131,7 @@ export class BlogService {
             this.commentsSignals.set(postId, signal([comment]));
           }
           this.notificationService.showNotification(
-            'Comment added successfully'
+            $localize`:@@blog-service.comment-upload-success:Comment uploaded successfully`
           );
           return comment;
         })
@@ -143,7 +150,7 @@ export class BlogService {
             );
           }
           this.notificationService.showNotification(
-            'Comment deleted successfully'
+            $localize`:@@blog-service.comment-delete-success:Comment deleted successfully`
           );
           return comment;
         })

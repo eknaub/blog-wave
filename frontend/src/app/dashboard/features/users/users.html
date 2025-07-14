@@ -1,10 +1,10 @@
-<app-dashboard-content-wrapper title="Authors">
+<app-dashboard-content-wrapper title="Authors" i18n-title="@@users.page-title">
   @if (!usersLoading()) {
     <div class="user-container">
       @for (user of users(); track user.id) {
         <app-user-card [user]="user" />
       } @empty {
-        <p>No authors yet.</p>
+        <p i18n="@@users.no-authors">No authors yet.</p>
       }
     </div>
   } @else if (usersError()) {

@@ -9,19 +9,24 @@
           (click)="deletePost()"
           class="delete-btn"
           matTooltip="Delete post"
+          i18n-matTooltip="@@blog-post.delete-tooltip"
         >
           <mat-icon>delete</mat-icon>
         </button>
       }
     </div>
     <div class="post-meta">
-      <mat-chip disableRipple> By User {{ post().users.username }} </mat-chip>
+      <mat-chip disableRipple>
+        <span i18n="@@blog-post.author-label">By User</span>
+        {{ post().users.username }}
+      </mat-chip>
       <mat-chip disableRipple>
         {{ post().createdAt | date: 'medium' }}
       </mat-chip>
       @if (post().updatedAt !== post().createdAt) {
         <mat-chip disableRipple>
-          Updated {{ post().updatedAt | date: 'medium' }}
+          <span i18n="@@blog-post.updated-label">Updated</span>
+          {{ post().updatedAt | date: 'medium' }}
         </mat-chip>
       }
     </div>

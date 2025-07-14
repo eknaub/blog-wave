@@ -1,10 +1,15 @@
-<app-dashboard-content-wrapper title="Blog Posts">
+<app-dashboard-content-wrapper
+  title="Blog Posts"
+  i18n-title="@@blog.page-title"
+>
   <button
     name="add-post"
     mat-fab
     color="primary"
     class="add-comment-btn"
     (click)="openDialog()"
+    matTooltip="Add new post"
+    i18n-matTooltip="@@blog.add-post-tooltip"
   >
     <mat-icon>add</mat-icon>
   </button>
@@ -16,12 +21,12 @@
         </div>
       } @placeholder {
         <div class="loading-placeholder">
-          <p>Loading post...</p>
+          <p i18n="@@blog.loading-post">Loading post...</p>
         </div>
       }
     } @empty {
       <div class="no-posts">
-        <p>No blog posts available.</p>
+        <p i18n="@@blog.no-posts">No blog posts available.</p>
       </div>
     }
   } @else if (postsError()) {

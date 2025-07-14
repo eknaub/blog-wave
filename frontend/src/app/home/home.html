@@ -1,22 +1,28 @@
 <main class="home-container">
   <mat-card class="welcome-card">
     <mat-card-header>
-      <mat-card-title><h1>Welcome to the Blog API</h1></mat-card-title>
+      <mat-card-title
+        ><h1 i18n="@@welcome.title">Welcome to the Blog API</h1></mat-card-title
+      >
     </mat-card-header>
     <mat-card-content>
-      <p>
+      <p i18n="@@welcome.description">
         This is a simple blog API. You can create, read, update, and delete blog
         posts.
       </p>
-      <p>Use the navigation links to explore the API or manage your account.</p>
+      <p i18n="@@welcome.navigation">
+        Use the navigation links to explore the API or manage your account.
+      </p>
       @if (isLoggedIn()) {
-        <p>
+        <p i18n="@@welcome.logged-in">
           You are logged in as
           <strong>{{ authService.getCurrentUser()?.username }}</strong
           >. You can manage your posts and profile.
         </p>
       } @else {
-        <p>Please log in or register to create and manage your blog posts.</p>
+        <p i18n="@@welcome.logged-out">
+          Please log in or register to create and manage your blog posts.
+        </p>
       }
     </mat-card-content>
     <mat-card-actions>
@@ -28,7 +34,7 @@
           [routerLink]="'/' + RouteNames.LOGIN"
         >
           <mat-icon>login</mat-icon>
-          Login
+          <span i18n="@@button.login">Login</span>
         </button>
         <button
           name="register"
@@ -37,7 +43,7 @@
           [routerLink]="'/' + RouteNames.REGISTER"
         >
           <mat-icon>app_registration</mat-icon>
-          Register
+          <span i18n="@@button.register">Register</span>
         </button>
       } @else {
         <button
@@ -47,7 +53,7 @@
           (click)="handleLogout()"
         >
           <mat-icon>logout</mat-icon>
-          Log Out
+          <span i18n="@@button.logout">Log Out</span>
         </button>
       }
     </mat-card-actions>

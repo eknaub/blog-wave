@@ -6,7 +6,9 @@
         (closed)="panelState.set(false)"
       >
         <mat-expansion-panel-header>
-          <mat-panel-title> Comments ({{ comments.length }}) </mat-panel-title>
+          <mat-panel-title i18n="@@blog-post-comment.title">
+            Comments ({{ comments.length }})
+          </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="comments-list">
           @for (comment of comments; track comment.id) {
@@ -20,6 +22,7 @@
                     (click)="deleteComment(comment.id)"
                     class="delete-btn"
                     matTooltip="Delete comment"
+                    i18n-matTooltip="@@blog-post-comment.delete-tooltip"
                   >
                     <mat-icon>delete</mat-icon>
                   </button>
@@ -27,21 +30,27 @@
               </div>
               <div class="comment-meta">
                 <mat-chip disableRipple>
-                  User: {{ comment.users.username }}
+                  <span i18n="@@blog-post-comment.user-label">User:</span>
+                  {{ comment.users.username }}
                 </mat-chip>
                 <mat-chip disableRipple>
                   {{ comment.createdAt | date: 'medium' }}
                 </mat-chip>
                 @if (comment.updatedAt !== comment.createdAt) {
                   <mat-chip disableRipple>
-                    Updated: {{ comment.updatedAt | date: 'medium' }}
+                    <span i18n="@@blog-post-comment.updated-label"
+                      >Updated:</span
+                    >
+                    {{ comment.updatedAt | date: 'medium' }}
                   </mat-chip>
                 }
               </div>
             </div>
           } @empty {
             <div class="no-comments">
-              <p>No comments yet. Be the first to comment!</p>
+              <p i18n="@@blog-post-comment.no-comments">
+                No comments yet. Be the first to comment!
+              </p>
             </div>
           }
         </div>
@@ -51,30 +60,41 @@
           class="comment-form"
         >
           <mat-form-field appearance="outline" class="comment-input">
-            <mat-label>Add a comment</mat-label>
+            <mat-label i18n="@@blog-post-comment.add-comment-label"
+              >Add a comment</mat-label
+            >
             <textarea
               matInput
               type="text"
               formControlName="comment"
               rows="3"
               placeholder="Enter your comment here..."
+              i18n-placeholder="@@blog-post-comment.placeholder"
               class="comment-textarea"
             ></textarea>
             <mat-icon matSuffix>comment</mat-icon>
-            <mat-error *ngIf="commentForm.get('comment')?.hasError('required')">
+            <mat-error
+              *ngIf="commentForm.get('comment')?.hasError('required')"
+              i18n="@@blog-post-comment.error-required"
+            >
               Comment is required.
             </mat-error>
             <mat-error
               *ngIf="commentForm.get('comment')?.hasError('minlength')"
+              i18n="@@blog-post-comment.error-minlength"
             >
               Comment must be at least 1 character long.
             </mat-error>
             <mat-error
               *ngIf="commentForm.get('comment')?.hasError('maxlength')"
+              i18n="@@blog-post-comment.error-maxlength"
             >
               Comment cannot exceed 1000 characters.
             </mat-error>
-            <mat-error *ngIf="commentForm.get('comment')?.hasError('pattern')">
+            <mat-error
+              *ngIf="commentForm.get('comment')?.hasError('pattern')"
+              i18n="@@blog-post-comment.error-pattern"
+            >
               Comment must be at least 1 character long and can include any
               characters.
             </mat-error>
@@ -86,6 +106,7 @@
               type="submit"
               [disabled]="commentForm.invalid"
               class="submit-btn"
+              i18n="@@blog-post-comment.submit-button"
             >
               Submit Comment
             </button>
@@ -97,6 +118,6 @@
 } @loading {
   <div class="loading-state">
     <div class="spinner"></div>
-    <p>Loading comments...</p>
+    <p i18n="@@blog-post-comment.loading">Loading comments...</p>
   </div>
 }

@@ -22,6 +22,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { LoggerService } from '../../../../../shared/services/logger.service';
 import { CommentInputValidators } from '../../../../../shared/utils/validators';
+import { NotificationService } from '../../../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-blog-post-comment',
@@ -45,6 +46,7 @@ export class BlogPostComment implements OnInit {
   panelState = signal(false);
   currentUser = this.blogService.currentUser;
   logger = inject(LoggerService);
+  notificationService = inject(NotificationService);
 
   commentForm = new FormGroup({
     comment: new FormControl('', [...CommentInputValidators.comment]),
@@ -62,18 +64,25 @@ export class BlogPostComment implements OnInit {
     this.commentForm.markAllAsTouched();
 
     if (!this.commentForm.valid || !this.commentForm.value.comment) {
-      this.logger.error('Comment form is invalid');
+      this.notificationService.showNotification(
+        $localize`:@@blog-post-comment.invalid-comment:Comment is invalid`
+      );
       return;
     }
 
     this.blogService
       .uploadCommentToPost(this.postId(), this.commentForm.value.comment)
       .subscribe({
-        next: (comment) => {
-          this.logger.log(`Comment uploaded successfully: ${comment}`);
+        next: () => {
+          this.notificationService.showNotification(
+            $localize`:@@blog-post-comment.comment-upload-success:Comment uploaded successfully`
+          );
           this.commentForm.reset();
         },
         error: (error) => {
+          this.notificationService.showNotification(
+            $localize`:@@blog-post-comment.comment-upload-error:Failed to upload comment`
+          );
           this.logger.error(`Failed to upload comment: ${error}`);
         },
       });
@@ -83,9 +92,14 @@ export class BlogPostComment implements OnInit {
   deleteComment = (commentId: number) => {
     this.blogService.deleteComment(this.postId(), commentId).subscribe({
       next: () => {
-        this.logger.log(`Comment with ID ${commentId} deleted successfully`);
+        this.notificationService.showNotification(
+          $localize`:@@blog-post-comment.comment-delete-success:Comment deleted successfully`
+        );
       },
       error: (error) => {
+        this.notificationService.showNotification(
+          $localize`:@@blog-post-comment.comment-delete-error:Failed to delete comment`
+        );
         this.logger.error(
           `Failed to delete comment with ID ${commentId}: ${error}`
         );

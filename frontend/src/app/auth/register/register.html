@@ -2,9 +2,11 @@
   <mat-card class="register-card">
     <mat-card-header>
       <mat-card-title>
-        <h1>Create Account</h1>
+        <h1 i18n="@@register.title">Create Account</h1>
       </mat-card-title>
-      <mat-card-subtitle>Sign up to start your journey</mat-card-subtitle>
+      <mat-card-subtitle i18n="@@register.subtitle"
+        >Sign up to start your journey</mat-card-subtitle
+      >
     </mat-card-header>
 
     <mat-card-content>
@@ -14,42 +16,72 @@
         class="register-form"
       >
         <mat-form-field appearance="outline">
-          <mat-label>Username</mat-label>
-          <input type="text" matInput formControlName="username" />
+          <mat-label i18n="@@register.username.label">Username</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="username"
+            i18n-placeholder="@@register.username.placeholder"
+            placeholder="Enter your username"
+          />
           <mat-icon matSuffix>person</mat-icon>
-          <mat-error *ngIf="registerForm.get('username')?.hasError('required')">
+          <mat-error
+            *ngIf="registerForm.get('username')?.hasError('required')"
+            i18n="@@register.username.required"
+          >
             Username is required.
           </mat-error>
-          <mat-error *ngIf="registerForm.get('username')?.hasError('pattern')">
+          <mat-error
+            *ngIf="registerForm.get('username')?.hasError('pattern')"
+            i18n="@@register.username.pattern"
+          >
             Username must be 3-20 characters long and can include letters,
             numbers, and underscores.
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input type="email" matInput formControlName="email" />
+          <mat-label i18n="@@register.email.label">Email</mat-label>
+          <input
+            type="email"
+            matInput
+            formControlName="email"
+            i18n-placeholder="@@register.email.placeholder"
+            placeholder="Enter your email"
+          />
           <mat-icon matSuffix>email</mat-icon>
-          <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+          <mat-error
+            *ngIf="registerForm.get('email')?.hasError('required')"
+            i18n="@@register.email.required"
+          >
             Email is required.
           </mat-error>
-          <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
+          <mat-error
+            *ngIf="registerForm.get('email')?.hasError('email')"
+            i18n="@@register.email.invalid"
+          >
             Please enter a valid email address.
           </mat-error>
-          <mat-error *ngIf="registerForm.get('email')?.hasError('maxlength')">
+          <mat-error
+            *ngIf="registerForm.get('email')?.hasError('maxlength')"
+            i18n="@@register.email.maxlength"
+          >
             Email cannot exceed 100 characters.
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label i18n="@@register.password.label">Password</mat-label>
           <input
             [type]="hidePassword ? 'password' : 'text'"
             matInput
             formControlName="password"
+            i18n-placeholder="@@register.password.placeholder"
+            placeholder="Enter your password"
           />
           <button
             name="togglePassword"
             matSuffix
             matIconButton
+            i18n-aria-label="@@register.password.toggle"
             aria-label="Show/hide Password"
             (click)="togglePasswordVisibility()"
           >
@@ -58,25 +90,36 @@
             }}</mat-icon>
           </button>
           <mat-icon matSuffix>lock</mat-icon>
-          <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+          <mat-error
+            *ngIf="registerForm.get('password')?.hasError('required')"
+            i18n="@@register.password.required"
+          >
             Password is required.
           </mat-error>
-          <mat-error *ngIf="registerForm.get('password')?.hasError('pattern')">
+          <mat-error
+            *ngIf="registerForm.get('password')?.hasError('pattern')"
+            i18n="@@register.password.pattern"
+          >
             Password must be at least 6 characters long and include at least one
             uppercase letter, one lowercase letter, and one number.
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Confirm Password</mat-label>
+          <mat-label i18n="@@register.confirm-password.label"
+            >Confirm Password</mat-label
+          >
           <input
             [type]="hideConfirmPassword ? 'password' : 'text'"
             matInput
             formControlName="confirmPassword"
+            i18n-placeholder="@@register.confirm-password.placeholder"
+            placeholder="Confirm your password"
           />
           <button
             name="confirmPasswordToggle"
             matSuffix
             matIconButton
+            i18n-aria-label="@@register.confirm-password.toggle"
             aria-label="Show/hide Password"
             (click)="toggleConfirmPasswordVisibility()"
           >
@@ -87,17 +130,20 @@
           <mat-icon matSuffix>lock</mat-icon>
           <mat-error
             *ngIf="registerForm.get('confirmPassword')?.hasError('required')"
+            i18n="@@register.confirm-password.required"
           >
             Password is required.
           </mat-error>
           <mat-error
             *ngIf="registerForm.get('confirmPassword')?.hasError('pattern')"
+            i18n="@@register.confirm-password.pattern"
           >
             Password must be at least 6 characters long and include at least one
             uppercase letter, one lowercase letter, and one number.
           </mat-error>
           <mat-error
             *ngIf="registerForm.get('confirmPassword')?.hasError('mismatch')"
+            i18n="@@register.confirm-password.mismatch"
           >
             Passwords do not match.
           </mat-error>
@@ -109,16 +155,16 @@
           [disabled]="!registerForm.valid"
         >
           <mat-icon>person_add</mat-icon>
-          Register
+          <span i18n="@@register.submit">Register</span>
         </button>
       </form>
     </mat-card-content>
     <mat-divider />
     <mat-card-actions class="register-actions">
-      <p>Already have an account?</p>
-      <a mat-button color="accent" [routerLink]="'/' + RouteNames.LOGIN"
-        >Sign In</a
-      >
+      <p i18n="@@register.have-account">Already have an account?</p>
+      <a mat-button color="accent" [routerLink]="'/' + RouteNames.LOGIN">
+        <span i18n="@@register.sign-in">Sign In</span>
+      </a>
     </mat-card-actions>
   </mat-card>
 </div>

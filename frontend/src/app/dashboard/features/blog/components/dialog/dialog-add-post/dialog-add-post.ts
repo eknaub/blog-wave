@@ -19,6 +19,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { LoggerService } from '../../../../../../shared/services/logger.service';
 import { PostInputValidators } from '../../../../../../shared/utils/validators';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../../../../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-dialog-add-post',
@@ -41,6 +42,7 @@ export class DialogAddPost {
   blogService = inject(BlogService);
   logger = inject(LoggerService);
   readonly dialogRef = inject(MatDialogRef<DialogAddPost>);
+  notificationService = inject(NotificationService);
   postForm = new FormGroup({
     title: new FormControl('', [...PostInputValidators.title]),
     content: new FormControl('', [...PostInputValidators.content]),
@@ -55,23 +57,32 @@ export class DialogAddPost {
     const postData = this.postForm.value;
 
     if (!postData.title || !postData.content) {
-      this.logger.error('Title and content are required');
+      this.notificationService.showNotification(
+        $localize`:@@dialog-add-post.title-content-required:Title and content are required`
+      );
       return;
     }
 
     if (this.postForm.invalid) {
-      this.logger.error('Form is invalid');
+      this.notificationService.showNotification(
+        $localize`:@@dialog-add-post.invalid-form:Form is invalid`
+      );
       return;
     }
 
     this.blogService.uploadPost(postData.title, postData.content).subscribe({
       next: () => {
-        this.logger.log(`Post created successfully`);
+        this.notificationService.showNotification(
+          $localize`:@@dialog-add-post.post-created:Post created successfully`
+        );
         this.postForm.reset();
         this.dialogRef.close();
       },
-      error: () => {
-        this.logger.error(`Failed to create post`);
+      error: (error) => {
+        this.notificationService.showNotification(
+          $localize`:@@dialog-add-post.post-create-error:Failed to create post`
+        );
+        this.logger.error(`Failed to create post: ${error}`);
       },
     });
   }

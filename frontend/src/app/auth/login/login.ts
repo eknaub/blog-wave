@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { RouteNames } from '../../shared/interfaces/routes';
 import { AuthService } from '../../shared/services/auth.service';
-import { LoggerService } from '../../shared/services/logger.service';
+import { NotificationService } from '../../shared/services/notification.service';
 import { CommonModule } from '@angular/common';
 import { AuthInputValidators } from '../../shared/utils/validators';
 
@@ -32,7 +32,7 @@ import { AuthInputValidators } from '../../shared/utils/validators';
 })
 export class Login {
   private authService = inject(AuthService);
-  logger = inject(LoggerService);
+  private notificationService = inject(NotificationService);
   readonly RouteNames = RouteNames;
   hidePassword = true;
 
@@ -51,12 +51,16 @@ export class Login {
     const { username, password } = this.loginForm.value;
 
     if (!username || !password) {
-      this.logger.error('Username and password are required');
+      this.notificationService.showNotification(
+        $localize`:@@login.credentials-required:Username and password are required`
+      );
       return;
     }
 
     if (this.loginForm.invalid) {
-      this.logger.error('Form is invalid');
+      this.notificationService.showNotification(
+        $localize`:@@login.form-invalid:Please correct the form errors`
+      );
       return;
     }
 

@@ -4,6 +4,7 @@ import { RouteNames } from '../interfaces/routes';
 import { User } from '../interfaces/user';
 import { BaseHttpService } from './http.service';
 import { LoggerService } from './logger.service';
+import { NotificationService } from './notification.service';
 
 export const LOCAL_STORAGE_CURRENT_USER_KEY = 'currentUser';
 
@@ -27,6 +28,7 @@ export class AuthService {
   public currentUser$ = this.currentUserSignal.asReadonly();
   private baseHttp = inject(BaseHttpService);
   logger = inject(LoggerService);
+  notificationService = inject(NotificationService);
 
   constructor() {
     this.checkExistingAuth();
@@ -50,6 +52,9 @@ export class AuthService {
 
       return false;
     } catch (error) {
+      this.notificationService.showNotification(
+        $localize`:@@auth-service.login-error:Login failed`
+      );
       this.logger.error(`Login failed: ${error}`);
       return false;
     }
@@ -62,6 +67,9 @@ export class AuthService {
       localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
       this.router.navigate([RouteNames.LOGIN]);
     } catch (error) {
+      this.notificationService.showNotification(
+        $localize`:@@auth-service.logout-error:Logout failed`
+      );
       this.logger.error(`Logout failed: ${error}`);
     }
   }
@@ -86,7 +94,10 @@ export class AuthService {
         const user = JSON.parse(storedUser);
         this.currentUserSignal.set(user);
       } catch (error) {
-        this.logger.error(`Error parsing stored user: ${error}`);
+        this.notificationService.showNotification(
+          $localize`:@@auth-service.invalid-user:Invalid user data in local storage`
+        );
+        this.logger.error(`Invalid user data in local storage: ${error}`);
         localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
       }
     }
@@ -106,6 +117,9 @@ export class AuthService {
       }
       return false;
     } catch (error) {
+      this.notificationService.showNotification(
+        $localize`:@@auth-service.registration-error:Registration failed`
+      );
       this.logger.error(`Registration failed: ${error}`);
       return false;
     }

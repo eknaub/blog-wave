@@ -1,14 +1,14 @@
 <div class="not-found-container">
   <div class="not-found-content">
-    <div class="error-code">404</div>
-    <h1 class="error-title">Page Not Found</h1>
-    <p class="error-message">
+    <div class="error-code" i18n="@@not-found.error.code">404</div>
+    <h1 class="error-title" i18n="@@not-found.error.title">Page Not Found</h1>
+    <p class="error-message" i18n="@@not-found.error.message">
       Sorry, the page you are looking for doesn't exist or has been moved.
     </p>
     <div class="action-buttons">
       <button class="btn btn-primary" [routerLink]="'/' + RouteNames.HOME">
         <i class="fas fa-home"></i>
-        Go Home
+        <span i18n="@@not-found.action.home">Go to Home</span>
       </button>
     </div>
   </div>

@@ -7,6 +7,7 @@ import { BlogService } from '../../../../services/blog-service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { LoggerService } from '../../../../../shared/services/logger.service';
+import { NotificationService } from '../../../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-blog-post',
@@ -25,13 +26,19 @@ export class BlogPost {
   blogService = inject(BlogService);
   currentUser = this.blogService.currentUser;
   logger = inject(LoggerService);
+  notificationService = inject(NotificationService);
 
   deletePost = () => {
     this.blogService.deletePost(this.post().id).subscribe({
       next: () => {
-        this.logger.log('Post deleted successfully');
+        this.notificationService.showNotification(
+          $localize`:@@blog-post.delete-success:Post deleted successfully`
+        );
       },
       error: (error) => {
+        this.notificationService.showNotification(
+          $localize`:@@blog-post.delete-error:Failed to delete post`
+        );
         this.logger.error(`Failed to delete post: ${error}`);
       },
     });

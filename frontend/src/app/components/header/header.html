@@ -5,7 +5,7 @@
     [routerLink]="['/', RouteNames.HOME]"
   >
     <mat-icon>article</mat-icon>
-    <span>Blog API</span>
+    <span i18n="@@header.brand">Blog API</span>
   </a>
 
   <nav>
@@ -17,7 +17,7 @@
       [routerLinkActiveOptions]="{ exact: true }"
     >
       <mat-icon>home</mat-icon>
-      Home
+      <span i18n="@@header.nav.home">Home</span>
     </a>
     @if (isLoggedIn()) {
       <a
@@ -27,13 +27,18 @@
         routerLinkActive="active-link"
       >
         <mat-icon>dashboard</mat-icon>
-        Dashboard
+        <span i18n="@@header.nav.dashboard">Dashboard</span>
       </a>
     }
   </nav>
 
   <div>
-    <button matIconButton [matMenuTriggerFor]="userMenu" aria-label="User menu">
+    <button
+      matIconButton
+      [matMenuTriggerFor]="userMenu"
+      i18n-aria-label="@@header.user-menu.aria"
+      aria-label="User menu"
+    >
       <mat-icon>account_circle</mat-icon>
     </button>
     <mat-menu #userMenu="matMenu">
@@ -44,7 +49,7 @@
           (click)="navigateTo(RouteNames.PROFILE)"
         >
           <mat-icon>person</mat-icon>
-          <span>Profile</span>
+          <span i18n="@@header.menu.profile">Profile</span>
         </button>
       }
       <button
@@ -53,13 +58,13 @@
         (click)="navigateTo(RouteNames.SETTINGS)"
       >
         <mat-icon>settings</mat-icon>
-        <span>Settings</span>
+        <span i18n="@@header.menu.settings">Settings</span>
       </button>
       @if (isLoggedIn()) {
         <mat-divider></mat-divider>
         <button [name]="'menuLogout'" mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>
-          <span>Logout</span>
+          <span i18n="@@header.menu.logout">Logout</span>
         </button>
       }
     </mat-menu>

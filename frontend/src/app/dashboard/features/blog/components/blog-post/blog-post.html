@@ -17,8 +17,9 @@
     </div>
     <div class="post-meta">
       <mat-chip disableRipple>
-        <span i18n="@@blog-post.author-label">By User</span>
-        {{ post().users.username }}
+        <ng-container i18n="@@blog-post.author-label"
+          >User: {{ post().users.username }}</ng-container
+        >
       </mat-chip>
       <mat-chip disableRipple>
         {{ post().createdAt | date: 'medium' }}

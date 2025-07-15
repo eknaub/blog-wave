@@ -4,6 +4,7 @@
     <body>
       <trans-unit id="login.welcome" datatype="html">
         <source>Welcome Back</source>
+        <target>Willkommen zurück</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">5,6</context>
@@ -11,6 +12,7 @@
       </trans-unit>
       <trans-unit id="login.subtitle" datatype="html">
         <source>Sign in to your account</source>
+        <target>Melden Sie sich an</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">8,10</context>
@@ -18,6 +20,7 @@
       </trans-unit>
       <trans-unit id="login.username.label" datatype="html">
         <source>Username</source>
+        <target>Benutzername</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">18,20</context>
@@ -25,6 +28,7 @@
       </trans-unit>
       <trans-unit id="login.username.placeholder" datatype="html">
         <source>Enter your username</source>
+        <target>Geben Sie Ihren Benutzernamen ein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">23,26</context>
@@ -32,6 +36,7 @@
       </trans-unit>
       <trans-unit id="login.username.required" datatype="html">
         <source> Username is required. </source>
+        <target> Der Benutzername ist erforderlich. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">31,33</context>
@@ -39,6 +44,7 @@
       </trans-unit>
       <trans-unit id="login.username.pattern" datatype="html">
         <source> Username must be 3-20 characters long and can include letters, numbers, and underscores. </source>
+        <target> Der Benutzername muss 3-20 Zeichen lang sein und kann Buchstaben, Zahlen und Unterstriche enthalten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">37,39</context>
@@ -46,6 +52,7 @@
       </trans-unit>
       <trans-unit id="login.password.label" datatype="html">
         <source>Password</source>
+        <target>Password</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">42,44</context>
@@ -53,6 +60,7 @@
       </trans-unit>
       <trans-unit id="login.password.placeholder" datatype="html">
         <source>Enter your password</source>
+        <target>Geben Sie Ihr Passwort ein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">48,51</context>
@@ -60,6 +68,7 @@
       </trans-unit>
       <trans-unit id="login.password.toggle" datatype="html">
         <source>Show/hide Password</source>
+        <target>Passwort anzeigen/verbergen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">55,56</context>
@@ -67,6 +76,7 @@
       </trans-unit>
       <trans-unit id="login.password.required" datatype="html">
         <source> Password is required. </source>
+        <target> Passwort ist erforderlich. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">67,69</context>
@@ -74,6 +84,7 @@
       </trans-unit>
       <trans-unit id="login.password.pattern" datatype="html">
         <source> Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, and one number. </source>
+        <target> Das Passwort muss mindestens 6 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">73,75</context>
@@ -81,6 +92,7 @@
       </trans-unit>
       <trans-unit id="login.submit" datatype="html">
         <source>Sign In</source>
+        <target>Anmelden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">84,86</context>
@@ -88,6 +100,7 @@
       </trans-unit>
       <trans-unit id="login.no-account" datatype="html">
         <source>Don&apos;t have an account?</source>
+        <target>Sie haben noch kein Konto?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">90,91</context>
@@ -95,6 +108,7 @@
       </trans-unit>
       <trans-unit id="login.create-account" datatype="html">
         <source>Create Account</source>
+        <target>Konto erstellen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.html</context>
           <context context-type="linenumber">92,94</context>
@@ -102,6 +116,7 @@
       </trans-unit>
       <trans-unit id="login.credentials-required" datatype="html">
         <source>Username and password are required</source>
+        <target>Benutzername und Passwort sind erforderlich</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.ts</context>
           <context context-type="linenumber">55</context>
@@ -109,6 +124,7 @@
       </trans-unit>
       <trans-unit id="login.form-invalid" datatype="html">
         <source>Please correct the form errors</source>
+        <target>Bitte korrigieren Sie die Formularfehler</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/login/login.ts</context>
           <context context-type="linenumber">62</context>
@@ -116,6 +132,7 @@
       </trans-unit>
       <trans-unit id="register.title" datatype="html">
         <source>Create Account</source>
+        <target>Konto erstellen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">5,6</context>
@@ -123,6 +140,7 @@
       </trans-unit>
       <trans-unit id="register.subtitle" datatype="html">
         <source>Sign up to start your journey</source>
+        <target>Melden Sie sich an, um Ihre Reise zu beginnen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">8,10</context>
@@ -130,6 +148,7 @@
       </trans-unit>
       <trans-unit id="register.username.label" datatype="html">
         <source>Username</source>
+        <target>Benutzername</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">19,21</context>
@@ -137,6 +156,7 @@
       </trans-unit>
       <trans-unit id="register.username.placeholder" datatype="html">
         <source>Enter your username</source>
+        <target>Geben Sie Ihren Benutzernamen ein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">25,27</context>
@@ -144,6 +164,7 @@
       </trans-unit>
       <trans-unit id="register.username.required" datatype="html">
         <source> Username is required. </source>
+        <target> Der Benutzername ist erforderlich. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">32,34</context>
@@ -151,6 +172,7 @@
       </trans-unit>
       <trans-unit id="register.username.pattern" datatype="html">
         <source> Username must be 3-20 characters long and can include letters, numbers, and underscores. </source>
+        <target> Der Benutzername muss 3-20 Zeichen lang sein und kann Buchstaben, Zahlen und Unterstriche enthalten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">38,40</context>
@@ -158,6 +180,7 @@
       </trans-unit>
       <trans-unit id="register.email.label" datatype="html">
         <source>Email</source>
+        <target>E-Mail</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">43,45</context>
@@ -165,6 +188,7 @@
       </trans-unit>
       <trans-unit id="register.email.placeholder" datatype="html">
         <source>Enter your email</source>
+        <target>Geben Sie Ihre E-Mail-Adresse ein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">49,51</context>
@@ -172,6 +196,7 @@
       </trans-unit>
       <trans-unit id="register.email.required" datatype="html">
         <source> Email is required. </source>
+        <target> E-Mail ist erforderlich. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">56,58</context>
@@ -179,6 +204,7 @@
       </trans-unit>
       <trans-unit id="register.email.invalid" datatype="html">
         <source> Please enter a valid email address. </source>
+        <target> Bitte geben Sie eine gültige E-Mail-Adresse ein. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">62,64</context>
@@ -186,6 +212,7 @@
       </trans-unit>
       <trans-unit id="register.email.maxlength" datatype="html">
         <source> Email cannot exceed 100 characters. </source>
+        <target> Die E-Mail darf 100 Zeichen nicht überschreiten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">68,70</context>
@@ -193,6 +220,7 @@
       </trans-unit>
       <trans-unit id="register.password.label" datatype="html">
         <source>Password</source>
+        <target>Passwort</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">72,74</context>
@@ -200,6 +228,7 @@
       </trans-unit>
       <trans-unit id="register.password.placeholder" datatype="html">
         <source>Enter your password</source>
+        <target>Geben Sie Ihr Passwort ein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">78,81</context>
@@ -207,6 +236,7 @@
       </trans-unit>
       <trans-unit id="register.password.toggle" datatype="html">
         <source>Show/hide Password</source>
+        <target>Passwort anzeigen/verbergen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">85,86</context>
@@ -214,6 +244,7 @@
       </trans-unit>
       <trans-unit id="register.password.required" datatype="html">
         <source> Password is required. </source>
+        <target> Passwort ist erforderlich. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">97,99</context>
@@ -221,6 +252,7 @@
       </trans-unit>
       <trans-unit id="register.password.pattern" datatype="html">
         <source> Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, and one number. </source>
+        <target> Das Passwort muss mindestens 6 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">103,105</context>
@@ -228,6 +260,7 @@
       </trans-unit>
       <trans-unit id="register.confirm-password.label" datatype="html">
         <source>Confirm Password</source>
+        <target>Passwort bestätigen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">109,112</context>
@@ -235,6 +268,7 @@
       </trans-unit>
       <trans-unit id="register.confirm-password.placeholder" datatype="html">
         <source>Confirm your password</source>
+        <target>Bestätigen Sie Ihr Passwort</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">116,119</context>
@@ -242,6 +276,7 @@
       </trans-unit>
       <trans-unit id="register.confirm-password.toggle" datatype="html">
         <source>Show/hide Password</source>
+        <target>Passwort anzeigen/verbergen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">123,124</context>
@@ -249,6 +284,7 @@
       </trans-unit>
       <trans-unit id="register.confirm-password.required" datatype="html">
         <source> Password is required. </source>
+        <target> Passwort ist erforderlich. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">135,137</context>
@@ -256,6 +292,7 @@
       </trans-unit>
       <trans-unit id="register.confirm-password.pattern" datatype="html">
         <source> Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, and one number. </source>
+        <target> Das Passwort muss mindestens 6 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">141,144</context>
@@ -263,6 +300,7 @@
       </trans-unit>
       <trans-unit id="register.confirm-password.mismatch" datatype="html">
         <source> Passwords do not match. </source>
+        <target> Passwörter stimmen nicht überein. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">148,150</context>
@@ -270,6 +308,7 @@
       </trans-unit>
       <trans-unit id="register.submit" datatype="html">
         <source>Register</source>
+        <target>Registrieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">158,160</context>
@@ -277,6 +316,7 @@
       </trans-unit>
       <trans-unit id="register.have-account" datatype="html">
         <source>Already have an account?</source>
+        <target>Haben Sie bereits ein Konto?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">164,165</context>
@@ -284,6 +324,7 @@
       </trans-unit>
       <trans-unit id="register.sign-in" datatype="html">
         <source>Sign In</source>
+        <target>Anmelden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.html</context>
           <context context-type="linenumber">166,168</context>
@@ -291,6 +332,7 @@
       </trans-unit>
       <trans-unit id="register.password-mismatch" datatype="html">
         <source>Passwords do not match.</source>
+        <target>Passwörter stimmen nicht überein.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.ts</context>
           <context context-type="linenumber">81</context>
@@ -298,6 +340,7 @@
       </trans-unit>
       <trans-unit id="register.all-fields-required" datatype="html">
         <source>All fields are required</source>
+        <target>Alle Felder sind erforderlich</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.ts</context>
           <context context-type="linenumber">100</context>
@@ -305,6 +348,7 @@
       </trans-unit>
       <trans-unit id="register.form-invalid" datatype="html">
         <source>Please correct the form errors</source>
+        <target>Bitte korrigieren Sie die Formularfehler</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/auth/register/register.ts</context>
           <context context-type="linenumber">107</context>
@@ -312,6 +356,7 @@
       </trans-unit>
       <trans-unit id="header.brand" datatype="html">
         <source>Blog API</source>
+        <target>Blog API</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/header/header.html</context>
           <context context-type="linenumber">8,12</context>
@@ -319,6 +364,7 @@
       </trans-unit>
       <trans-unit id="header.nav.home" datatype="html">
         <source>Home</source>
+        <target>Startseite</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/header/header.html</context>
           <context context-type="linenumber">20,22</context>
@@ -326,6 +372,7 @@
       </trans-unit>
       <trans-unit id="header.nav.dashboard" datatype="html">
         <source>Dashboard</source>
+        <target>Dashboard</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/header/header.html</context>
           <context context-type="linenumber">30,35</context>
@@ -333,6 +380,7 @@
       </trans-unit>
       <trans-unit id="header.user-menu.aria" datatype="html">
         <source>User menu</source>
+        <target>Benutzermenü</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/header/header.html</context>
           <context context-type="linenumber">40,42</context>
@@ -340,6 +388,7 @@
       </trans-unit>
       <trans-unit id="header.menu.profile" datatype="html">
         <source>Profile</source>
+        <target>Profil</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/header/header.html</context>
           <context context-type="linenumber">52,55</context>
@@ -347,6 +396,7 @@
       </trans-unit>
       <trans-unit id="header.menu.settings" datatype="html">
         <source>Settings</source>
+        <target>Einstellungen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/header/header.html</context>
           <context context-type="linenumber">61,63</context>
@@ -354,6 +404,7 @@
       </trans-unit>
       <trans-unit id="header.menu.logout" datatype="html">
         <source>Logout</source>
+        <target>Abmelden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/header/header.html</context>
           <context context-type="linenumber">67,69</context>
@@ -361,6 +412,7 @@
       </trans-unit>
       <trans-unit id="not-found.error.code" datatype="html">
         <source>404</source>
+        <target>404</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/not-found/not-found.html</context>
           <context context-type="linenumber">3,4</context>
@@ -368,6 +420,7 @@
       </trans-unit>
       <trans-unit id="not-found.error.title" datatype="html">
         <source>Page Not Found</source>
+        <target>Seite nicht gefunden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/not-found/not-found.html</context>
           <context context-type="linenumber">4,5</context>
@@ -375,6 +428,7 @@
       </trans-unit>
       <trans-unit id="not-found.error.message" datatype="html">
         <source> Sorry, the page you are looking for doesn&apos;t exist or has been moved. </source>
+        <target> Leider existiert die Seite, die Sie suchen, nicht oder wurde verschoben. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/not-found/not-found.html</context>
           <context context-type="linenumber">6,8</context>
@@ -382,6 +436,7 @@
       </trans-unit>
       <trans-unit id="not-found.action.home" datatype="html">
         <source>Go to Home</source>
+        <target>Zur Startseite</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/not-found/not-found.html</context>
           <context context-type="linenumber">11,13</context>
@@ -389,6 +444,7 @@
       </trans-unit>
       <trans-unit id="blog.page-title" datatype="html">
         <source>Blog Posts</source>
+        <target>Blog-Beiträge</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/blog.html</context>
           <context context-type="linenumber">2,3</context>
@@ -396,6 +452,7 @@
       </trans-unit>
       <trans-unit id="blog.add-post-tooltip" datatype="html">
         <source>Add new post</source>
+        <target>Neuen Beitrag hinzufügen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/blog.html</context>
           <context context-type="linenumber">11,12</context>
@@ -403,6 +460,7 @@
       </trans-unit>
       <trans-unit id="blog.loading-post" datatype="html">
         <source>Loading post...</source>
+        <target>Lade Beitrag...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/blog.html</context>
           <context context-type="linenumber">24,27</context>
@@ -410,6 +468,7 @@
       </trans-unit>
       <trans-unit id="blog.no-posts" datatype="html">
         <source>No blog posts available.</source>
+        <target>Keine Blog-Beiträge verfügbar.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/blog.html</context>
           <context context-type="linenumber">29,32</context>
@@ -417,6 +476,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.title" datatype="html">
         <source> Comments (<x id="INTERPOLATION" equiv-text="{{ comments.length }}"/>) </source>
+        <target> Kommentare (<x id="INTERPOLATION" equiv-text="{{ comments.length }}"/>) </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">10,11</context>
@@ -424,6 +484,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.delete-tooltip" datatype="html">
         <source>Delete comment</source>
+        <target>Kommentar löschen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">24,25</context>
@@ -431,6 +492,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.user-label" datatype="html">
         <source>User:</source>
+        <target>Benutzer:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">33,34</context>
@@ -438,6 +500,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.updated-label" datatype="html">
         <source>Updated:</source>
+        <target>Aktualisiert:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">42,44</context>
@@ -445,6 +508,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.no-comments" datatype="html">
         <source> No comments yet. Be the first to comment! </source>
+        <target> Noch keine Kommentare. Seien Sie der Erste, der kommentiert! </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">52,54</context>
@@ -452,6 +516,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.add-comment-label" datatype="html">
         <source>Add a comment</source>
+        <target>Kommentar hinzufügen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">64,66</context>
@@ -459,6 +524,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.placeholder" datatype="html">
         <source>Enter your comment here...</source>
+        <target>Geben Sie hier Ihren Kommentar ein...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">71,72</context>
@@ -466,6 +532,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.error-required" datatype="html">
         <source> Comment is required. </source>
+        <target> Kommentar ist erforderlich. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">80,82</context>
@@ -473,6 +540,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.error-minlength" datatype="html">
         <source> Comment must be at least 1 character long. </source>
+        <target> Kommentar muss mindestens 1 Zeichen lang sein. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">86,88</context>
@@ -480,6 +548,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.error-maxlength" datatype="html">
         <source> Comment cannot exceed 1000 characters. </source>
+        <target> Kommentar darf 1000 Zeichen nicht überschreiten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">92,94</context>
@@ -487,6 +556,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.error-pattern" datatype="html">
         <source> Comment must be at least 1 character long and can include any characters. </source>
+        <target> Kommentar muss mindestens 1 Zeichen lang sein und kann beliebige Zeichen enthalten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">98,100</context>
@@ -494,6 +564,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.submit-button" datatype="html">
         <source> Submit Comment </source>
+        <target> Kommentar absenden </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">111,113</context>
@@ -501,6 +572,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.loading" datatype="html">
         <source>Loading comments...</source>
+        <target>Lade Kommentare...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.html</context>
           <context context-type="linenumber">121,124</context>
@@ -508,6 +580,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.invalid-comment" datatype="html">
         <source>Comment is invalid</source>
+        <target>Kommentar ist ungültig</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.ts</context>
           <context context-type="linenumber">68</context>
@@ -515,6 +588,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.comment-upload-success" datatype="html">
         <source>Comment uploaded successfully</source>
+        <target>Kommentar erfolgreich hochgeladen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.ts</context>
           <context context-type="linenumber">78</context>
@@ -522,6 +596,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.comment-upload-error" datatype="html">
         <source>Failed to upload comment</source>
+        <target>Fehler beim Hochladen des Kommentars</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.ts</context>
           <context context-type="linenumber">84</context>
@@ -529,6 +604,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.comment-delete-success" datatype="html">
         <source>Comment deleted successfully</source>
+        <target>Kommentar erfolgreich gelöscht</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.ts</context>
           <context context-type="linenumber">96</context>
@@ -536,6 +612,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.comment-delete-error" datatype="html">
         <source>Failed to delete comment</source>
+        <target>Fehler beim Löschen des Kommentars</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post-comment/blog-post-comment.ts</context>
           <context context-type="linenumber">101</context>
@@ -543,13 +620,15 @@
       </trans-unit>
       <trans-unit id="blog-post.delete-tooltip" datatype="html">
         <source>Delete post</source>
+        <target>Beitrag löschen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post/blog-post.html</context>
           <context context-type="linenumber">11,12</context>
         </context-group>
       </trans-unit>
       <trans-unit id="blog-post.author-label" datatype="html">
-        <source>By User</source>
+        <source>User:</source>
+        <target>Von Benutzer</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post/blog-post.html</context>
           <context context-type="linenumber">20,21</context>
@@ -557,6 +636,7 @@
       </trans-unit>
       <trans-unit id="blog-post.updated-label" datatype="html">
         <source>Updated</source>
+        <target>Aktualisiert</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post/blog-post.html</context>
           <context context-type="linenumber">28,29</context>
@@ -564,6 +644,7 @@
       </trans-unit>
       <trans-unit id="blog-post.delete-success" datatype="html">
         <source>Post deleted successfully</source>
+        <target>Beitrag erfolgreich gelöscht</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post/blog-post.ts</context>
           <context context-type="linenumber">35</context>
@@ -571,6 +652,7 @@
       </trans-unit>
       <trans-unit id="blog-post.delete-error" datatype="html">
         <source>Failed to delete post</source>
+        <target>Fehler beim Löschen des Beitrags</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/blog-post/blog-post.ts</context>
           <context context-type="linenumber">40</context>
@@ -578,6 +660,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.title" datatype="html">
         <source>Create New Post</source>
+        <target>Neuen Beitrag erstellen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.html</context>
           <context context-type="linenumber">1,3</context>
@@ -585,6 +668,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.title-label" datatype="html">
         <source>Title</source>
+        <target>Titel</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.html</context>
           <context context-type="linenumber">6,8</context>
@@ -592,6 +676,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.title-placeholder" datatype="html">
         <source>Enter post title</source>
+        <target>Geben Sie den Titel des Beitrags ein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.html</context>
           <context context-type="linenumber">11,12</context>
@@ -599,6 +684,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.title-error-required" datatype="html">
         <source> Title is required. </source>
+        <target> Der Titel ist erforderlich. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.html</context>
           <context context-type="linenumber">18,21</context>
@@ -606,6 +692,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.title-error-maxlength" datatype="html">
         <source> Title cannot exceed 100 characters. </source>
+        <target> Der Titel darf 100 Zeichen nicht überschreiten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.html</context>
           <context context-type="linenumber">24,27</context>
@@ -613,6 +700,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.title-error-pattern" datatype="html">
         <source> Title must be alphanumeric and can include spaces and hyphens. </source>
+        <target> Der Titel muss alphanumerisch sein und kann Leerzeichen und Bindestriche enthalten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.html</context>
           <context context-type="linenumber">30,32</context>
@@ -620,6 +708,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.content-label" datatype="html">
         <source>Content</source>
+        <target>Inhalt</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.html</context>
           <context context-type="linenumber">34,36</context>
@@ -627,6 +716,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.content-placeholder" datatype="html">
         <source>Write your post content here...</source>
+        <target>Schreiben Sie hier den Inhalt Ihres Beitrags...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.html</context>
           <context context-type="linenumber">39,40</context>
@@ -634,6 +724,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.cancel-button" datatype="html">
         <source> Cancel </source>
+        <target> Abbrechen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.html</context>
           <context context-type="linenumber">63,66</context>
@@ -641,6 +732,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.create-button" datatype="html">
         <source> Create Post </source>
+        <target> Beitrag erstellen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.html</context>
           <context context-type="linenumber">75,78</context>
@@ -648,13 +740,15 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.title-content-required" datatype="html">
         <source>Title and content are required</source>
+        <target>Titel und Inhalt sind erforderlich</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.ts</context>
           <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dialog-add-post.invalid-form" datatype="html">
-        <source>Form is invalid</source>
+        <source>Form is invalid</source>    
+        <target>Formular ist ungültig</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.ts</context>
           <context context-type="linenumber">68</context>
@@ -662,6 +756,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.post-created" datatype="html">
         <source>Post created successfully</source>
+        <target>Beitrag erfolgreich erstellt</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.ts</context>
           <context context-type="linenumber">76</context>
@@ -669,6 +764,7 @@
       </trans-unit>
       <trans-unit id="dialog-add-post.post-create-error" datatype="html">
         <source>Failed to create post</source>
+        <target>Fehler beim Erstellen des Beitrags</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/blog/components/dialog/dialog-add-post/dialog-add-post.ts</context>
           <context context-type="linenumber">83</context>
@@ -676,6 +772,7 @@
       </trans-unit>
       <trans-unit id="stats-card.total-posts" datatype="html">
         <source>Total Posts</source>
+        <target>Gesamtanzahl der Beiträge</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/stats/components/stats-card/stats-card.html</context>
           <context context-type="linenumber">11,12</context>
@@ -683,6 +780,7 @@
       </trans-unit>
       <trans-unit id="stats-card.total-users" datatype="html">
         <source>Total Users</source>
+        <target>Gesamtanzahl der Benutzer</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/stats/components/stats-card/stats-card.html</context>
           <context context-type="linenumber">24,25</context>
@@ -690,6 +788,7 @@
       </trans-unit>
       <trans-unit id="stats.page-title" datatype="html">
         <source>Stats</source>
+        <target>Statistiken</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/stats/stats.html</context>
           <context context-type="linenumber">1</context>
@@ -697,6 +796,7 @@
       </trans-unit>
       <trans-unit id="stats.blog-error" datatype="html">
         <source> Error loading blog stats: <x id="INTERPOLATION" equiv-text="{{ stats.blogServiceError() }}"/> </source>
+        <target> Fehler beim Laden der Blog-Statistiken: <x id="INTERPOLATION" equiv-text="{{ stats.blogServiceError() }}"/> </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/stats/stats.html</context>
           <context context-type="linenumber">7,9</context>
@@ -704,6 +804,7 @@
       </trans-unit>
       <trans-unit id="stats.user-error" datatype="html">
         <source> Error loading user stats: <x id="INTERPOLATION" equiv-text="{{ stats.userServiceError() }}"/> </source>
+        <target> Fehler beim Laden der Benutzerstatistiken: <x id="INTERPOLATION" equiv-text="{{ stats.userServiceError() }}"/> </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/stats/stats.html</context>
           <context context-type="linenumber">12,14</context>
@@ -711,6 +812,7 @@
       </trans-unit>
       <trans-unit id="user-card.posts-label" datatype="html">
         <source>Posts</source>
+        <target>Beiträge</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/users/components/user-card/user-card.html</context>
           <context context-type="linenumber">15,18</context>
@@ -718,6 +820,7 @@
       </trans-unit>
       <trans-unit id="users.page-title" datatype="html">
         <source>Authors</source>
+        <target>Autoren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/users/users.html</context>
           <context context-type="linenumber">1</context>
@@ -725,6 +828,7 @@
       </trans-unit>
       <trans-unit id="users.no-authors" datatype="html">
         <source>No authors yet.</source>
+        <target>Noch keine Autoren.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/features/users/users.html</context>
           <context context-type="linenumber">7,10</context>
@@ -732,6 +836,7 @@
       </trans-unit>
       <trans-unit id="dashboard-navigation.stats" datatype="html">
         <source>Stats</source>
+        <target>Statistiken</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/layout/dashboard-navigation/dashboard-navigation.html</context>
           <context context-type="linenumber">13,17</context>
@@ -739,6 +844,7 @@
       </trans-unit>
       <trans-unit id="dashboard-navigation.authors" datatype="html">
         <source>Authors</source>
+        <target>Autoren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/layout/dashboard-navigation/dashboard-navigation.html</context>
           <context context-type="linenumber">24,29</context>
@@ -746,6 +852,7 @@
       </trans-unit>
       <trans-unit id="dashboard-navigation.blog-posts" datatype="html">
         <source>Blog Posts</source>
+        <target>Blog-Beiträge</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/layout/dashboard-navigation/dashboard-navigation.html</context>
           <context context-type="linenumber">36,39</context>
@@ -753,6 +860,7 @@
       </trans-unit>
       <trans-unit id="blog-post-comment.load-comments-error" datatype="html">
         <source>Failed to load comments</source>
+        <target>Fehler beim Laden der Kommentare</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/services/blog-service.ts</context>
           <context context-type="linenumber">60</context>
@@ -760,6 +868,7 @@
       </trans-unit>
       <trans-unit id="blog-service.post-upload-success" datatype="html">
         <source>Post uploaded successfully</source>
+        <target>Beitrag erfolgreich hochgeladen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/services/blog-service.ts</context>
           <context context-type="linenumber">88</context>
@@ -767,6 +876,7 @@
       </trans-unit>
       <trans-unit id="blog-service.post-delete-success" datatype="html">
         <source>Post deleted successfully</source>
+        <target>Beitrag erfolgreich gelöscht</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/services/blog-service.ts</context>
           <context context-type="linenumber">102</context>
@@ -774,6 +884,7 @@
       </trans-unit>
       <trans-unit id="blog-service.comment-upload-success" datatype="html">
         <source>Comment uploaded successfully</source>
+        <target>Kommentar erfolgreich hochgeladen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/services/blog-service.ts</context>
           <context context-type="linenumber">134</context>
@@ -781,6 +892,7 @@
       </trans-unit>
       <trans-unit id="blog-service.comment-delete-success" datatype="html">
         <source>Comment deleted successfully</source>
+        <target>Kommentar erfolgreich gelöscht</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/dashboard/services/blog-service.ts</context>
           <context context-type="linenumber">153</context>
@@ -788,6 +900,7 @@
       </trans-unit>
       <trans-unit id="welcome.title" datatype="html">
         <source>Welcome to the Blog API</source>
+        <target>Willkommen bei der Blog API</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/home/home.html</context>
           <context context-type="linenumber">5,6</context>
@@ -795,6 +908,7 @@
       </trans-unit>
       <trans-unit id="welcome.description" datatype="html">
         <source> This is a simple blog API. You can create, read, update, and delete blog posts. </source>
+        <target> Dies ist eine einfache Blog-API. Sie können Blog-Beiträge erstellen, lesen, aktualisieren und löschen. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/home/home.html</context>
           <context context-type="linenumber">10,13</context>
@@ -802,6 +916,7 @@
       </trans-unit>
       <trans-unit id="welcome.navigation" datatype="html">
         <source> Use the navigation links to explore the API or manage your account. </source>
+        <target> Verwenden Sie die Navigationslinks, um die API zu erkunden oder Ihr Konto zu verwalten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/home/home.html</context>
           <context context-type="linenumber">14,16</context>
@@ -810,6 +925,8 @@
       <trans-unit id="welcome.logged-in" datatype="html">
         <source> You are logged in as <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ authService.getCurrentUser()?.username }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong
           &gt;"/>. You can manage your posts and profile. </source>
+        <target> Sie sind angemeldet als <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ authService.getCurrentUser()?.username }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong
+        &gt;"/>. Sie können Ihre Beiträge und Ihr Profil verwalten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/home/home.html</context>
           <context context-type="linenumber">18,22</context>
@@ -817,6 +934,7 @@
       </trans-unit>
       <trans-unit id="welcome.logged-out" datatype="html">
         <source> Please log in or register to create and manage your blog posts. </source>
+        <target> Bitte melden Sie sich an oder registrieren Sie sich, um Ihre Blog-Beiträge zu erstellen und zu verwalten. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/home/home.html</context>
           <context context-type="linenumber">24,26</context>
@@ -824,6 +942,7 @@
       </trans-unit>
       <trans-unit id="button.login" datatype="html">
         <source>Login</source>
+        <target>Anmelden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/home/home.html</context>
           <context context-type="linenumber">37,38</context>
@@ -831,6 +950,7 @@
       </trans-unit>
       <trans-unit id="button.register" datatype="html">
         <source>Register</source>
+        <target>Registrieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/home/home.html</context>
           <context context-type="linenumber">46,48</context>
@@ -838,6 +958,7 @@
       </trans-unit>
       <trans-unit id="button.logout" datatype="html">
         <source>Log Out</source>
+        <target>Abmelden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/home/home.html</context>
           <context context-type="linenumber">56,58</context>
@@ -845,6 +966,7 @@
       </trans-unit>
       <trans-unit id="auth-service.login-error" datatype="html">
         <source>Login failed</source>
+        <target>Anmeldung fehlgeschlagen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/auth.service.ts</context>
           <context context-type="linenumber">56</context>
@@ -852,6 +974,7 @@
       </trans-unit>
       <trans-unit id="auth-service.logout-error" datatype="html">
         <source>Logout failed</source>
+        <target>Abmeldung fehlgeschlagen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/auth.service.ts</context>
           <context context-type="linenumber">71</context>
@@ -859,6 +982,7 @@
       </trans-unit>
       <trans-unit id="auth-service.invalid-user" datatype="html">
         <source>Invalid user data in local storage</source>
+        <target>Ungültige Benutzerdaten im lokalen Speicher</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/auth.service.ts</context>
           <context context-type="linenumber">98</context>
@@ -866,6 +990,7 @@
       </trans-unit>
       <trans-unit id="auth-service.registration-error" datatype="html">
         <source>Registration failed</source>
+        <target>Registrierung fehlgeschlagen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/auth.service.ts</context>
           <context context-type="linenumber">121</context>

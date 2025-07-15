@@ -30,8 +30,9 @@
               </div>
               <div class="comment-meta">
                 <mat-chip disableRipple>
-                  <span i18n="@@blog-post-comment.user-label">User:</span>
-                  {{ comment.users.username }}
+                  <ng-container i18n="@@blog-post-comment.user-label"
+                    >User: {{ comment.users.username }}</ng-container
+                  >
                 </mat-chip>
                 <mat-chip disableRipple>
                   {{ comment.createdAt | date: 'medium' }}

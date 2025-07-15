@@ -1,10 +1,6 @@
 <mat-toolbar color="primary" class="header">
-  <a
-    [name]="'homeLogoLink'"
-    class="brand"
-    [routerLink]="['/', RouteNames.HOME]"
-  >
-    <mat-icon>article</mat-icon>
+  <a [name]="'homeLogoLink'" class="brand" [routerLink]="[RouteNames.HOME]">
+    <mat-icon class="brandIcon">article</mat-icon>
     <span i18n="@@header.brand">Blog API</span>
   </a>
 
@@ -38,6 +34,7 @@
       [matMenuTriggerFor]="userMenu"
       i18n-aria-label="@@header.user-menu.aria"
       aria-label="User menu"
+      class="user-menu-button"
     >
       <mat-icon>account_circle</mat-icon>
     </button>

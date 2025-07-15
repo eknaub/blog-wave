@@ -28,10 +28,7 @@
   text-decoration: none;
 }
 
-.dashboard-nav-item:hover {
-  background-color: #e9ecef;
-}
-
+.dashboard-nav-item:hover,
 .dashboard-nav-item.active-nav-item {
   background-color: #e3f2fd;
   color: #1976d2;

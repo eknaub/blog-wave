@@ -3,4 +3,5 @@ export enum Routes {
   POSTS = 'posts',
   COMMENTS = 'comments',
   AUTH = 'auth',
+  AI = 'ai',
 }

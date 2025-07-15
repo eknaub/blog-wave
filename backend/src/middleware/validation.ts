@@ -135,6 +135,23 @@ export const PostIdParamSchema = z.object({
   }),
 });
 
+export const AiContentParamSchema = z.object({
+  content: z
+    .string()
+    .min(1)
+    .max(5000)
+    .transform((val, ctx) => {
+      if (!/^[\s\S]{1,5000}$/.test(val)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Content must be between 1 and 5000 characters',
+        });
+        return z.NEVER;
+      }
+      return val;
+    }),
+});
+
 export const PostAndCommentIdParamSchema = z.object({
   postId: z.string().transform((val, ctx) => {
     const parsed = Number(val);

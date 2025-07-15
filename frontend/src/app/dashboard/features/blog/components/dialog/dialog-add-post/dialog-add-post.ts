@@ -5,7 +5,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import {
   MatDialogActions,
   MatDialogContent,
@@ -20,6 +20,8 @@ import { LoggerService } from '../../../../../../shared/services/logger.service'
 import { PostInputValidators } from '../../../../../../shared/utils/validators';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../../../../../shared/services/notification.service';
+import { MatIconModule } from '@angular/material/icon';
+import { AiService } from '../../../../../services/ai-service';
 
 @Component({
   selector: 'app-dialog-add-post',
@@ -34,6 +36,7 @@ import { NotificationService } from '../../../../../../shared/services/notificat
     ReactiveFormsModule,
     MatDividerModule,
     CommonModule,
+    MatIconModule,
   ],
   templateUrl: './dialog-add-post.html',
   styleUrl: './dialog-add-post.css',
@@ -47,6 +50,34 @@ export class DialogAddPost {
     title: new FormControl('', [...PostInputValidators.title]),
     content: new FormControl('', [...PostInputValidators.content]),
   });
+  aiService = inject(AiService);
+  isGeneratingContent = this.aiService.isGeneratingContent;
+
+  generateAIContent(): void {
+    if (!this.postForm.value.title) {
+      this.notificationService.showNotification(
+        $localize`:@@dialog-add-post.title-required:Title is required to generate content`
+      );
+      return;
+    }
+
+    this.aiService
+      .getGeneratedPostContent(this.postForm.value.title)
+      .subscribe({
+        next: (data) => {
+          this.postForm.patchValue({ content: data.contents });
+          this.notificationService.showNotification(
+            $localize`:@@dialog-add-post.ai-content-generated:AI content generated successfully`
+          );
+        },
+        error: (error) => {
+          this.notificationService.showNotification(
+            $localize`:@@dialog-add-post.ai-content-error:Failed to generate AI content: ${error.message}`
+          );
+          this.logger.error(`Failed to generate AI content: ${error}`);
+        },
+      });
+  }
 
   onNoClick(): void {
     this.dialogRef.close();

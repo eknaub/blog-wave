@@ -47,6 +47,35 @@ h2[mat-dialog-title] {
   color: #333;
 }
 
+.ai-generate-btn {
+  color: #1976d2;
+}
+
+.ai-generate-btn:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.ai-generate-header {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+}
+
+.ai-generate-info {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #888;
+}
+
+.generating-text {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
+
 @media (max-width: 600px) {
   .dialog-content {
     min-width: 280px;

@@ -52,6 +52,33 @@
       </textarea>
     </mat-form-field>
   </form>
+  <div class="ai-generate-header">
+    <span>
+      <strong i18n="@@dialog-add-post.ai-generate-title"
+        >AI Content Generation</strong
+      >
+    </span>
+  </div>
+  <div class="ai-generate-info">
+    <span i18n="@@dialog-add-post.ai-generate-description">
+      Click the button to generate content based on the title.
+    </span>
+    <button
+      matSuffix
+      matIconButton
+      type="button"
+      (click)="generateAIContent()"
+      [disabled]="isGeneratingContent() || !postForm.get('title')?.value"
+      matTooltip="Generate AI content based on title"
+      i18n-matTooltip="@@dialog-add-post.ai-generate-tooltip"
+      class="ai-generate-btn"
+    >
+      <mat-icon>auto_awesome</mat-icon>
+    </button>
+    <span *ngIf="isGeneratingContent()" class="generating-text">
+      Generating content...
+    </span>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions class="dialog-actions">
   <button

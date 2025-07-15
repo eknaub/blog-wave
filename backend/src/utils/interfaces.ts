@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+export const AiSchema = z.object({
+  contents: z.string(),
+});
+
 export const UserSchema = z.object({
   id: z.number().int().positive(),
   username: z
@@ -128,3 +132,5 @@ export type CommentCreate = z.infer<typeof CommentCreateSchema>;
 export type CommentUpdate = z.infer<typeof CommentUpdateSchema>;
 
 export type Login = z.infer<typeof LoginSchema>;
+
+export type Ai = z.infer<typeof AiSchema>;

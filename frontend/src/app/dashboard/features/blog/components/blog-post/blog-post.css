@@ -69,6 +69,7 @@
   margin: 0;
   text-align: justify;
   word-spacing: 0.1em;
+  white-space: pre-wrap;
 }
 
 .post-footer {

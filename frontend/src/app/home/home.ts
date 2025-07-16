@@ -1,4 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,16 +14,28 @@ import { AuthService } from '../shared/services/auth.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
-  styleUrls: ['./home.css'],
+  styleUrl: './home.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, MatButtonModule, MatCardModule, MatIconModule],
 })
 export class Home {
-  readonly RouteNames = RouteNames;
-  protected authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
 
-  isLoggedIn = computed(() => this.authService.isAuthenticated());
+  protected readonly RouteNames = RouteNames;
+  protected readonly currentUserName = computed(() => {
+    const user = this.authService.getCurrentUser();
+    return user ? user.username : '';
+  });
 
-  handleLogout() {
-    this.authService.logout();
+  protected readonly isLoggedIn = computed(() =>
+    this.authService.isAuthenticated()
+  );
+
+  protected handleLogout(): void {
+    this.authService.logout().subscribe({
+      next: () => {
+        // Login successful, navigation handled by service
+      },
+    });
   }
 }

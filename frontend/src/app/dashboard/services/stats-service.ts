@@ -6,23 +6,17 @@ import { UserService } from './user-service';
   providedIn: 'root',
 })
 export class StatsService {
-  private blogService = inject(BlogService);
-  private userService = inject(UserService);
+  private readonly blogService = inject(BlogService);
+  private readonly userService = inject(UserService);
 
-  blogServiceError = computed(() => this.blogService.postsError());
-  userServiceError = computed(() => this.userService.usersError());
+  readonly blogServiceError = computed(() => this.blogService.postsError());
+  readonly userServiceError = computed(() => this.userService.usersError());
 
-  isLoading = computed(
+  readonly isLoading = computed(
     () => this.blogService.postsLoading() || this.userService.usersLoading()
   );
 
-  posts = computed(() => {
-    const posts = this.blogService.posts;
-    return posts().length;
-  });
+  readonly posts = computed(() => this.blogService.posts().length);
 
-  users = computed(() => {
-    const users = this.userService.users;
-    return users().length;
-  });
+  readonly users = computed(() => this.userService.users().length);
 }

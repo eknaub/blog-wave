@@ -1,4 +1,9 @@
-import { Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,13 +15,13 @@ import { RouterLink } from '@angular/router';
 import { RouteNames } from '../../shared/interfaces/routes';
 import { AuthService } from '../../shared/services/auth.service';
 import { NotificationService } from '../../shared/services/notification.service';
-import { CommonModule } from '@angular/common';
 import { AuthInputValidators } from '../../shared/utils/validators';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.html',
   styleUrl: './login.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
@@ -27,25 +32,25 @@ import { AuthInputValidators } from '../../shared/utils/validators';
     MatIconModule,
     RouterLink,
     MatError,
-    CommonModule,
   ],
 })
 export class Login {
-  private authService = inject(AuthService);
-  private notificationService = inject(NotificationService);
-  readonly RouteNames = RouteNames;
-  hidePassword = true;
+  private readonly authService = inject(AuthService);
+  private readonly notificationService = inject(NotificationService);
 
-  togglePasswordVisibility() {
-    this.hidePassword = !this.hidePassword;
-  }
+  protected readonly RouteNames = RouteNames;
+  protected readonly hidePassword = signal(true);
 
-  loginForm = new FormGroup({
+  protected readonly loginForm = new FormGroup({
     username: new FormControl('', [...AuthInputValidators.username]),
     password: new FormControl('', [...AuthInputValidators.password]),
   });
 
-  handleLogin() {
+  protected togglePasswordVisibility(): void {
+    this.hidePassword.update((hidden) => !hidden);
+  }
+
+  protected handleLogin(): void {
     this.loginForm.markAllAsTouched();
 
     const { username, password } = this.loginForm.value;
@@ -64,9 +69,15 @@ export class Login {
       return;
     }
 
-    this.authService.login({
-      username: username,
-      password: password,
-    });
+    this.authService
+      .login({
+        username,
+        password,
+      })
+      .subscribe({
+        next: () => {
+          // Login successful, navigation handled by service
+        },
+      });
   }
 }

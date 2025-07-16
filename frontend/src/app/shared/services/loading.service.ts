@@ -4,7 +4,7 @@ import { computed, Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class LoadingService {
-  private loading = signal(0);
+  private readonly loading = signal(0);
 
   isLoading = computed(() => {
     return this.loading() > 0;

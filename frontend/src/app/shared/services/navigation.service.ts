@@ -6,13 +6,28 @@ import { RouteNames } from '../interfaces/routes';
   providedIn: 'root',
 })
 export class NavigationService {
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
-  navigateTo(route: RouteNames) {
+  navigateTo(route: RouteNames): void {
     this.router.navigate([route]);
   }
 
-  navigateToWithParams(route: RouteNames, params: any) {
+  navigateToWithParams(
+    route: RouteNames,
+    params: Record<string, unknown>
+  ): void {
     this.router.navigate([route], { queryParams: params });
+  }
+
+  navigateToWithState(route: RouteNames, state: Record<string, unknown>): void {
+    this.router.navigate([route], { state });
+  }
+
+  goBack(): void {
+    window.history.back();
+  }
+
+  reload(): void {
+    window.location.reload();
   }
 }

@@ -2,7 +2,7 @@
   <header class="post-header-container">
     <div class="post-header">
       <h1 class="post-title">{{ post().title }}</h1>
-      @if (post().authorId === currentUser?.id) {
+      @if (canDeletePost()) {
         <button
           mat-icon-button
           color="warn"
@@ -24,7 +24,7 @@
       <mat-chip disableRipple>
         {{ post().createdAt | date: 'medium' }}
       </mat-chip>
-      @if (post().updatedAt !== post().createdAt) {
+      @if (wasUpdated()) {
         <mat-chip disableRipple>
           <span i18n="@@blog-post.updated-label">Updated</span>
           {{ post().updatedAt | date: 'medium' }}
@@ -33,7 +33,7 @@
     </div>
   </header>
   <div class="post-content">
-    <p class="post-text">{{ post().content }}</p>
+    <p class="post-text" [innerHTML]="formattedContent()"></p>
   </div>
   <footer class="post-footer">
     <app-blog-post-comment [postId]="post().id"></app-blog-post-comment>

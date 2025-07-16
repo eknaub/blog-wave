@@ -1,4 +1,9 @@
-import { Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -16,13 +21,13 @@ import { RouterLink } from '@angular/router';
 import { RouteNames } from '../../shared/interfaces/routes';
 import { AuthService } from '../../shared/services/auth.service';
 import { NotificationService } from '../../shared/services/notification.service';
-import { CommonModule } from '@angular/common';
 import { AuthInputValidators } from '../../shared/utils/validators';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.html',
   styleUrl: './register.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
@@ -33,26 +38,17 @@ import { AuthInputValidators } from '../../shared/utils/validators';
     MatIconModule,
     RouterLink,
     MatError,
-    CommonModule,
-    MatIconModule,
   ],
 })
 export class Register {
-  readonly RouteNames = RouteNames;
-  private authService = inject(AuthService);
-  private notificationService = inject(NotificationService);
-  hidePassword = true;
-  hideConfirmPassword = true;
+  private readonly authService = inject(AuthService);
+  private readonly notificationService = inject(NotificationService);
 
-  togglePasswordVisibility() {
-    this.hidePassword = !this.hidePassword;
-  }
+  protected readonly RouteNames = RouteNames;
+  protected readonly hidePassword = signal(false);
+  protected readonly hideConfirmPassword = signal(false);
 
-  toggleConfirmPasswordVisibility() {
-    this.hideConfirmPassword = !this.hideConfirmPassword;
-  }
-
-  registerForm = new FormGroup(
+  protected readonly registerForm = new FormGroup(
     {
       username: new FormControl('', [...AuthInputValidators.username]),
       email: new FormControl('', [...AuthInputValidators.email]),
@@ -64,7 +60,15 @@ export class Register {
     }
   );
 
-  matchValidator(
+  protected togglePasswordVisibility(): void {
+    this.hidePassword.update((hidden) => !hidden);
+  }
+
+  protected toggleConfirmPasswordVisibility(): void {
+    this.hideConfirmPassword.update((hidden) => !hidden);
+  }
+
+  private matchValidator(
     controlName: string,
     matchingControlName: string
   ): ValidatorFn {
@@ -72,24 +76,24 @@ export class Register {
       const control = abstractControl.get(controlName);
       const matchingControl = abstractControl.get(matchingControlName);
 
-      if (matchingControl!.errors && !matchingControl!.errors?.['mismatch']) {
+      if (matchingControl?.errors && !matchingControl.errors?.['mismatch']) {
         return null;
       }
 
-      if (control!.value !== matchingControl!.value) {
+      if (control?.value !== matchingControl?.value) {
         const error = {
           mismatch: $localize`:@@register.password-mismatch:Passwords do not match.`,
         };
-        matchingControl!.setErrors(error);
+        matchingControl?.setErrors(error);
         return error;
       } else {
-        matchingControl!.setErrors(null);
+        matchingControl?.setErrors(null);
         return null;
       }
     };
   }
 
-  handleRegister() {
+  protected handleRegister(): void {
     this.registerForm.markAllAsTouched();
 
     const { username, email, password, confirmPassword } =

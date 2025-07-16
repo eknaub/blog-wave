@@ -24,25 +24,23 @@
             type="text"
           />
           <mat-icon matSuffix>person</mat-icon>
-          <mat-error
-            *ngIf="loginForm.get('username')?.hasError('required')"
-            i18n="@@login.username.required"
-          >
-            Username is required.
-          </mat-error>
-          <mat-error
-            *ngIf="loginForm.get('username')?.hasError('pattern')"
-            i18n="@@login.username.pattern"
-          >
-            Username must be 3-20 characters long and can include letters,
-            numbers, and underscores.
-          </mat-error>
+          @if (loginForm.get('username')?.hasError('required')) {
+            <mat-error i18n="@@login.username.required">
+              Username is required.
+            </mat-error>
+          }
+          @if (loginForm.get('username')?.hasError('pattern')) {
+            <mat-error i18n="@@login.username.pattern">
+              Username must be 3-20 characters long and can include letters,
+              numbers, and underscores.
+            </mat-error>
+          }
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label i18n="@@login.password.label">Password</mat-label>
           <input
             matInput
-            [type]="hidePassword ? 'password' : 'text'"
+            [type]="hidePassword() ? 'password' : 'text'"
             formControlName="password"
             i18n-placeholder="@@login.password.placeholder"
             placeholder="Enter your password"
@@ -56,23 +54,21 @@
             (click)="togglePasswordVisibility()"
           >
             <mat-icon>{{
-              hidePassword ? 'visibility' : 'visibility_off'
+              hidePassword() ? 'visibility' : 'visibility_off'
             }}</mat-icon>
           </button>
           <mat-icon matSuffix>lock</mat-icon>
-          <mat-error
-            *ngIf="loginForm.get('password')?.hasError('required')"
-            i18n="@@login.password.required"
-          >
-            Password is required.
-          </mat-error>
-          <mat-error
-            *ngIf="loginForm.get('password')?.hasError('pattern')"
-            i18n="@@login.password.pattern"
-          >
-            Password must be at least 6 characters long and include at least one
-            uppercase letter, one lowercase letter, and one number.
-          </mat-error>
+          @if (loginForm.get('password')?.hasError('required')) {
+            <mat-error i18n="@@login.password.required">
+              Password is required.
+            </mat-error>
+          }
+          @if (loginForm.get('password')?.hasError('pattern')) {
+            <mat-error i18n="@@login.password.pattern">
+              Password must be at least 6 characters long and include at least
+              one uppercase letter, one lowercase letter, and one number.
+            </mat-error>
+          }
         </mat-form-field>
         <button
           mat-raised-button

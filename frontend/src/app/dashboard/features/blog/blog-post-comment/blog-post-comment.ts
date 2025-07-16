@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
   input,
-  OnInit,
   signal,
 } from '@angular/core';
 import { BlogService } from '../../../../services/blog-service';
@@ -23,11 +23,14 @@ import { MatInputModule } from '@angular/material/input';
 import { LoggerService } from '../../../../../shared/services/logger.service';
 import { CommentInputValidators } from '../../../../../shared/utils/validators';
 import { NotificationService } from '../../../../../shared/services/notification.service';
+import { effect } from '@angular/core';
 
 @Component({
   selector: 'app-blog-post-comment',
+  templateUrl: './blog-post-comment.html',
+  styleUrl: './blog-post-comment.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     MatExpansionModule,
     MatIconModule,
     MatButtonModule,
@@ -36,31 +39,41 @@ import { NotificationService } from '../../../../../shared/services/notification
     FormsModule,
     MatInputModule,
     ReactiveFormsModule,
+    DatePipe,
   ],
-  templateUrl: './blog-post-comment.html',
-  styleUrl: './blog-post-comment.css',
 })
-export class BlogPostComment implements OnInit {
-  blogService = inject(BlogService);
-  postId = input.required<number>();
-  panelState = signal(false);
-  currentUser = this.blogService.currentUser;
-  logger = inject(LoggerService);
-  notificationService = inject(NotificationService);
+export class BlogPostComment {
+  readonly postId = input.required<number>();
 
-  commentForm = new FormGroup({
+  private readonly blogService = inject(BlogService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly logger = inject(LoggerService);
+
+  protected readonly panelState = signal(false);
+  protected readonly currentUser = this.blogService.currentUser;
+
+  protected readonly commentForm = new FormGroup({
     comment: new FormControl('', [...CommentInputValidators.comment]),
   });
 
-  ngOnInit() {
-    this.blogService.loadCommentsForPost(this.postId());
-  }
-
-  comments = computed(() => {
+  protected readonly comments = computed(() => {
     return this.blogService.getCommentsByPostId(this.postId())();
   });
 
-  submitComment = () => {
+  constructor() {
+    effect(() => {
+      const id = this.postId();
+      if (id) {
+        this.blogService.loadCommentsForPost(id);
+      }
+    });
+  }
+
+  protected canDeleteComment = computed(() => (commentAuthorId: number) => {
+    return this.currentUser()?.id === commentAuthorId;
+  });
+
+  protected submitComment = (): void => {
     this.commentForm.markAllAsTouched();
 
     if (!this.commentForm.valid || !this.commentForm.value.comment) {
@@ -86,10 +99,9 @@ export class BlogPostComment implements OnInit {
           this.logger.error(`Failed to upload comment: ${error}`);
         },
       });
-    this.commentForm.reset();
   };
 
-  deleteComment = (commentId: number) => {
+  protected deleteComment = (commentId: number): void => {
     this.blogService.deleteComment(this.postId(), commentId).subscribe({
       next: () => {
         this.notificationService.showNotification(

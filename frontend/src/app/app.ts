@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from './components/header/header';
+import { Header } from './header/header';
 import { GlobalLoadingComponent } from './shared/components/global-loading.component';
 
 @Component({
@@ -8,6 +8,7 @@ import { GlobalLoadingComponent } from './shared/components/global-loading.compo
   template: ` <app-header />
     <main><router-outlet /></main>
     <app-global-loading />`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, Header, GlobalLoadingComponent],
 })
 export class App {}

@@ -15,7 +15,7 @@
             <div class="comment-card">
               <div class="comment-content">
                 <p class="comment-text">{{ comment.content }}</p>
-                @if (comment.authorId === currentUser?.id) {
+                @if (comment.authorId === currentUser()?.id) {
                   <button
                     mat-icon-button
                     color="warn"
@@ -74,31 +74,27 @@
               class="comment-textarea"
             ></textarea>
             <mat-icon matSuffix>comment</mat-icon>
-            <mat-error
-              *ngIf="commentForm.get('comment')?.hasError('required')"
-              i18n="@@blog-post-comment.error-required"
-            >
-              Comment is required.
-            </mat-error>
-            <mat-error
-              *ngIf="commentForm.get('comment')?.hasError('minlength')"
-              i18n="@@blog-post-comment.error-minlength"
-            >
-              Comment must be at least 1 character long.
-            </mat-error>
-            <mat-error
-              *ngIf="commentForm.get('comment')?.hasError('maxlength')"
-              i18n="@@blog-post-comment.error-maxlength"
-            >
-              Comment cannot exceed 1000 characters.
-            </mat-error>
-            <mat-error
-              *ngIf="commentForm.get('comment')?.hasError('pattern')"
-              i18n="@@blog-post-comment.error-pattern"
-            >
-              Comment must be at least 1 character long and can include any
-              characters.
-            </mat-error>
+            @if (commentForm.get('comment')?.hasError('required')) {
+              <mat-error i18n="@@blog-post-comment.error-required">
+                Comment is required.
+              </mat-error>
+            }
+            @if (commentForm.get('comment')?.hasError('minlength')) {
+              <mat-error i18n="@@blog-post-comment.error-minlength">
+                Comment must be at least 1 character long.
+              </mat-error>
+            }
+            @if (commentForm.get('comment')?.hasError('maxlength')) {
+              <mat-error i18n="@@blog-post-comment.error-maxlength">
+                Comment cannot exceed 1000 characters.
+              </mat-error>
+            }
+            @if (commentForm.get('comment')?.hasError('pattern')) {
+              <mat-error i18n="@@blog-post-comment.error-pattern">
+                Comment must be at least 1 character long and can include any
+                characters.
+              </mat-error>
+            }
           </mat-form-field>
           <div class="form-actions">
             <button

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { RouteNames } from './shared/interfaces/routes';
 import { AuthGuard } from './core/auth-guard';
 import { Home } from './home/home';
-import { NotFound } from './components/not-found/not-found';
+import { NotFound } from './not-found/not-found';
 import { GuestGuard } from './core/guest-guard';
 
 export const routes: Routes = [

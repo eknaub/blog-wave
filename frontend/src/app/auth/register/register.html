@@ -25,19 +25,17 @@
             placeholder="Enter your username"
           />
           <mat-icon matSuffix>person</mat-icon>
-          <mat-error
-            *ngIf="registerForm.get('username')?.hasError('required')"
-            i18n="@@register.username.required"
-          >
-            Username is required.
-          </mat-error>
-          <mat-error
-            *ngIf="registerForm.get('username')?.hasError('pattern')"
-            i18n="@@register.username.pattern"
-          >
-            Username must be 3-20 characters long and can include letters,
-            numbers, and underscores.
-          </mat-error>
+          @if (registerForm.get('username')?.hasError('required')) {
+            <mat-error i18n="@@register.username.required">
+              Username is required.
+            </mat-error>
+          }
+          @if (registerForm.get('username')?.hasError('pattern')) {
+            <mat-error i18n="@@register.username.pattern">
+              Username must be 3-20 characters long and can include letters,
+              numbers, and underscores.
+            </mat-error>
+          }
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label i18n="@@register.email.label">Email</mat-label>
@@ -49,29 +47,26 @@
             placeholder="Enter your email"
           />
           <mat-icon matSuffix>email</mat-icon>
-          <mat-error
-            *ngIf="registerForm.get('email')?.hasError('required')"
-            i18n="@@register.email.required"
-          >
-            Email is required.
-          </mat-error>
-          <mat-error
-            *ngIf="registerForm.get('email')?.hasError('email')"
-            i18n="@@register.email.invalid"
-          >
-            Please enter a valid email address.
-          </mat-error>
-          <mat-error
-            *ngIf="registerForm.get('email')?.hasError('maxlength')"
-            i18n="@@register.email.maxlength"
-          >
-            Email cannot exceed 100 characters.
-          </mat-error>
+          @if (registerForm.get('email')?.hasError('required')) {
+            <mat-error i18n="@@register.email.required">
+              Email is required.
+            </mat-error>
+          }
+          @if (registerForm.get('email')?.hasError('email')) {
+            <mat-error i18n="@@register.email.invalid">
+              Please enter a valid email address.
+            </mat-error>
+          }
+          @if (registerForm.get('email')?.hasError('maxlength')) {
+            <mat-error i18n="@@register.email.maxlength">
+              Email cannot exceed 100 characters.
+            </mat-error>
+          }
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label i18n="@@register.password.label">Password</mat-label>
           <input
-            [type]="hidePassword ? 'password' : 'text'"
+            [type]="hidePassword() ? 'password' : 'text'"
             matInput
             formControlName="password"
             i18n-placeholder="@@register.password.placeholder"
@@ -86,30 +81,28 @@
             (click)="togglePasswordVisibility()"
           >
             <mat-icon>{{
-              hidePassword ? 'visibility' : 'visibility_off'
+              hidePassword() ? 'visibility' : 'visibility_off'
             }}</mat-icon>
           </button>
           <mat-icon matSuffix>lock</mat-icon>
-          <mat-error
-            *ngIf="registerForm.get('password')?.hasError('required')"
-            i18n="@@register.password.required"
-          >
-            Password is required.
-          </mat-error>
-          <mat-error
-            *ngIf="registerForm.get('password')?.hasError('pattern')"
-            i18n="@@register.password.pattern"
-          >
-            Password must be at least 6 characters long and include at least one
-            uppercase letter, one lowercase letter, and one number.
-          </mat-error>
+          @if (registerForm.get('password')?.hasError('required')) {
+            <mat-error i18n="@@register.password.required">
+              Password is required.
+            </mat-error>
+          }
+          @if (registerForm.get('password')?.hasError('pattern')) {
+            <mat-error i18n="@@register.password.pattern">
+              Password must be at least 6 characters long and include at least
+              one uppercase letter, one lowercase letter, and one number.
+            </mat-error>
+          }
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label i18n="@@register.confirm-password.label"
             >Confirm Password</mat-label
           >
           <input
-            [type]="hideConfirmPassword ? 'password' : 'text'"
+            [type]="hideConfirmPassword() ? 'password' : 'text'"
             matInput
             formControlName="confirmPassword"
             i18n-placeholder="@@register.confirm-password.placeholder"
@@ -124,29 +117,26 @@
             (click)="toggleConfirmPasswordVisibility()"
           >
             <mat-icon>{{
-              hideConfirmPassword ? 'visibility' : 'visibility_off'
+              hideConfirmPassword() ? 'visibility' : 'visibility_off'
             }}</mat-icon>
           </button>
           <mat-icon matSuffix>lock</mat-icon>
-          <mat-error
-            *ngIf="registerForm.get('confirmPassword')?.hasError('required')"
-            i18n="@@register.confirm-password.required"
-          >
-            Password is required.
-          </mat-error>
-          <mat-error
-            *ngIf="registerForm.get('confirmPassword')?.hasError('pattern')"
-            i18n="@@register.confirm-password.pattern"
-          >
-            Password must be at least 6 characters long and include at least one
-            uppercase letter, one lowercase letter, and one number.
-          </mat-error>
-          <mat-error
-            *ngIf="registerForm.get('confirmPassword')?.hasError('mismatch')"
-            i18n="@@register.confirm-password.mismatch"
-          >
-            Passwords do not match.
-          </mat-error>
+          @if (registerForm.get('confirmPassword')?.hasError('required')) {
+            <mat-error i18n="@@register.confirm-password.required">
+              Password is required.
+            </mat-error>
+          }
+          @if (registerForm.get('confirmPassword')?.hasError('pattern')) {
+            <mat-error i18n="@@register.confirm-password.pattern">
+              Password must be at least 6 characters long and include at least
+              one uppercase letter, one lowercase letter, and one number.
+            </mat-error>
+          }
+          @if (registerForm.get('confirmPassword')?.hasError('mismatch')) {
+            <mat-error i18n="@@register.confirm-password.mismatch">
+              Passwords do not match.
+            </mat-error>
+          }
         </mat-form-field>
         <mat-divider />
         <button

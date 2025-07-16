@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,6 +15,7 @@ import { RouteNames } from '../../../shared/interfaces/routes';
   selector: 'app-blog-dashboard-navigation',
   templateUrl: './dashboard-navigation.html',
   styleUrl: './dashboard-navigation.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
     RouterLinkActive,
@@ -29,5 +30,5 @@ import { RouteNames } from '../../../shared/interfaces/routes';
   ],
 })
 export class DashboardNavigation {
-  readonly RouteNames = RouteNames;
+  protected readonly RouteNames = RouteNames;
 }

@@ -1,4 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { StatsService } from '../../../../services/stats-service';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -6,18 +11,19 @@ import { RouteNames } from '../../../../../shared/interfaces/routes';
 
 @Component({
   selector: 'app-stats-card',
-  imports: [MatIconModule, RouterLink],
   templateUrl: './stats-card.html',
   styleUrl: './stats-card.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatIconModule, RouterLink],
 })
 export class StatsCard {
-  readonly RouteNames = RouteNames;
-  statsService = inject(StatsService);
+  private readonly statsService = inject(StatsService);
 
-  totalPosts = this.statsService.posts;
-  totalUsers = this.statsService.users;
+  protected readonly RouteNames = RouteNames;
+  protected readonly totalPosts = this.statsService.posts;
+  protected readonly totalUsers = this.statsService.users;
 
-  hasErrors = computed(() => {
+  protected readonly hasErrors = computed(() => {
     return (
       this.statsService.blogServiceError() ||
       this.statsService.userServiceError()

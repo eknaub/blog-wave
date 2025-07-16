@@ -1,20 +1,24 @@
-import { Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingService } from '../services/loading.service';
 
 @Component({
   selector: 'app-global-loading',
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatProgressSpinnerModule],
   template: `
-    @if (loadingService.isLoading()) {
+    @if (isLoading()) {
       <div class="loading-overlay">
         <mat-progress-spinner
           mode="indeterminate"
           diameter="60"
           strokeWidth="4"
-        >
-        </mat-progress-spinner>
+        />
       </div>
     }
   `,
@@ -36,5 +40,9 @@ import { LoadingService } from '../services/loading.service';
   ],
 })
 export class GlobalLoadingComponent {
-  loadingService = inject(LoadingService);
+  private readonly loadingService = inject(LoadingService);
+
+  protected readonly isLoading = computed(() =>
+    this.loadingService.isLoading()
+  );
 }

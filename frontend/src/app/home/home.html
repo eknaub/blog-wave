@@ -16,7 +16,7 @@
       @if (isLoggedIn()) {
         <p i18n="@@welcome.logged-in">
           You are logged in as
-          <strong>{{ authService.getCurrentUser()?.username }}</strong
+          <strong>{{ currentUserName() }}</strong
           >. You can manage your posts and profile.
         </p>
       } @else {

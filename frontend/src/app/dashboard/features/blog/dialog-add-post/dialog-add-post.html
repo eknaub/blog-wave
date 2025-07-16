@@ -11,24 +11,21 @@
         placeholder="Enter post title"
         i18n-placeholder="@@dialog-add-post.title-placeholder"
       />
-      <mat-error
-        *ngIf="postForm.get('title')?.hasError('required')"
-        i18n="@@dialog-add-post.title-error-required"
-      >
-        Title is required.
-      </mat-error>
-      <mat-error
-        *ngIf="postForm.get('title')?.hasError('maxlength')"
-        i18n="@@dialog-add-post.title-error-maxlength"
-      >
-        Title cannot exceed 100 characters.
-      </mat-error>
-      <mat-error
-        *ngIf="postForm.get('title')?.hasError('pattern')"
-        i18n="@@dialog-add-post.title-error-pattern"
-      >
-        Title must be alphanumeric and can include spaces and hyphens.
-      </mat-error>
+      @if (postForm.get('title')?.hasError('required')) {
+        <mat-error i18n="@@dialog-add-post.title-error-required">
+          Title is required.
+        </mat-error>
+      }
+      @if (postForm.get('title')?.hasError('required')) {
+        <mat-error i18n="@@dialog-add-post.title-error-maxlength">
+          Title cannot exceed 100 characters.
+        </mat-error>
+      }
+      @if (postForm.get('title')?.hasError('pattern')) {
+        <mat-error i18n="@@dialog-add-post.title-error-pattern">
+          Title must be alphanumeric and can include spaces and hyphens.
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="outline" class="form-field">
       <mat-label i18n="@@dialog-add-post.content-label">Content</mat-label>
@@ -68,16 +65,16 @@
       matIconButton
       type="button"
       (click)="generateAIContent()"
-      [disabled]="isGeneratingContent() || !postForm.get('title')?.value"
+      [disabled]="!canGenerateAIContent"
       matTooltip="Generate AI content based on title"
       i18n-matTooltip="@@dialog-add-post.ai-generate-tooltip"
       class="ai-generate-btn"
     >
       <mat-icon>auto_awesome</mat-icon>
     </button>
-    <span *ngIf="isGeneratingContent()" class="generating-text">
-      Generating content...
-    </span>
+    @if (isGeneratingContent()) {
+      <span class="generating-text"> Generating content... </span>
+    }
   </div>
 </mat-dialog-content>
 <mat-dialog-actions class="dialog-actions">
@@ -95,7 +92,7 @@
     type="submit"
     form="postForm"
     (click)="onSubmit()"
-    [disabled]="postForm.invalid"
+    [disabled]="!canSubmitForm"
     class="submit-btn"
     i18n="@@dialog-add-post.create-button"
   >

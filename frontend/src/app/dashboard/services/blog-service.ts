@@ -1,7 +1,7 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, computed } from '@angular/core';
 import { Post, PostCreate } from '../../shared/interfaces/post';
 import { Comment, CommentCreate } from '../../shared/interfaces/comment';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { BaseHttpService } from '../../shared/services/http.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -11,25 +11,30 @@ import { LoggerService } from '../../shared/services/logger.service';
   providedIn: 'root',
 })
 export class BlogService {
-  private baseHttp = inject(BaseHttpService);
-  private commentsSignals = new Map<
+  private readonly baseHttp = inject(BaseHttpService);
+  private readonly authService = inject(AuthService);
+  private readonly logger = inject(LoggerService);
+  private readonly notificationService = inject(NotificationService);
+
+  private readonly commentsSignals = new Map<
     number,
     ReturnType<typeof signal<Comment[]>>
   >();
-  posts = signal<Post[]>([]);
-  postsLoading = signal<boolean>(false);
-  postsError = signal<string | null>(null);
-  authService = inject(AuthService);
-  currentUser = this.authService.getCurrentUser();
-  notificationService = inject(NotificationService);
-  logger = inject(LoggerService);
+
+  readonly posts = signal<Post[]>([]);
+  readonly postsLoading = signal(false);
+  readonly postsError = signal<string | null>(null);
+
+  readonly currentUser = computed(() => this.authService.getCurrentUser());
 
   constructor() {
     this.loadPosts();
   }
 
-  private loadPosts() {
+  private loadPosts(): Subscription {
     this.postsLoading.set(true);
+    this.postsError.set(null);
+
     return this.baseHttp.get<Post[]>('/posts').subscribe({
       next: (posts) => {
         this.posts.set(posts);
@@ -38,6 +43,7 @@ export class BlogService {
       error: (error) => {
         this.postsError.set(error.message);
         this.postsLoading.set(false);
+        this.logger.error(`Failed to load posts: ${error}`);
       },
     });
   }
@@ -50,14 +56,14 @@ export class BlogService {
     return this.commentsSignals.get(postId)!;
   }
 
-  loadCommentsForPost(postId: number) {
+  loadCommentsForPost(postId: number): void {
     const commentsSignal = this.getCommentsByPostId(postId);
 
     this.baseHttp.get<Comment[]>(`/posts/${postId}/comments`).subscribe({
       next: (comments) => commentsSignal.set(comments),
       error: (error) => {
         this.notificationService.showNotification(
-          $localize`:@@blog-post-comment.load-comments-error:Failed to load comments`
+          $localize`:@@blog-service.load-comments-error:Failed to load comments`
         );
         this.logger.error(
           `Failed to load comments for post ${postId}: ${error}`
@@ -66,19 +72,20 @@ export class BlogService {
     });
   }
 
-  getPostCountByAuthor(authorId: number) {
+  getPostCountByAuthor = computed(() => (authorId: number) => {
     return this.posts().filter((post) => post.authorId === authorId).length;
-  }
+  });
 
   uploadPost(title: string, content: string): Observable<Post> {
-    if (!this.currentUser) {
+    const user = this.currentUser();
+    if (!user) {
       throw new Error('User not authenticated');
     }
 
     const newPost: PostCreate = {
       title,
       content,
-      authorId: this.currentUser.id,
+      authorId: user.id,
     };
 
     return this.baseHttp.post<Post>('/posts', newPost).pipe(
@@ -95,9 +102,7 @@ export class BlogService {
   deletePost(postId: number): Observable<Post> {
     return this.baseHttp.delete<Post>(`/posts/${postId}`).pipe(
       map((post) => {
-        this.posts.update((posts) =>
-          posts.filter((post) => post.id !== postId)
-        );
+        this.posts.update((posts) => posts.filter((p) => p.id !== postId));
         this.notificationService.showNotification(
           $localize`:@@blog-service.post-delete-success:Post deleted successfully`
         );
@@ -106,17 +111,15 @@ export class BlogService {
     );
   }
 
-  uploadCommentToPost(
-    postId: number,
-    comment: string
-  ): Observable<CommentCreate> {
-    if (!this.currentUser) {
+  uploadCommentToPost(postId: number, comment: string): Observable<Comment> {
+    const user = this.currentUser();
+    if (!user) {
       throw new Error('User not authenticated');
     }
 
     const newComment: CommentCreate = {
-      postId: postId,
-      authorId: this.currentUser?.id,
+      postId,
+      authorId: user.id,
       content: comment,
     };
 
@@ -146,7 +149,7 @@ export class BlogService {
           const commentsSignal = this.commentsSignals.get(postId);
           if (commentsSignal) {
             commentsSignal.update((comments) =>
-              comments.filter((comment) => comment.id !== commentId)
+              comments.filter((c) => c.id !== commentId)
             );
           }
           this.notificationService.showNotification(

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DashboardNavigation } from './layout/dashboard-navigation/dashboard-navigation';
+import { DashboardNavigation } from './dashboard-navigation/dashboard-navigation';
 
 @Component({
   selector: 'app-blog-dashboard',

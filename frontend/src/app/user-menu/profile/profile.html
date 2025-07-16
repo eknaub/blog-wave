@@ -1,1 +1,47 @@
-<p>profile works!</p>
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="user-info">
+      @if (!isEditing()) {
+        <h1 class="user-name">{{ user()?.username }}</h1>
+        <p class="user-email">{{ user()?.email }}</p>
+      } @else {
+        <div class="edit-form">
+          <input
+            type="text"
+            [value]="user()?.username"
+            placeholder="Full Name"
+            class="edit-input"
+          />
+          <input
+            type="email"
+            [value]="user()?.email"
+            placeholder="Email"
+            class="edit-input"
+          />
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="profile-stats">
+    <div class="stat-item">
+      <span class="stat-number">{{ postCount() }}</span>
+      <span class="stat-label">Posts</span>
+    </div>
+  </div>
+
+  <div class="profile-actions">
+    @if (!isEditing()) {
+      <button class="btn btn-primary" (click)="toggleEdit()">
+        Edit Profile
+      </button>
+    } @else {
+      <div class="edit-actions">
+        <button class="btn btn-success" (click)="saveProfile()">
+          Save Changes
+        </button>
+        <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+      </div>
+    }
+  </div>
+</div>

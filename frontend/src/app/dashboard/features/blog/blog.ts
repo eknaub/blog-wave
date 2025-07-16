@@ -9,8 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { BlogService } from '../../services/blog-service';
 import { DashboardContentWrapper } from '../../dashboard-content-wrapper/dashboard-content-wrapper';
-import { BlogPost } from './components/blog-post/blog-post';
-import { DialogAddPost } from './components/dialog/dialog-add-post/dialog-add-post';
+import { DialogAddPost } from './dialog-add-post/dialog-add-post';
+import { BlogPost } from './blog-post/blog-post';
 
 @Component({
   selector: 'app-blog',

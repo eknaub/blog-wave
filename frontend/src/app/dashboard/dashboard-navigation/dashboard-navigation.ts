@@ -9,7 +9,7 @@ import {
   MatDrawerContent,
 } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { RouteNames } from '../../../shared/interfaces/routes';
+import { RouteNames } from '../../shared/interfaces/routes';
 
 @Component({
   selector: 'app-blog-dashboard-navigation',

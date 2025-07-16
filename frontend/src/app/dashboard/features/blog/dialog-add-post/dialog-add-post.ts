@@ -20,13 +20,13 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { BlogService } from '../../../../../services/blog-service';
 import { MatDividerModule } from '@angular/material/divider';
-import { LoggerService } from '../../../../../../shared/services/logger.service';
-import { PostInputValidators } from '../../../../../../shared/utils/validators';
-import { NotificationService } from '../../../../../../shared/services/notification.service';
 import { MatIconModule } from '@angular/material/icon';
-import { AiService } from '../../../../../services/ai-service';
+import { BlogService } from '../../../services/blog-service';
+import { LoggerService } from '../../../../shared/services/logger.service';
+import { NotificationService } from '../../../../shared/services/notification.service';
+import { AiService } from '../../../services/ai-service';
+import { PostInputValidators } from '../../../../shared/utils/validators';
 
 @Component({
   selector: 'app-dialog-add-post',

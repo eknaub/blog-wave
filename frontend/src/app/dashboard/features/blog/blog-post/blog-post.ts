@@ -6,14 +6,14 @@ import {
   input,
 } from '@angular/core';
 import { BlogPostComment } from '../blog-post-comment/blog-post-comment';
-import { Post } from '../../../../../shared/interfaces/post';
 import { MatChipsModule } from '@angular/material/chips';
-import { BlogService } from '../../../../services/blog-service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { LoggerService } from '../../../../../shared/services/logger.service';
-import { NotificationService } from '../../../../../shared/services/notification.service';
 import { DatePipe } from '@angular/common';
+import { BlogService } from '../../../services/blog-service';
+import { LoggerService } from '../../../../shared/services/logger.service';
+import { NotificationService } from '../../../../shared/services/notification.service';
+import { Post } from '../../../../shared/interfaces/post';
 
 @Component({
   selector: 'app-blog-post',

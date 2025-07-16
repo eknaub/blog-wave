@@ -7,7 +7,6 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { BlogService } from '../../../../services/blog-service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,10 +19,11 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { LoggerService } from '../../../../../shared/services/logger.service';
-import { CommentInputValidators } from '../../../../../shared/utils/validators';
-import { NotificationService } from '../../../../../shared/services/notification.service';
 import { effect } from '@angular/core';
+import { NotificationService } from '../../../../shared/services/notification.service';
+import { BlogService } from '../../../services/blog-service';
+import { LoggerService } from '../../../../shared/services/logger.service';
+import { CommentInputValidators } from '../../../../shared/utils/validators';
 
 @Component({
   selector: 'app-blog-post-comment',

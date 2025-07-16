@@ -1,4 +1,4 @@
-@import '../../shared/styling-utils/animations.css';
+@import '../shared/styling-utils/animations.css';
 
 .header {
   display: flex;

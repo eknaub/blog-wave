@@ -2,10 +2,10 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, map, catchError, of } from 'rxjs';
 import { RouteNames } from '../interfaces/routes';
-import { BaseHttpService } from './http.service';
 import { LoggerService } from './logger.service';
 import { NotificationService } from './notification.service';
 import { User } from '../api/models';
+import { AuthService as GeneratedAuthService } from '../api/services/auth.service';
 
 export const LOCAL_STORAGE_CURRENT_USER_KEY = 'currentUser';
 
@@ -25,9 +25,9 @@ export interface RegisterCredentials {
 })
 export class AuthService {
   private readonly router = inject(Router);
-  private readonly baseHttp = inject(BaseHttpService);
   private readonly notificationService = inject(NotificationService);
   private readonly logger = inject(LoggerService);
+  private readonly generatedAuthService = inject(GeneratedAuthService);
 
   private readonly currentUserSignal = signal<User | null>(null);
 
@@ -46,30 +46,37 @@ export class AuthService {
       return of(false);
     }
 
-    return this.baseHttp.post<User>('/auth/login', credentials).pipe(
-      map((response) => {
-        if (response) {
-          this.setCurrentUser(response);
-          this.router.navigate([RouteNames.DASHBOARD]);
-          this.notificationService.showNotification(
-            $localize`:@@auth-service.login-success:Login successful`
-          );
-          return true;
-        }
-        return false;
-      }),
-      catchError((error) => {
-        this.notificationService.showNotification(
-          $localize`:@@auth-service.login-error:Login failed`
-        );
-        this.logger.error(`Login failed: ${error}`);
-        return of(false);
+    return this.generatedAuthService
+      .apiAuthLoginPost({
+        body: {
+          username: credentials.username,
+          password: credentials.password,
+        },
       })
-    );
+      .pipe(
+        map((response) => {
+          if (response) {
+            this.setCurrentUser(response);
+            this.router.navigate([RouteNames.DASHBOARD]);
+            this.notificationService.showNotification(
+              $localize`:@@auth-service.login-success:Login successful`
+            );
+            return true;
+          }
+          return false;
+        }),
+        catchError((error) => {
+          this.notificationService.showNotification(
+            $localize`:@@auth-service.login-error:Login failed`
+          );
+          this.logger.error(`Login failed: ${error}`);
+          return of(false);
+        })
+      );
   }
 
   logout(): Observable<void> {
-    return this.baseHttp.post('/auth/logout', {}).pipe(
+    return this.generatedAuthService.apiAuthLogoutPost().pipe(
       map(() => {
         this.currentUserSignal.set(null);
         localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
@@ -100,26 +107,34 @@ export class AuthService {
       return of(false);
     }
 
-    return this.baseHttp.post<User>('/auth/register', credentials).pipe(
-      map((response) => {
-        if (response) {
-          this.setCurrentUser(response);
-          this.router.navigate([RouteNames.DASHBOARD]);
-          this.notificationService.showNotification(
-            $localize`:@@auth-service.registration-success:Registration successful`
-          );
-          return true;
-        }
-        return false;
-      }),
-      catchError((error) => {
-        this.notificationService.showNotification(
-          $localize`:@@auth-service.registration-error:Registration failed`
-        );
-        this.logger.error(`Registration failed: ${error}`);
-        return of(false);
+    return this.generatedAuthService
+      .apiAuthRegisterPost({
+        body: {
+          username: credentials.username,
+          password: credentials.password,
+          email: credentials.email,
+        },
       })
-    );
+      .pipe(
+        map((response) => {
+          if (response) {
+            this.setCurrentUser(response);
+            this.router.navigate([RouteNames.DASHBOARD]);
+            this.notificationService.showNotification(
+              $localize`:@@auth-service.registration-success:Registration successful`
+            );
+            return true;
+          }
+          return false;
+        }),
+        catchError((error) => {
+          this.notificationService.showNotification(
+            $localize`:@@auth-service.registration-error:Registration failed`
+          );
+          this.logger.error(`Registration failed: ${error}`);
+          return of(false);
+        })
+      );
   }
 
   private setCurrentUser(user: User): void {

@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { UserUpdate } from '../api/interfaces';
+import { User, UserUpdate } from '../api/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
 import bcrypt from 'bcrypt';
@@ -15,7 +15,15 @@ class UserController {
   async getUsers(req: ValidatedRequest, res: Response): Promise<void> {
     try {
       const data = await prisma.users.findMany();
-      sendSuccess(res, data, 'Users retrieved successfully');
+
+      const sendData: User[] = data.map(user => ({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        createdAt: user.createdAt ?? new Date(),
+        updatedAt: user.updatedAt ?? new Date(),
+      }));
+      sendSuccess(res, sendData, 'Users retrieved successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);

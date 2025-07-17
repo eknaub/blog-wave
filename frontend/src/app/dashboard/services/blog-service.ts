@@ -1,19 +1,21 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
 import { map, Observable, Subscription } from 'rxjs';
-import { BaseHttpService } from '../../shared/services/http.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { Comment, CommentPost, Post, PostPost } from '../../shared/api/models';
+import { PostsService as GeneratedPostsService } from '../../shared/api/services/posts.service';
+import { CommentsService as GeneratedCommentsService } from '../../shared/api/services/comments.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BlogService {
-  private readonly baseHttp = inject(BaseHttpService);
   private readonly authService = inject(AuthService);
   private readonly logger = inject(LoggerService);
   private readonly notificationService = inject(NotificationService);
+  private readonly generatedPostsService = inject(GeneratedPostsService);
+  private readonly generatedCommentsService = inject(GeneratedCommentsService);
 
   private readonly commentsSignals = new Map<
     number,
@@ -34,7 +36,7 @@ export class BlogService {
     this.postsLoading.set(true);
     this.postsError.set(null);
 
-    return this.baseHttp.get<Post[]>('/posts').subscribe({
+    return this.generatedPostsService.apiPostsGet().subscribe({
       next: (posts) => {
         this.posts.set(posts);
         this.postsLoading.set(false);
@@ -58,17 +60,21 @@ export class BlogService {
   loadCommentsForPost(postId: number): void {
     const commentsSignal = this.getCommentsByPostId(postId);
 
-    this.baseHttp.get<Comment[]>(`/posts/${postId}/comments`).subscribe({
-      next: (comments) => commentsSignal.set(comments),
-      error: (error) => {
-        this.notificationService.showNotification(
-          $localize`:@@blog-service.load-comments-error:Failed to load comments`
-        );
-        this.logger.error(
-          `Failed to load comments for post ${postId}: ${error}`
-        );
-      },
-    });
+    this.generatedCommentsService
+      .apiPostsPostIdCommentsGet({
+        postId,
+      })
+      .subscribe({
+        next: (comments) => commentsSignal.set(comments),
+        error: (error) => {
+          this.notificationService.showNotification(
+            $localize`:@@blog-service.load-comments-error:Failed to load comments`
+          );
+          this.logger.error(
+            `Failed to load comments for post ${postId}: ${error}`
+          );
+        },
+      });
   }
 
   getPostCountByAuthor = computed(() => (authorId: number) => {
@@ -87,27 +93,35 @@ export class BlogService {
       authorId: user.id,
     };
 
-    return this.baseHttp.post<Post>('/posts', newPost).pipe(
-      map((post) => {
-        this.posts.update((posts) => [...posts, post]);
-        this.notificationService.showNotification(
-          $localize`:@@blog-service.post-upload-success:Post uploaded successfully`
-        );
-        return post;
+    return this.generatedPostsService
+      .apiPostsPost({
+        body: newPost,
       })
-    );
+      .pipe(
+        map((post) => {
+          this.posts.update((posts) => [...posts, post]);
+          this.notificationService.showNotification(
+            $localize`:@@blog-service.post-upload-success:Post uploaded successfully`
+          );
+          return post;
+        })
+      );
   }
 
   deletePost(postId: number): Observable<Post> {
-    return this.baseHttp.delete<Post>(`/posts/${postId}`).pipe(
-      map((post) => {
-        this.posts.update((posts) => posts.filter((p) => p.id !== postId));
-        this.notificationService.showNotification(
-          $localize`:@@blog-service.post-delete-success:Post deleted successfully`
-        );
-        return post;
+    return this.generatedPostsService
+      .apiPostsPostIdDelete({
+        postId,
       })
-    );
+      .pipe(
+        map((post) => {
+          this.posts.update((posts) => posts.filter((p) => p.id !== postId));
+          this.notificationService.showNotification(
+            $localize`:@@blog-service.post-delete-success:Post deleted successfully`
+          );
+          return post;
+        })
+      );
   }
 
   uploadCommentToPost(postId: number, comment: string): Observable<Comment> {
@@ -122,8 +136,11 @@ export class BlogService {
       content: comment,
     };
 
-    return this.baseHttp
-      .post<Comment>(`/posts/${postId}/comments`, newComment)
+    return this.generatedCommentsService
+      .apiPostsPostIdCommentsPost({
+        postId,
+        body: newComment,
+      })
       .pipe(
         map((comment) => {
           const commentsSignal = this.commentsSignals.get(postId);
@@ -141,8 +158,11 @@ export class BlogService {
   }
 
   deleteComment(postId: number, commentId: number): Observable<Comment> {
-    return this.baseHttp
-      .delete<Comment>(`/posts/${postId}/comments/${commentId}`)
+    return this.generatedCommentsService
+      .apiPostsPostIdCommentsCommentIdDelete({
+        postId,
+        commentId,
+      })
       .pipe(
         map((comment) => {
           const commentsSignal = this.commentsSignals.get(postId);

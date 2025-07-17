@@ -20,15 +20,6 @@ export const UserSchema = z.object({
     .email('Invalid email format')
     .max(100, 'Email must be at most 100 characters')
     .trim(),
-  password: z
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .max(50, 'Password must be at most 50 characters')
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,50}$/,
-      'Password must contain at least one lowercase letter, one uppercase letter, and one number'
-    )
-    .trim(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
@@ -92,7 +83,15 @@ export const CommentSchema = z.object({
 export const UserCreateSchema = z.object({
   username: UserSchema.shape.username,
   email: UserSchema.shape.email,
-  password: UserSchema.shape.password,
+  password: z
+    .string()
+    .min(6, 'Password must be at least 6 characters')
+    .max(50, 'Password must be at most 50 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,50}$/,
+      'Password must contain at least one lowercase letter, one uppercase letter, and one number'
+    )
+    .trim(),
 });
 
 export const PostCreateSchema = z.object({

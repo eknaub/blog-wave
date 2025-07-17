@@ -1,14 +1,13 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { BaseHttpService } from '../../shared/services/http.service';
 import { Subscription } from 'rxjs';
 import { User } from '../../shared/api/models';
+import { UsersService as GeneratedUserService } from '../../shared/api/services/users.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private readonly baseHttp = inject(BaseHttpService);
-
+  private readonly generatedUserService = inject(GeneratedUserService);
   readonly users = signal<User[]>([]);
   readonly usersLoading = signal(false);
   readonly usersError = signal<string | null>(null);
@@ -21,7 +20,7 @@ export class UserService {
     this.usersLoading.set(true);
     this.usersError.set(null);
 
-    return this.baseHttp.get<User[]>('/users').subscribe({
+    return this.generatedUserService.apiUsersGet().subscribe({
       next: (users) => {
         this.users.set(users);
         this.usersLoading.set(false);

@@ -92,6 +92,10 @@ import { requireAuth } from '../middleware/auth';
  *     responses:
  *       204:
  *         description: Post deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
  *
  * /api/posts/{postId}/publish:
  *   patch:

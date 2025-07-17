@@ -6,7 +6,6 @@ export interface User {
   createdAt: string;
   email: string;
   id: number;
-  password: string;
   updatedAt: string;
   username: string;
 }

@@ -1,15 +1,15 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { BaseHttpService } from '../../shared/services/http.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { catchError, finalize, map, Observable, throwError } from 'rxjs';
 import { Ai } from '../../shared/api/models';
+import { AiService as GeneratedAiService } from '../../shared/api/services/ai.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AiService {
-  private readonly baseHttp = inject(BaseHttpService);
   private readonly notificationService = inject(NotificationService);
+  private readonly generatedAiService = inject(GeneratedAiService);
 
   readonly isGeneratingContent = signal<boolean>(false);
   readonly generatedContent = signal('');
@@ -17,7 +17,7 @@ export class AiService {
   getGeneratedPostContent(contents: string): Observable<Ai> {
     this.isGeneratingContent.set(true);
 
-    return this.baseHttp.get<Ai>(`/ai?content=${contents}`).pipe(
+    return this.generatedAiService.apiAiGet({ content: contents }).pipe(
       map((response) => {
         const content = response.contents || '';
         this.generatedContent.set(content);

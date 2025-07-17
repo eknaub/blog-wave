@@ -139,7 +139,7 @@ export class CommentsService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  apiPostsPostIdCommentsCommentIdDelete$Response(params: ApiPostsPostIdCommentsCommentIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  apiPostsPostIdCommentsCommentIdDelete$Response(params: ApiPostsPostIdCommentsCommentIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<Comment>> {
     return apiPostsPostIdCommentsCommentIdDelete(this.http, this.rootUrl, params, context);
   }
 
@@ -153,9 +153,9 @@ export class CommentsService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  apiPostsPostIdCommentsCommentIdDelete(params: ApiPostsPostIdCommentsCommentIdDelete$Params, context?: HttpContext): Observable<void> {
+  apiPostsPostIdCommentsCommentIdDelete(params: ApiPostsPostIdCommentsCommentIdDelete$Params, context?: HttpContext): Observable<Comment> {
     return this.apiPostsPostIdCommentsCommentIdDelete$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+      map((r: StrictHttpResponse<Comment>): Comment => r.body)
     );
   }
 

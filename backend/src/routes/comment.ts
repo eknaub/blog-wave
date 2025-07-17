@@ -105,6 +105,10 @@ import { requireAuth } from '../middleware/auth';
  *     responses:
  *       204:
  *         description: Comment deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Comment'
  */
 
 const router = Router();

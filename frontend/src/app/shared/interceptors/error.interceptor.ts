@@ -4,30 +4,14 @@ import { catchError, throwError } from 'rxjs';
 import { NotificationService } from '../services/notification.service';
 import { ApiResponse } from '../interfaces/response';
 import { LoggerService } from '../services/logger.service';
-import { LOCAL_STORAGE_CURRENT_USER_KEY } from '../services/auth.service';
-import { Router } from '@angular/router';
-import { RouteNames } from '../interfaces/routes';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const notificationService = inject(NotificationService);
   const logger = inject(LoggerService);
-  const router = inject(Router);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       let errorMessage = 'An unexpected error occurred';
-
-      if (error.status === 401) {
-        //If user is unauthorized, clear local storage and redirect to login
-        localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
-        router.navigate([RouteNames.LOGIN]);
-
-        errorMessage = 'Session expired. Please log in again.';
-        logger.error(`HTTP Error: ${errorMessage}`);
-        notificationService.showNotification(errorMessage);
-
-        return throwError(() => new Error(errorMessage));
-      }
 
       if (error.error instanceof ErrorEvent) {
         errorMessage = `Network error: ${error.error.message}`;
@@ -72,7 +56,7 @@ function getDefaultErrorMessage(status: number): string {
     case 400:
       return 'Bad request. Please check your input.';
     case 401:
-      return 'Session expired. Please log in again.';
+      return 'Unauthorized. Please log in.';
     case 403:
       return "Access forbidden. You don't have permission.";
     case 404:

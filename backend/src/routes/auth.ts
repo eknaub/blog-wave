@@ -20,6 +20,10 @@ import { requireAuth } from '../middleware/auth';
  *     responses:
  *       201:
  *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       400:
  *         description: Validation error
  *
@@ -37,6 +41,10 @@ import { requireAuth } from '../middleware/auth';
  *     responses:
  *       200:
  *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       401:
  *         description: Invalid credentials
  *
@@ -48,6 +56,10 @@ import { requireAuth } from '../middleware/auth';
  *     responses:
  *       200:
  *         description: Logout successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Login'
  *       401:
  *         description: Unauthorized
  *

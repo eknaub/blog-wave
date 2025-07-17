@@ -141,7 +141,7 @@ export class PostsService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  apiPostsPostIdDelete$Response(params: ApiPostsPostIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  apiPostsPostIdDelete$Response(params: ApiPostsPostIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<Post>> {
     return apiPostsPostIdDelete(this.http, this.rootUrl, params, context);
   }
 
@@ -155,9 +155,9 @@ export class PostsService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  apiPostsPostIdDelete(params: ApiPostsPostIdDelete$Params, context?: HttpContext): Observable<void> {
+  apiPostsPostIdDelete(params: ApiPostsPostIdDelete$Params, context?: HttpContext): Observable<Post> {
     return this.apiPostsPostIdDelete$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+      map((r: StrictHttpResponse<Post>): Post => r.body)
     );
   }
 

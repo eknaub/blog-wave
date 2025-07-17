@@ -33,6 +33,12 @@ export const UserSchema = z.object({
   updatedAt: z.date(),
 });
 
+const UserDetailSchema = z.object({
+  id: z.number().int(),
+  username: z.string(),
+  email: z.string().email(),
+});
+
 export const PostSchema = z.object({
   id: z.number().int().positive(),
   title: z
@@ -53,10 +59,17 @@ export const PostSchema = z.object({
       'Content must be at least 1 character long and can include any characters'
     )
     .trim(),
-  authorId: z.number().int().positive(),
   published: z.boolean().default(false),
   createdAt: z.date(),
   updatedAt: z.date(),
+  author: UserDetailSchema,
+});
+
+const PostDetailSchema = z.object({
+  id: z.number().int(),
+  title: z.string(),
+  content: z.string(),
+  published: z.boolean(),
 });
 
 export const CommentSchema = z.object({
@@ -70,47 +83,38 @@ export const CommentSchema = z.object({
       'Content must be at least 1 character long and can include any characters'
     )
     .trim(),
-  postId: z.number().int().positive(),
-  authorId: z.number().int().positive(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  author: UserDetailSchema,
+  post: PostDetailSchema,
 });
 
-export const UserCreateSchema = UserSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
+export const UserCreateSchema = z.object({
+  username: UserSchema.shape.username,
+  email: UserSchema.shape.email,
+  password: UserSchema.shape.password,
 });
 
-export const PostCreateSchema = PostSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
+export const PostCreateSchema = z.object({
+  title: PostSchema.shape.title,
+  content: PostSchema.shape.content,
+  authorId: z.number().int().positive(),
+  published: PostSchema.shape.published.optional(),
 });
 
 export const PostPublishSchema = z.object({
   published: z.boolean(),
 });
 
-export const CommentCreateSchema = CommentSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
+export const CommentCreateSchema = z.object({
+  content: CommentSchema.shape.content,
+  postId: z.number().int().positive(),
+  authorId: z.number().int().positive(),
 });
 
 export const UserUpdateSchema = UserCreateSchema.partial();
 export const PostUpdateSchema = PostCreateSchema.partial();
 export const CommentUpdateSchema = CommentCreateSchema.partial();
-
-export const UserWithRelationsSchema = UserSchema.extend({
-  posts: z.array(PostSchema).optional(),
-  comments: z.array(CommentSchema).optional(),
-});
-
-export const PostWithRelationsSchema = PostSchema.extend({
-  author: UserSchema.optional(),
-  comments: z.array(CommentSchema).optional(),
-});
 
 export const LoginSchema = z.object({
   username: z.string().min(1, 'Username is required').trim(),
@@ -120,12 +124,10 @@ export const LoginSchema = z.object({
 export type User = z.infer<typeof UserSchema>;
 export type UserCreate = z.infer<typeof UserCreateSchema>;
 export type UserUpdate = z.infer<typeof UserUpdateSchema>;
-export type UserWithRelations = z.infer<typeof UserWithRelationsSchema>;
 
 export type Post = z.infer<typeof PostSchema>;
 export type PostCreate = z.infer<typeof PostCreateSchema>;
 export type PostUpdate = z.infer<typeof PostUpdateSchema>;
-export type PostWithRelations = z.infer<typeof PostWithRelationsSchema>;
 
 export type Comment = z.infer<typeof CommentSchema>;
 export type CommentCreate = z.infer<typeof CommentCreateSchema>;

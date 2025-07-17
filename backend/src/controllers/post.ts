@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Post, PostUpdate } from '../utils/interfaces';
+import { Post, PostCreate, PostUpdate } from '../api/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
 import {
@@ -11,6 +11,22 @@ import {
   sendUpdated,
 } from '../utils/response';
 
+export function toPostDto(post: any, author: any): Post {
+  return {
+    id: post.id,
+    title: post.title,
+    content: post.content,
+    published: post.published ?? false,
+    author: {
+      id: author.id,
+      username: author.username,
+      email: author.email,
+    },
+    createdAt: post.createdAt ?? new Date(),
+    updatedAt: post.updatedAt ?? new Date(),
+  };
+}
+
 class PostController {
   async getPosts(
     req: ValidatedRequest<unknown, { userId: number | undefined }>,
@@ -21,7 +37,7 @@ class PostController {
       let posts = await prisma.posts.findMany({
         where: userId ? { authorId: userId } : undefined,
         include: {
-          users: {
+          author: {
             select: {
               id: true,
               username: true,
@@ -35,7 +51,8 @@ class PostController {
         posts = posts.filter(post => post.authorId === userId);
       }
 
-      sendSuccess(res, posts, 'Posts retrieved successfully');
+      const postObjects = posts.map(post => toPostDto(post, post.author));
+      sendSuccess(res, postObjects, 'Posts retrieved successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
@@ -43,11 +60,14 @@ class PostController {
     }
   }
 
-  async postPost(req: ValidatedRequest<Post>, res: Response): Promise<void> {
+  async postPost(
+    req: ValidatedRequest<PostCreate>,
+    res: Response
+  ): Promise<void> {
     try {
-      const validatedPost: Post = req.validatedBody!;
+      const validatedPost: PostCreate = req.validatedBody!;
 
-      const foundAuthor = await prisma.users.findFirst({
+      const foundAuthor = await prisma.users.findUnique({
         where: { id: validatedPost.authorId },
       });
 
@@ -64,12 +84,11 @@ class PostController {
           title: validatedPost.title,
           content: validatedPost.content,
           authorId: validatedPost.authorId,
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
       });
 
-      sendCreated(res, createdPost, 'Post created successfully');
+      const sendPost: Post = toPostDto(createdPost, foundAuthor);
+      sendCreated(res, sendPost, 'Post created successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
@@ -78,18 +97,26 @@ class PostController {
   }
 
   async putPost(
-    req: ValidatedRequest<Post, unknown, { postId: number }>,
+    req: ValidatedRequest<PostUpdate, unknown, { postId: number }>,
     res: Response
   ): Promise<void> {
     try {
       const postId = req.validatedParams!.postId;
       const validatedPost: PostUpdate = req.validatedBody!;
-      const foundPost = await prisma.posts.findFirst({
+      const foundPost = await prisma.posts.findUnique({
         where: { id: postId },
+      });
+      const foundAuthor = await prisma.users.findUnique({
+        where: { id: validatedPost.authorId },
       });
 
       if (!foundPost) {
         sendNotFound(res, 'Post not found. Please provide a valid post ID.');
+        return;
+      }
+
+      if (!foundAuthor) {
+        sendNotFound(res, 'Author not found.');
         return;
       }
 
@@ -103,7 +130,8 @@ class PostController {
         },
       });
 
-      sendUpdated(res, updatedPost, 'Post updated successfully');
+      const sendPost: Post = toPostDto(updatedPost, foundAuthor);
+      sendUpdated(res, sendPost, 'Post updated successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
@@ -117,7 +145,7 @@ class PostController {
   ): Promise<void> {
     try {
       const postId = req.validatedParams!.postId;
-      const foundPost = await prisma.posts.findFirst({
+      const foundPost = await prisma.posts.findUnique({
         where: { id: postId },
       });
 
@@ -126,19 +154,21 @@ class PostController {
         return;
       }
 
+      const foundAuthor = await prisma.users.findUnique({
+        where: { id: foundPost.authorId },
+      });
+
+      if (!foundAuthor) {
+        sendNotFound(res, 'Author not found.');
+        return;
+      }
+
       const deletedPost = await prisma.posts.delete({
-        select: {
-          id: true,
-          title: true,
-          content: true,
-          authorId: true,
-          createdAt: true,
-          updatedAt: true,
-        },
         where: { id: postId },
       });
 
-      sendDeleted(res, deletedPost, 'Post deleted successfully');
+      const sendPost: Post = toPostDto(deletedPost, foundAuthor);
+      sendDeleted(res, sendPost, 'Post deleted successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
@@ -153,12 +183,21 @@ class PostController {
     try {
       const postId = req.validatedParams!.postId;
       const { published } = req.validatedBody!;
-      const foundPost = await prisma.posts.findFirst({
+      const foundPost = await prisma.posts.findUnique({
         where: { id: postId },
       });
 
       if (!foundPost) {
         sendNotFound(res, 'Post not found. Please provide a valid post ID.');
+        return;
+      }
+
+      const foundAuthor = await prisma.users.findUnique({
+        where: { id: foundPost.authorId },
+      });
+
+      if (!foundAuthor) {
+        sendNotFound(res, 'Author not found.');
         return;
       }
 
@@ -170,9 +209,10 @@ class PostController {
         },
       });
 
+      const sendPost: Post = toPostDto(updatedPost, foundAuthor);
       sendUpdated(
         res,
-        updatedPost,
+        sendPost,
         'Post publication status updated successfully'
       );
     } catch (error) {

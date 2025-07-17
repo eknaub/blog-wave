@@ -18,16 +18,19 @@
     <div class="post-meta">
       <mat-chip disableRipple>
         <ng-container i18n="@@blog-post.author-label"
-          >User: {{ post().users.username }}</ng-container
+          >User: {{ post().author.username }}</ng-container
         >
       </mat-chip>
       <mat-chip disableRipple>
-        {{ post().createdAt | date: 'medium' }}
+        <ng-container i18n="@@blog-post.created-label"
+          >Created: {{ post().createdAt | date: 'medium' }}</ng-container
+        >
       </mat-chip>
       @if (wasUpdated()) {
         <mat-chip disableRipple>
-          <span i18n="@@blog-post.updated-label">Updated</span>
-          {{ post().updatedAt | date: 'medium' }}
+          <ng-container i18n="@@blog-post.updated-label"
+            >Updated: {{ post().updatedAt | date: 'medium' }}</ng-container
+          >
         </mat-chip>
       }
     </div>

@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
 import { BlogService } from '../../../services/blog-service';
 import { LoggerService } from '../../../../shared/services/logger.service';
 import { NotificationService } from '../../../../shared/services/notification.service';
-import { Post } from '../../../../shared/interfaces/post';
+import { Post } from '../../../../shared/api/models';
 
 @Component({
   selector: 'app-blog-post',
@@ -38,7 +38,7 @@ export class BlogPost {
   protected readonly currentUser = this.blogService.currentUser;
 
   protected readonly canDeletePost = computed(
-    () => this.post().authorId === this.currentUser()?.id
+    () => this.post().author.id === this.currentUser()?.id
   );
 
   protected readonly formattedContent = computed(() =>

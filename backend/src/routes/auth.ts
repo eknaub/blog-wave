@@ -1,8 +1,71 @@
 import { Router } from 'express';
 import AuthController from '../controllers/auth';
 import { validateBody } from '../middleware/validation';
-import { UserCreateSchema, LoginSchema } from '../utils/interfaces';
+import { UserCreateSchema, LoginSchema } from '../api/interfaces';
 import { requireAuth } from '../middleware/auth';
+
+/**
+ * @openapi
+ * /api/auth/register:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: Register a new user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserPost'
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: Validation error
+ *
+ * /api/auth/login:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: Login a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Login'
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       401:
+ *         description: Invalid credentials
+ *
+ * /api/auth/logout:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: Logout the current user
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ *       401:
+ *         description: Unauthorized
+ *
+ * /api/auth/profile:
+ *   get:
+ *     tags:
+ *       - Auth
+ *     summary: Get the current user's profile
+ *     responses:
+ *       200:
+ *         description: User profile returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ */
 
 const router = Router();
 const authController = new AuthController();

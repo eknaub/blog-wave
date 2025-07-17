@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { ValidatedRequest } from '../middleware/validation';
 import { sendError, sendSuccess } from '../utils/response';
-import { Ai } from '../utils/interfaces';
+import { Ai } from '../api/interfaces';
 import ai from '../prisma/ai';
 
 class AiController {

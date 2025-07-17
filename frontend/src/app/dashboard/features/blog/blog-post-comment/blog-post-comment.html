@@ -15,7 +15,7 @@
             <div class="comment-card">
               <div class="comment-content">
                 <p class="comment-text">{{ comment.content }}</p>
-                @if (comment.authorId === currentUser()?.id) {
+                @if (comment.author.id === currentUser()?.id) {
                   <button
                     mat-icon-button
                     color="warn"
@@ -31,18 +31,21 @@
               <div class="comment-meta">
                 <mat-chip disableRipple>
                   <ng-container i18n="@@blog-post-comment.user-label"
-                    >User: {{ comment.users.username }}</ng-container
+                    >User: {{ comment.author.username }}</ng-container
                   >
                 </mat-chip>
                 <mat-chip disableRipple>
-                  {{ comment.createdAt | date: 'medium' }}
+                  <ng-container i18n="@@blog-post-comment.created-label"
+                    >Created:
+                    {{ comment.createdAt | date: 'medium' }}</ng-container
+                  >
                 </mat-chip>
                 @if (comment.updatedAt !== comment.createdAt) {
                   <mat-chip disableRipple>
-                    <span i18n="@@blog-post-comment.updated-label"
-                      >Updated:</span
+                    <ng-container i18n="@@blog-post-comment.updated-label"
+                      >Updated:
+                      {{ comment.updatedAt | date: 'medium' }}</ng-container
                     >
-                    {{ comment.updatedAt | date: 'medium' }}
                   </mat-chip>
                 }
               </div>

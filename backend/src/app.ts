@@ -4,6 +4,8 @@ import router from './routes';
 import prisma from './prisma/client';
 import session from 'express-session';
 import passport from './config/passportConfig';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swaggerConfig';
 
 const app = express();
 const PORT = 3000;
@@ -15,6 +17,13 @@ app.use(
     credentials: true,
   })
 );
+
+//Configure Swagger UI
+app.get('/api-docs/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(
   session({

@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Comment, CommentUpdate } from '../utils/interfaces';
+import { Comment, CommentCreate, CommentUpdate, Post } from '../api/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
 import {
@@ -9,6 +9,22 @@ import {
   sendSuccess,
   sendUpdated,
 } from '../utils/response';
+import { toPostDto } from './post';
+
+export function toCommentDto(comment: any, post: any, author: any): Comment {
+  return {
+    id: comment.id,
+    content: comment.content,
+    createdAt: comment.createdAt,
+    updatedAt: comment.updatedAt,
+    author: {
+      id: author.id,
+      username: author.username,
+      email: author.email,
+    },
+    post: toPostDto(post, author),
+  };
+}
 
 class CommentController {
   async getComments(
@@ -22,7 +38,7 @@ class CommentController {
           postId: postId,
         },
         include: {
-          users: {
+          author: {
             select: {
               id: true,
               username: true,
@@ -32,7 +48,28 @@ class CommentController {
         },
       });
 
-      sendSuccess(res, comments, 'Comments retrieved successfully');
+      const foundPost = await prisma.posts.findUnique({
+        where: { id: postId },
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              email: true,
+            },
+          },
+        },
+      });
+
+      if (!foundPost) {
+        sendNotFound(res, 'Post not found');
+        return;
+      }
+
+      const commentObjects = comments.map(comment =>
+        toCommentDto(comment, foundPost, comment.author)
+      );
+      sendSuccess(res, commentObjects, 'Comments retrieved successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
@@ -43,12 +80,42 @@ class CommentController {
   }
 
   async postComment(
-    req: ValidatedRequest<Comment, unknown, { postId: number }>,
+    req: ValidatedRequest<CommentCreate, unknown, { postId: number }>,
     res: Response
   ): Promise<void> {
     try {
       const postId = req.validatedParams!.postId;
-      const validatedComment: Comment = { ...req.validatedBody!, postId };
+      const validatedComment: CommentCreate = { ...req.validatedBody!, postId };
+
+      const foundAuthor = await prisma.users.findUnique({
+        where: { id: validatedComment.authorId },
+      });
+
+      if (!foundAuthor) {
+        sendNotFound(
+          res,
+          'Author not found. Please provide a valid author ID.'
+        );
+        return;
+      }
+
+      const foundPost = await prisma.posts.findUnique({
+        where: { id: postId },
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              email: true,
+            },
+          },
+        },
+      });
+
+      if (!foundPost) {
+        sendNotFound(res, 'Post not found');
+        return;
+      }
 
       const createdComment = await prisma.comments.create({
         data: {
@@ -60,7 +127,12 @@ class CommentController {
         },
       });
 
-      sendCreated(res, createdComment, 'Comment created successfully');
+      const sendComment: Comment = toCommentDto(
+        createdComment,
+        foundPost,
+        foundAuthor
+      );
+      sendCreated(res, sendComment, 'Comment created successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
@@ -72,7 +144,7 @@ class CommentController {
 
   async putComment(
     req: ValidatedRequest<
-      Comment,
+      CommentUpdate,
       unknown,
       { postId: number; commentId: number }
     >,
@@ -82,7 +154,7 @@ class CommentController {
       const postId = req.validatedParams!.postId;
       const commentId = req.validatedParams!.commentId;
       const validatedComment: CommentUpdate = req.validatedBody!;
-      const foundComment = await prisma.comments.findFirst({
+      const foundComment = await prisma.comments.findUnique({
         where: {
           id: commentId,
           postId: postId,
@@ -91,6 +163,36 @@ class CommentController {
 
       if (!foundComment) {
         sendNotFound(res, 'Comment not found');
+        return;
+      }
+
+      const foundAuthor = await prisma.users.findUnique({
+        where: { id: validatedComment.authorId },
+      });
+
+      if (!foundAuthor) {
+        sendNotFound(
+          res,
+          'Author not found. Please provide a valid author ID.'
+        );
+        return;
+      }
+
+      const foundPost = await prisma.posts.findUnique({
+        where: { id: postId },
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              email: true,
+            },
+          },
+        },
+      });
+
+      if (!foundPost) {
+        sendNotFound(res, 'Post not found');
         return;
       }
 
@@ -104,7 +206,12 @@ class CommentController {
         },
       });
 
-      sendUpdated(res, updatedComment, 'Comment updated successfully');
+      const sendComment: Comment = toCommentDto(
+        updatedComment,
+        foundPost,
+        foundAuthor
+      );
+      sendUpdated(res, sendComment, 'Comment updated successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
@@ -125,7 +232,7 @@ class CommentController {
     try {
       const postId = req.validatedParams!.postId;
       const commentId = req.validatedParams!.commentId;
-      const foundComment = await prisma.comments.findFirst({
+      const foundComment = await prisma.comments.findUnique({
         where: {
           id: commentId,
           postId: postId,
@@ -137,13 +244,48 @@ class CommentController {
         return;
       }
 
+      const foundAuthor = await prisma.users.findUnique({
+        where: { id: foundComment.authorId },
+      });
+
+      if (!foundAuthor) {
+        sendNotFound(
+          res,
+          'Author not found. Please provide a valid author ID.'
+        );
+        return;
+      }
+
+      const foundPost = await prisma.posts.findUnique({
+        where: { id: postId },
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              email: true,
+            },
+          },
+        },
+      });
+
+      if (!foundPost) {
+        sendNotFound(res, 'Post not found');
+        return;
+      }
+
       const deletedComment = await prisma.comments.delete({
         where: {
           id: commentId,
         },
       });
 
-      sendDeleted(res, deletedComment, 'Comment deleted successfully');
+      const sendComment: Comment = toCommentDto(
+        deletedComment,
+        foundPost,
+        foundAuthor
+      );
+      sendDeleted(res, sendComment, 'Comment deleted successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);

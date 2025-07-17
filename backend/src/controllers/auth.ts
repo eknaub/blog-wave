@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import passport from '../config/passportConfig';
 import prisma from '../prisma/client';
 import { ValidatedRequest } from '../middleware/validation';
-import { UserCreate, Login } from '../utils/interfaces';
+import { UserCreate, Login } from '../api/interfaces';
 import {
   sendConflict,
   sendCreated,

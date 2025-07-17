@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { User } from '../../shared/interfaces/user';
 import { BaseHttpService } from '../../shared/services/http.service';
 import { Subscription } from 'rxjs';
+import { User } from '../../shared/api/models';
 
 @Injectable({
   providedIn: 'root',

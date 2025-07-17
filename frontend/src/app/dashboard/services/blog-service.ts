@@ -1,11 +1,10 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
-import { Post, PostCreate } from '../../shared/interfaces/post';
-import { Comment, CommentCreate } from '../../shared/interfaces/comment';
 import { map, Observable, Subscription } from 'rxjs';
 import { BaseHttpService } from '../../shared/services/http.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { Comment, CommentPost, Post, PostPost } from '../../shared/api/models';
 
 @Injectable({
   providedIn: 'root',
@@ -73,7 +72,7 @@ export class BlogService {
   }
 
   getPostCountByAuthor = computed(() => (authorId: number) => {
-    return this.posts().filter((post) => post.authorId === authorId).length;
+    return this.posts().filter((post) => post.author.id === authorId).length;
   });
 
   uploadPost(title: string, content: string): Observable<Post> {
@@ -82,7 +81,7 @@ export class BlogService {
       throw new Error('User not authenticated');
     }
 
-    const newPost: PostCreate = {
+    const newPost: PostPost = {
       title,
       content,
       authorId: user.id,
@@ -117,7 +116,7 @@ export class BlogService {
       throw new Error('User not authenticated');
     }
 
-    const newComment: CommentCreate = {
+    const newComment: CommentPost = {
       postId,
       authorId: user.id,
       content: comment,

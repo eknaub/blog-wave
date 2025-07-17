@@ -11,8 +11,113 @@ import {
   PostCreateSchema,
   PostPublishSchema,
   PostUpdateSchema,
-} from '../utils/interfaces';
+} from '../api/interfaces';
 import { requireAuth } from '../middleware/auth';
+
+/**
+ * @openapi
+ * /api/posts:
+ *   get:
+ *     tags:
+ *       - Posts
+ *     summary: Get all posts
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: false
+ *         schema:
+ *           type: integer
+ *         description: Filter posts by user ID
+ *     responses:
+ *       200:
+ *         description: List of posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
+ *   post:
+ *     tags:
+ *       - Posts
+ *     summary: Create a new post
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostPost'
+ *     responses:
+ *       201:
+ *         description: Post created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *
+ * /api/posts/{postId}:
+ *   put:
+ *     tags:
+ *       - Posts
+ *     summary: Update a post
+ *     parameters:
+ *       - in: path
+ *         name: postId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostPut'
+ *     responses:
+ *       200:
+ *         description: Post updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *   delete:
+ *     tags:
+ *       - Posts
+ *     summary: Delete a post
+ *     parameters:
+ *       - in: path
+ *         name: postId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: Post deleted
+ *
+ * /api/posts/{postId}/publish:
+ *   patch:
+ *     tags:
+ *       - Posts
+ *     summary: Publish a post
+ *     parameters:
+ *       - in: path
+ *         name: postId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostPut'
+ *     responses:
+ *       200:
+ *         description: Post published
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ */
 
 const router = Router();
 const postController = new PostController();

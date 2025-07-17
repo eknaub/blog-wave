@@ -1,4 +1,4 @@
-import { Comment, Post, User } from './interfaces';
+import { Comment, Post, User } from '../api/interfaces';
 
 export const users: User[] = [
   {

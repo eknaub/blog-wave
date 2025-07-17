@@ -2,10 +2,10 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, map, catchError, of } from 'rxjs';
 import { RouteNames } from '../interfaces/routes';
-import { User } from '../interfaces/user';
 import { BaseHttpService } from './http.service';
 import { LoggerService } from './logger.service';
 import { NotificationService } from './notification.service';
+import { User } from '../api/models';
 
 export const LOCAL_STORAGE_CURRENT_USER_KEY = 'currentUser';
 

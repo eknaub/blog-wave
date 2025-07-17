@@ -5,8 +5,8 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { User } from '../../../../../shared/interfaces/user';
 import { BlogService } from '../../../../services/blog-service';
+import { User } from '../../../../../shared/api/models';
 
 @Component({
   selector: 'app-user-card',

@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { UserUpdate } from '../utils/interfaces';
+import { UserUpdate } from '../api/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
 import bcrypt from 'bcrypt';
@@ -30,7 +30,7 @@ class UserController {
     try {
       const userId = req.validatedParams!.userId;
       const validatedUser: UserUpdate = req.validatedBody!;
-      const foundUser = await prisma.users.findFirst({
+      const foundUser = await prisma.users.findUnique({
         select: {
           id: true,
           username: true,
@@ -76,7 +76,7 @@ class UserController {
   ): Promise<void> {
     try {
       const userId = req.validatedParams!.userId;
-      const foundUser = await prisma.users.findFirst({
+      const foundUser = await prisma.users.findUnique({
         select: {
           id: true,
         },

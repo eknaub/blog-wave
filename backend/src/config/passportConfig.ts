@@ -11,7 +11,7 @@ passport.use(
     },
     async (username, password, done) => {
       try {
-        const user = await prisma.users.findFirst({
+        const user = await prisma.users.findUnique({
           where: { username },
         });
 
@@ -38,7 +38,7 @@ passport.serializeUser((user: any, done) => {
 
 passport.deserializeUser(async (id: number, done) => {
   try {
-    const user = await prisma.users.findFirst({
+    const user = await prisma.users.findUnique({
       where: { id },
       select: {
         id: true,

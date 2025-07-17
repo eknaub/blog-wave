@@ -15,7 +15,8 @@
     "lint": "ng lint",
     "format": "prettier --write \"src/**/*.{ts,html,css,scss,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,html,css,scss,json}\"",
-    "lint:fix": "ng lint --fix"
+    "lint:fix": "ng lint --fix",
+    "generate:swagger": "ng-openapi-gen -i http://localhost:3000/api-docs/swagger.json -o src/app/shared/api"
   },
   "private": true,
   "dependencies": {

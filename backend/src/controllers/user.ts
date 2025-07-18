@@ -6,10 +6,10 @@ import bcrypt from 'bcrypt';
 import {
   sendDeleted,
   sendError,
-  sendNotFound,
   sendSuccess,
   sendUpdated,
 } from '../utils/response';
+import { getUserOrNotFound } from './helpers/user';
 
 class UserController {
   async getUsers(req: ValidatedRequest, res: Response): Promise<void> {
@@ -23,6 +23,7 @@ class UserController {
         createdAt: user.createdAt ?? new Date(),
         updatedAt: user.updatedAt ?? new Date(),
       }));
+
       sendSuccess(res, sendData, 'Users retrieved successfully');
     } catch (error) {
       const errorMessage =
@@ -38,19 +39,7 @@ class UserController {
     try {
       const userId = req.validatedParams!.userId;
       const validatedUser: UserUpdate = req.validatedBody!;
-      const foundUser = await prisma.users.findUnique({
-        select: {
-          id: true,
-          username: true,
-          email: true,
-        },
-        where: { id: userId },
-      });
-
-      if (!foundUser) {
-        sendNotFound(res, 'User not found');
-        return;
-      }
+      await getUserOrNotFound(userId, res);
 
       const updatedUser = await prisma.users.update({
         select: {
@@ -84,17 +73,7 @@ class UserController {
   ): Promise<void> {
     try {
       const userId = req.validatedParams!.userId;
-      const foundUser = await prisma.users.findUnique({
-        select: {
-          id: true,
-        },
-        where: { id: userId },
-      });
-
-      if (!foundUser) {
-        sendNotFound(res, 'User not found');
-        return;
-      }
+      await getUserOrNotFound(userId, res);
 
       const deletedUser = await prisma.users.delete({
         select: {
@@ -121,21 +100,7 @@ class UserController {
   ): Promise<void> {
     try {
       const userId = req.validatedParams!.userId;
-      const foundUser = await prisma.users.findUnique({
-        select: {
-          id: true,
-          username: true,
-          email: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-        where: { id: userId },
-      });
-
-      if (!foundUser) {
-        sendNotFound(res, 'User not found');
-        return;
-      }
+      const foundUser = await getUserOrNotFound(userId, res);
 
       sendSuccess(res, foundUser, 'User retrieved successfully');
     } catch (error) {

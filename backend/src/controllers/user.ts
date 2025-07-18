@@ -114,6 +114,36 @@ class UserController {
       sendError(res, 'Failed to delete user', 500, [errorMessage]);
     }
   }
+
+  async getUser(
+    req: ValidatedRequest<unknown, unknown, { userId: number }>,
+    res: Response
+  ): Promise<void> {
+    try {
+      const userId = req.validatedParams!.userId;
+      const foundUser = await prisma.users.findUnique({
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+        where: { id: userId },
+      });
+
+      if (!foundUser) {
+        sendNotFound(res, 'User not found');
+        return;
+      }
+
+      sendSuccess(res, foundUser, 'User retrieved successfully');
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      sendError(res, 'Failed to retrieve user', 500, [errorMessage]);
+    }
+  }
 }
 
 export default UserController;

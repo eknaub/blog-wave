@@ -123,6 +123,7 @@ export const LoginSchema = z.object({
 export type User = z.infer<typeof UserSchema>;
 export type UserCreate = z.infer<typeof UserCreateSchema>;
 export type UserUpdate = z.infer<typeof UserUpdateSchema>;
+export type UserDetail = z.infer<typeof UserDetailSchema>;
 
 export type Post = z.infer<typeof PostSchema>;
 export type PostCreate = z.infer<typeof PostCreateSchema>;

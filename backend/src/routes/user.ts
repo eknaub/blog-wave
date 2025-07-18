@@ -64,6 +64,24 @@ import { requireAuth } from '../middleware/auth';
  *     responses:
  *       204:
  *         description: User deleted
+ *   get:
+ *    tags:
+ *      - Users
+ *    summary: Get a user by ID
+ *    parameters:
+ *     - in: path
+ *       name: userId
+ *       required: true
+ *       schema:
+ *        type: integer
+ *        description: ID of the user
+ *    responses:
+ *      200:
+ *        description: User details
+ *        content:
+ *          application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
  */
 
 const router = Router();
@@ -82,6 +100,12 @@ router.delete(
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.deleteUser.bind(userController)
+);
+router.get(
+  '/:userId',
+  requireAuth,
+  validateParams(UserIdParamSchema),
+  userController.getUser.bind(userController)
 );
 
 export default router;

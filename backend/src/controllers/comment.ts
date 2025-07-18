@@ -1,5 +1,10 @@
 import { Response } from 'express';
-import { Comment, CommentCreate, CommentUpdate, Post } from '../api/interfaces';
+import {
+  Comment,
+  CommentCreate,
+  CommentUpdate,
+  UserDetail,
+} from '../api/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
 import {
@@ -9,14 +14,27 @@ import {
   sendSuccess,
   sendUpdated,
 } from '../utils/response';
-import { toPostDto } from './post';
+import { PrismaReturnedPost, toPostDto } from './post';
 
-export function toCommentDto(comment: any, post: any, author: any): Comment {
+export interface PrismaReturnedComment {
+  id: number;
+  content: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  postId: number;
+  authorId: number;
+}
+
+export function toCommentDto(
+  comment: PrismaReturnedComment,
+  post: PrismaReturnedPost,
+  author: UserDetail
+): Comment {
   return {
     id: comment.id,
     content: comment.content,
-    createdAt: comment.createdAt,
-    updatedAt: comment.updatedAt,
+    createdAt: comment.createdAt ?? new Date(),
+    updatedAt: comment.updatedAt ?? new Date(),
     author: {
       id: author.id,
       username: author.username,

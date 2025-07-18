@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Post, PostCreate, PostUpdate } from '../api/interfaces';
+import { Post, PostCreate, PostUpdate, UserDetail } from '../api/interfaces';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
 import {
@@ -11,7 +11,17 @@ import {
   sendUpdated,
 } from '../utils/response';
 
-export function toPostDto(post: any, author: any): Post {
+export interface PrismaReturnedPost {
+  id: number;
+  title: string;
+  content: string;
+  published: boolean | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  authorId: number;
+}
+
+export function toPostDto(post: PrismaReturnedPost, author: UserDetail): Post {
   return {
     id: post.id,
     title: post.title,

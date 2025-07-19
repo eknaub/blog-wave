@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { Routes } from '../utils/enums';
+import { RouteIds, Routes } from '../utils/enums';
 import CommentController from '../controllers/comment';
 import {
   PostIdParamSchema,
@@ -118,26 +118,26 @@ const router = Router();
 const commentController = new CommentController();
 
 router.get(
-  `/:postId/${Routes.COMMENTS}`,
+  `/${RouteIds.POST_ID}/${Routes.COMMENTS}`,
   validateParams(PostIdParamSchema),
   commentController.getComments.bind(commentController)
 );
 router.post(
-  `/:postId/${Routes.COMMENTS}`,
+  `/${RouteIds.POST_ID}/${Routes.COMMENTS}`,
   requireAuth,
   validateParams(PostIdParamSchema),
   validateBody(CommentCreateSchema),
   commentController.postComment.bind(commentController)
 );
 router.put(
-  `/:postId/${Routes.COMMENTS}/:commentId`,
+  `/${RouteIds.POST_ID}/${Routes.COMMENTS}/${RouteIds.COMMENT_ID}`,
   requireAuth,
   validateParams(PostAndCommentIdParamSchema),
   validateBody(CommentUpdateSchema),
   commentController.putComment.bind(commentController)
 );
 router.delete(
-  `/:postId/${Routes.COMMENTS}/:commentId`,
+  `/${RouteIds.POST_ID}/${Routes.COMMENTS}/${RouteIds.COMMENT_ID}`,
   requireAuth,
   validateParams(PostAndCommentIdParamSchema),
   commentController.deleteComment.bind(commentController)

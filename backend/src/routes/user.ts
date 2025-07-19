@@ -7,7 +7,7 @@ import {
   UnfollowIdParamSchema,
 } from '../middleware/validation';
 import { requireAuth } from '../middleware/auth';
-import { UserRoutes } from '../utils/enums';
+import { RouteIds, UserRoutes } from '../utils/enums';
 import { FollowerCreateSchema } from '../api/models/follower';
 import { UserUpdateSchema } from '../api/models/user';
 
@@ -186,46 +186,46 @@ const userController = new UserController();
 
 router.get('/', userController.getUsers.bind(userController));
 router.put(
-  `/${UserRoutes.USER_ID}`,
+  `/${RouteIds.USER_ID}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   validateBody(UserUpdateSchema),
   userController.putUser.bind(userController)
 );
 router.delete(
-  `/${UserRoutes.USER_ID}`,
+  `/${RouteIds.USER_ID}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.deleteUser.bind(userController)
 );
 router.get(
-  `/${UserRoutes.USER_ID}`,
+  `/${RouteIds.USER_ID}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.getUser.bind(userController)
 );
 router.post(
-  `/${UserRoutes.USER_ID}/${UserRoutes.FOLLOWERS}`,
+  `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWERS}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   validateBody(FollowerCreateSchema),
   userController.addFollower.bind(userController)
 );
 router.delete(
-  `/${UserRoutes.USER_ID}/${UserRoutes.FOLLOWERS}/${UserRoutes.UNFOLLOW_ID}`,
+  `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWERS}/${RouteIds.UNFOLLOW_ID}`,
   requireAuth,
   validateParams(UnfollowIdParamSchema),
   validateBody(FollowerCreateSchema),
   userController.removeFollower.bind(userController)
 );
 router.get(
-  `/${UserRoutes.USER_ID}/${UserRoutes.FOLLOWERS}`,
+  `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWERS}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.getFollowers.bind(userController)
 );
 router.get(
-  `/${UserRoutes.USER_ID}/${UserRoutes.FOLLOWING}`,
+  `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWING}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.getFollowing.bind(userController)

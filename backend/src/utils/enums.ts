@@ -1,3 +1,10 @@
+export enum RouteIds {
+  USER_ID = ':userId',
+  UNFOLLOW_ID = ':unfollowId',
+  POST_ID = ':postId',
+  COMMENT_ID = ':commentId',
+}
+
 export enum Routes {
   USERS = 'users',
   POSTS = 'posts',
@@ -7,8 +14,13 @@ export enum Routes {
 }
 
 export enum UserRoutes {
-  USER_ID = ':userId',
-  UNFOLLOW_ID = ':unfollowId',
   FOLLOWERS = 'followers',
   FOLLOWING = 'following',
+}
+
+export enum AuthRoutes {
+  REGISTER = 'register',
+  LOGIN = 'login',
+  LOGOUT = 'logout',
+  PROFILE = 'profile',
 }

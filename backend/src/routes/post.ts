@@ -13,6 +13,7 @@ import {
   PostPublishSchema,
   PostUpdateSchema,
 } from '../api/models/post';
+import { RouteIds } from '../utils/enums';
 
 /**
  * @openapi
@@ -138,21 +139,21 @@ router.post(
   postController.postPost.bind(postController)
 );
 router.put(
-  '/:postId',
+  `/${RouteIds.POST_ID}`,
   requireAuth,
   validateParams(PostIdParamSchema),
   validateBody(PostUpdateSchema),
   postController.putPost.bind(postController)
 );
 router.patch(
-  '/:postId/publish',
+  `/${RouteIds.POST_ID}/publish`,
   requireAuth,
   validateParams(PostIdParamSchema),
   validateBody(PostPublishSchema),
   postController.publishPost.bind(postController)
 );
 router.delete(
-  '/:postId',
+  `/${RouteIds.POST_ID}`,
   requireAuth,
   validateParams(PostIdParamSchema),
   postController.deletePost.bind(postController)

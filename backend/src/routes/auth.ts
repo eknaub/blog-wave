@@ -4,6 +4,7 @@ import { validateBody } from '../middleware/validation';
 import { requireAuth } from '../middleware/auth';
 import { UserCreateSchema } from '../api/models/user';
 import { LoginSchema } from '../api/models/login';
+import { AuthRoutes } from '../utils/enums';
 
 /**
  * @openapi
@@ -84,18 +85,22 @@ const router = Router();
 const authController = new AuthController();
 
 router.post(
-  '/register',
+  `/${AuthRoutes.REGISTER}`,
   validateBody(UserCreateSchema),
   authController.register.bind(authController)
 );
 router.post(
-  '/login',
+  `/${AuthRoutes.LOGIN}`,
   validateBody(LoginSchema),
   authController.login.bind(authController)
 );
-router.post('/logout', requireAuth, authController.logout.bind(authController));
+router.post(
+  `/${AuthRoutes.LOGOUT}`,
+  requireAuth,
+  authController.logout.bind(authController)
+);
 router.get(
-  '/profile',
+  `/${AuthRoutes.PROFILE}`,
   requireAuth,
   authController.getProfile.bind(authController)
 );

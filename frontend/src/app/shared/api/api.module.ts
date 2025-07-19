@@ -11,6 +11,7 @@ import { AuthService } from './services/auth.service';
 import { CommentsService } from './services/comments.service';
 import { PostsService } from './services/posts.service';
 import { UsersService } from './services/users.service';
+import { FollowersService } from './services/followers.service';
 
 /**
  * Module that provides all services and configuration.
@@ -25,6 +26,7 @@ import { UsersService } from './services/users.service';
     CommentsService,
     PostsService,
     UsersService,
+    FollowersService,
     ApiConfiguration
   ],
 })

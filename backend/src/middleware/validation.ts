@@ -41,6 +41,7 @@ export function validateParams(schema: z.ZodTypeAny) {
   return (req: ValidatedRequest, res: Response, next: NextFunction): void => {
     try {
       req.validatedParams = schema.parse(req.params);
+
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -114,6 +115,31 @@ export const UserIdParamSchema = z.object({
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'User ID must be a positive number',
+      });
+      return z.NEVER;
+    }
+    return parsed;
+  }),
+});
+
+export const UnfollowIdParamSchema = z.object({
+  userId: z.string().transform((val, ctx) => {
+    const parsed = Number(val);
+    if (isNaN(parsed) || parsed <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'User ID must be a positive number',
+      });
+      return z.NEVER;
+    }
+    return parsed;
+  }),
+  unfollowId: z.string().transform((val, ctx) => {
+    const parsed = Number(val);
+    if (isNaN(parsed) || parsed <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Unfollow ID must be a positive number',
       });
       return z.NEVER;
     }

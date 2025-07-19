@@ -3,13 +3,14 @@ import bcrypt from 'bcryptjs';
 import passport from '../config/passportConfig';
 import prisma from '../prisma/client';
 import { ValidatedRequest } from '../middleware/validation';
-import { UserCreate, Login } from '../api/interfaces';
+import { Login } from '../api/models/login';
 import {
   sendConflict,
   sendCreated,
   sendError,
   sendSuccess,
 } from '../utils/response';
+import { UserCreate } from '../api/models/user';
 
 class AuthController {
   async register(

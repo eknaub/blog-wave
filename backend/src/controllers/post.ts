@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Post, PostCreate, PostUpdate } from '../api/interfaces';
+import { Post, PostCreate, PostUpdate } from '../api/models/post';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
 import {

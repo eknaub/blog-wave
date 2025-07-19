@@ -9,6 +9,10 @@
     "outDir": "./dist",
     "rootDir": "./src"
   },
-  "include": ["src/**/*.ts", "src/controllers/tests/post.test.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/controllers/tests/post.test.ts",
+    "src/api/models"
+  ],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

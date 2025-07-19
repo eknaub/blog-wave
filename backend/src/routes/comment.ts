@@ -7,7 +7,10 @@ import {
   validateBody,
   validateParams,
 } from '../middleware/validation';
-import { CommentCreateSchema, CommentUpdateSchema } from '../api/interfaces';
+import {
+  CommentCreateSchema,
+  CommentUpdateSchema,
+} from '../api/models/comment';
 import { requireAuth } from '../middleware/auth';
 
 /**

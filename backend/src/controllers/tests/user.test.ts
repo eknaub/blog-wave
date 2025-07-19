@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'supertest';
 import UserController from '../user';
-import { User } from '../../api/interfaces';
+import { User } from '../../api/models/login';
 import { Routes } from '../../utils/enums';
 
 const app = express();

@@ -7,3 +7,4 @@ export { AuthService } from './services/auth.service';
 export { CommentsService } from './services/comments.service';
 export { PostsService } from './services/posts.service';
 export { UsersService } from './services/users.service';
+export { FollowersService } from './services/followers.service';

@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import AuthController from '../controllers/auth';
 import { validateBody } from '../middleware/validation';
-import { UserCreateSchema, LoginSchema } from '../api/interfaces';
 import { requireAuth } from '../middleware/auth';
+import { UserCreateSchema } from '../api/models/user';
+import { LoginSchema } from '../api/models/login';
 
 /**
  * @openapi

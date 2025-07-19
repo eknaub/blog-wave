@@ -1,9 +1,11 @@
-import { Comment, Post, UserDetail } from '../../api/interfaces';
 import { getPostOrNotFound, PrismaReturnedPost, toPostDto } from './post';
 import prisma from '../../prisma/client';
 import { Response } from 'express';
 import { sendNotFound } from '../../utils/response';
 import { getUserOrNotFound } from './user';
+import { Post } from '../../api/models/post';
+import { UserDetail } from '../../api/models/user';
+import { Comment } from '../../api/models/comment';
 
 export interface PrismaReturnedComment {
   id: number;

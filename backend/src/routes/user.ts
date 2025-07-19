@@ -4,9 +4,12 @@ import {
   validateBody,
   validateParams,
   UserIdParamSchema,
+  UnfollowIdParamSchema,
 } from '../middleware/validation';
-import { UserUpdateSchema } from '../api/interfaces';
 import { requireAuth } from '../middleware/auth';
+import { UserRoutes } from '../utils/enums';
+import { FollowerCreateSchema } from '../api/models/follower';
+import { UserUpdateSchema } from '../api/models/user';
 
 /**
  * @openapi
@@ -82,6 +85,100 @@ import { requireAuth } from '../middleware/auth';
  *          application/json:
  *           schema:
  *             $ref: '#/components/schemas/User'
+ * /api/users/{userId}/followers:
+ *   post:
+ *     tags:
+ *       - Followers
+ *     summary: Add a follower to a user
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the user to be followed
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/FollowerCreate'
+ *     responses:
+ *       201:
+ *         description: Follower added
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/BaseFollower'
+ *
+ *   get:
+ *     tags:
+ *       - Followers
+ *     summary: Get all followers of a user
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the user
+ *     responses:
+ *       200:
+ *         description: List of followers
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Follower'
+ *
+ * /api/users/{userId}/followers/{unfollowId}:
+ *   delete:
+ *     tags:
+ *       - Followers
+ *     summary: Remove a follower from a user
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the user
+ *       - in: path
+ *         name: unfollowId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the follower to remove
+ *     responses:
+ *       200:
+ *         description: Follower removed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/BaseFollower'
+ *
+ * /api/users/{userId}/following:
+ *   get:
+ *     tags:
+ *       - Followers
+ *     summary: Get all users a user is following
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the user
+ *     responses:
+ *       200:
+ *         description: List of users being followed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Follower'
  */
 
 const router = Router();
@@ -89,23 +186,49 @@ const userController = new UserController();
 
 router.get('/', userController.getUsers.bind(userController));
 router.put(
-  '/:userId',
+  `/${UserRoutes.USER_ID}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   validateBody(UserUpdateSchema),
   userController.putUser.bind(userController)
 );
 router.delete(
-  '/:userId',
+  `/${UserRoutes.USER_ID}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.deleteUser.bind(userController)
 );
 router.get(
-  '/:userId',
+  `/${UserRoutes.USER_ID}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.getUser.bind(userController)
+);
+router.post(
+  `/${UserRoutes.USER_ID}/${UserRoutes.FOLLOWERS}`,
+  requireAuth,
+  validateParams(UserIdParamSchema),
+  validateBody(FollowerCreateSchema),
+  userController.addFollower.bind(userController)
+);
+router.delete(
+  `/${UserRoutes.USER_ID}/${UserRoutes.FOLLOWERS}/${UserRoutes.UNFOLLOW_ID}`,
+  requireAuth,
+  validateParams(UnfollowIdParamSchema),
+  validateBody(FollowerCreateSchema),
+  userController.removeFollower.bind(userController)
+);
+router.get(
+  `/${UserRoutes.USER_ID}/${UserRoutes.FOLLOWERS}`,
+  requireAuth,
+  validateParams(UserIdParamSchema),
+  userController.getFollowers.bind(userController)
+);
+router.get(
+  `/${UserRoutes.USER_ID}/${UserRoutes.FOLLOWING}`,
+  requireAuth,
+  validateParams(UserIdParamSchema),
+  userController.getFollowing.bind(userController)
 );
 
 export default router;

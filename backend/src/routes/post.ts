@@ -7,12 +7,12 @@ import {
   validateParams,
   validateQuery,
 } from '../middleware/validation';
+import { requireAuth } from '../middleware/auth';
 import {
   PostCreateSchema,
   PostPublishSchema,
   PostUpdateSchema,
-} from '../api/interfaces';
-import { requireAuth } from '../middleware/auth';
+} from '../api/models/post';
 
 /**
  * @openapi

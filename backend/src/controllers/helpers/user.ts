@@ -1,12 +1,31 @@
 import { Response } from 'express';
 import prisma from '../../prisma/client';
 import { sendNotFound } from '../../utils/response';
-import { User } from '../../api/interfaces';
+import { ExtendedUser, User } from '../../api/models/user';
+
+export async function getExtendedUser(user: User): Promise<ExtendedUser> {
+  const followersCount = await prisma.userFollows.count({
+    where: { followingId: user.id },
+  });
+
+  const followingCount = await prisma.userFollows.count({
+    where: { followerId: user.id },
+  });
+
+  return {
+    ...user,
+    createdAt: user.createdAt || new Date(),
+    updatedAt: user.updatedAt || new Date(),
+    followersCount,
+    followingCount,
+  };
+}
 
 export async function getUserOrNotFound(
   userId: number | undefined,
-  res: Response
-): Promise<User | null> {
+  res: Response,
+  options?: { fetchExtendedUser?: boolean }
+): Promise<ExtendedUser | User | null> {
   if (!userId) {
     sendNotFound(res, 'User ID is required.');
     return null;
@@ -30,5 +49,11 @@ export async function getUserOrNotFound(
     return null;
   }
 
-  return foundUser as User;
+  if (!options?.fetchExtendedUser) {
+    return foundUser;
+  }
+
+  const extendedUser = await getExtendedUser(foundUser);
+
+  return extendedUser;
 }

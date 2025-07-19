@@ -1,11 +1,10 @@
 import { Response } from 'express';
-import { Comment, CommentCreate, CommentUpdate } from '../api/interfaces';
+import { Comment, CommentCreate, CommentUpdate } from '../api/models/comment';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
 import {
   sendCreated,
   sendDeleted,
-  sendNotFound,
   sendSuccess,
   sendUpdated,
 } from '../utils/response';

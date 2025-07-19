@@ -15,6 +15,8 @@ import { apiUsersGet } from '../fn/users/api-users-get';
 import { ApiUsersGet$Params } from '../fn/users/api-users-get';
 import { apiUsersUserIdDelete } from '../fn/users/api-users-user-id-delete';
 import { ApiUsersUserIdDelete$Params } from '../fn/users/api-users-user-id-delete';
+import { apiUsersUserIdGet } from '../fn/users/api-users-user-id-get';
+import { ApiUsersUserIdGet$Params } from '../fn/users/api-users-user-id-get';
 import { apiUsersUserIdPut } from '../fn/users/api-users-user-id-put';
 import { ApiUsersUserIdPut$Params } from '../fn/users/api-users-user-id-put';
 import { User } from '../models/user';
@@ -55,6 +57,39 @@ export class UsersService extends BaseService {
   apiUsersGet(params?: ApiUsersGet$Params, context?: HttpContext): Observable<Array<User>> {
     return this.apiUsersGet$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<User>>): Array<User> => r.body)
+    );
+  }
+
+  /** Path part for operation `apiUsersUserIdGet()` */
+  static readonly ApiUsersUserIdGetPath = '/api/users/{userId}';
+
+  /**
+   * Get a user by ID.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiUsersUserIdGet()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiUsersUserIdGet$Response(params: ApiUsersUserIdGet$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+    return apiUsersUserIdGet(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Get a user by ID.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiUsersUserIdGet$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiUsersUserIdGet(params: ApiUsersUserIdGet$Params, context?: HttpContext): Observable<User> {
+    return this.apiUsersUserIdGet$Response(params, context).pipe(
+      map((r: StrictHttpResponse<User>): User => r.body)
     );
   }
 

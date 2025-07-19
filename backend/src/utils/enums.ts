@@ -5,3 +5,10 @@ export enum Routes {
   AUTH = 'auth',
   AI = 'ai',
 }
+
+export enum UserRoutes {
+  USER_ID = ':userId',
+  UNFOLLOW_ID = ':unfollowId',
+  FOLLOWERS = 'followers',
+  FOLLOWING = 'following',
+}

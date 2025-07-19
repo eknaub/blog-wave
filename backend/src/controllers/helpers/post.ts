@@ -1,8 +1,9 @@
 import prisma from '../../prisma/client';
 import { Response } from 'express';
 import { sendNotFound } from '../../utils/response';
-import { Post, User, UserDetail } from '../../api/interfaces';
+import { Post } from '../../api/models/post';
 import { getUserOrNotFound } from './user';
+import { User, UserDetail } from '../../api/models/user';
 
 export interface PrismaReturnedPost {
   id: number;

@@ -1,17 +1,27 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 import {
-  aiSwaggerSchema,
-  commentCreateSwaggerSchema,
-  commentSwaggerSchema,
-  commentUpdateSwaggerSchema,
-  loginSwaggerSchema,
-  postCreateSwaggerSchema,
-  postSwaggerSchema,
-  postUpdateSwaggerSchema,
+  followerBaseSwaggerSchema,
+  followerCreateSwaggerSchema,
+  followerSwaggerSchema,
+} from '../api/models/followerSwagger';
+import { aiSwaggerSchema } from '../api/models/aiSwagger';
+import {
+  extendedUserSchema,
   userPostSwaggerSchema,
   userSwaggerSchema,
   userUpdateSwaggerSchema,
-} from '../api/swaggerDtos';
+} from '../api/models/userSwagger';
+import {
+  postCreateSwaggerSchema,
+  postSwaggerSchema,
+  postUpdateSwaggerSchema,
+} from '../api/models/postSwagger';
+import {
+  commentCreateSwaggerSchema,
+  commentSwaggerSchema,
+  commentUpdateSwaggerSchema,
+} from '../api/models/commentSwagger';
+import { loginSwaggerSchema } from '../api/models/loginSwagger';
 
 export const swaggerOptions = {
   definition: {
@@ -27,8 +37,12 @@ export const swaggerOptions = {
         Ai: aiSwaggerSchema.definitions?.Ai,
         //User schemas
         User: userSwaggerSchema.definitions?.User,
+        ExtendedUser: extendedUserSchema.definitions?.ExtendedUser,
         UserPost: userPostSwaggerSchema.definitions?.UserPost,
         UserPut: userUpdateSwaggerSchema.definitions?.UserPut,
+        BaseFollower: followerBaseSwaggerSchema.definitions?.BaseFollower,
+        Follower: followerSwaggerSchema.definitions?.Follower,
+        FollowerCreate: followerCreateSwaggerSchema.definitions?.FollowerCreate,
         // Post schemas
         Post: postSwaggerSchema.definitions?.Post,
         PostPost: postCreateSwaggerSchema.definitions?.PostPost,

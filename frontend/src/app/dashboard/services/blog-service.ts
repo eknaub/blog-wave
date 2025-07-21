@@ -28,7 +28,9 @@ export class BlogService {
   readonly postsLoading = signal(false);
   readonly postsError = signal<string | null>(null);
 
-  readonly currentUser = computed(() => this.authService.getCurrentUser());
+  private readonly currentUser = computed(() =>
+    this.authService.getCurrentUser()
+  );
 
   navigateToUserProfile(userId: number): void {
     this.router.navigate(['/dashboard', 'user-profile', userId]);
@@ -89,10 +91,13 @@ export class BlogService {
     );
   });
 
-  uploadPost(title: string, content: string): Observable<Post> {
+  uploadPost(title: string, content: string): void {
     const user = this.currentUser();
     if (!user) {
-      throw new Error('User not authenticated');
+      this.notificationService.showNotification(
+        $localize`:@@blog-service.post-upload-error:You must be logged in to post`
+      );
+      return;
     }
 
     const newPost: PostPost = {
@@ -101,56 +106,63 @@ export class BlogService {
       authorId: user.id,
     };
 
-    return this.generatedPostsService
-      .apiPostsPost({
-        body: newPost,
-      })
-      .pipe(
-        map((post) => {
-          this.posts.update((posts) => [...posts, post]);
-          this.notificationService.showNotification(
-            $localize`:@@blog-service.post-upload-success:Post uploaded successfully`
-          );
-          return post;
-        })
-      );
+    this.generatedPostsService.apiPostsPost({ body: newPost }).subscribe({
+      next: (post) => {
+        this.posts.update((posts) => [...posts, post]);
+        this.notificationService.showNotification(
+          $localize`:@@blog-service.post-upload-success:Post uploaded successfully`
+        );
+      },
+      error: (error) => {
+        this.notificationService.showNotification(
+          $localize`:@@blog-service.post-upload-error:Failed to upload post`
+        );
+        this.logger.error(`Failed to upload post: ${error}`);
+      },
+    });
   }
 
-  deletePost(postId: number): Observable<Post> {
-    return this.generatedPostsService
-      .apiPostsPostIdDelete({
-        postId,
-      })
-      .pipe(
-        map((post) => {
-          this.posts.update((posts) => posts.filter((p) => p.id !== postId));
-          this.notificationService.showNotification(
-            $localize`:@@blog-service.post-delete-success:Post deleted successfully`
-          );
-          return post;
-        })
-      );
+  deletePost(postId: number): void {
+    this.generatedPostsService.apiPostsPostIdDelete({ postId }).subscribe({
+      next: (deletedPost) => {
+        this.posts.update((posts) =>
+          posts.filter((p) => p.id !== deletedPost.id)
+        );
+        this.notificationService.showNotification(
+          $localize`:@@blog-service.post-delete-success:Post deleted successfully`
+        );
+      },
+      error: (error) => {
+        this.notificationService.showNotification(
+          $localize`:@@blog-service.post-delete-error:Failed to delete post`
+        );
+        this.logger.error(`Failed to delete post: ${error}`);
+      },
+    });
   }
 
-  uploadCommentToPost(postId: number, comment: string): Observable<Comment> {
+  uploadCommentToPost(postId: number, content: string): void {
     const user = this.currentUser();
     if (!user) {
-      throw new Error('User not authenticated');
+      this.notificationService.showNotification(
+        $localize`:@@blog-service.comment-upload-error:You must be logged in to comment`
+      );
+      return;
     }
 
     const newComment: CommentPost = {
       postId,
       authorId: user.id,
-      content: comment,
+      content,
     };
 
-    return this.generatedCommentsService
+    this.generatedCommentsService
       .apiPostsPostIdCommentsPost({
         postId,
         body: newComment,
       })
-      .pipe(
-        map((comment) => {
+      .subscribe({
+        next: (comment) => {
           const commentsSignal = this.commentsSignals.get(postId);
           if (commentsSignal) {
             commentsSignal.update((comments) => [...comments, comment]);
@@ -160,19 +172,21 @@ export class BlogService {
           this.notificationService.showNotification(
             $localize`:@@blog-service.comment-upload-success:Comment uploaded successfully`
           );
-          return comment;
-        })
-      );
+        },
+        error: (error) => {
+          this.notificationService.showNotification(
+            $localize`:@@blog-service.comment-upload-error:Failed to upload comment`
+          );
+          this.logger.error(`Failed to upload comment: ${error}`);
+        },
+      });
   }
 
-  deleteComment(postId: number, commentId: number): Observable<Comment> {
-    return this.generatedCommentsService
-      .apiPostsPostIdCommentsCommentIdDelete({
-        postId,
-        commentId,
-      })
-      .pipe(
-        map((comment) => {
+  deleteComment(postId: number, commentId: number): void {
+    this.generatedCommentsService
+      .apiPostsPostIdCommentsCommentIdDelete({ postId, commentId })
+      .subscribe({
+        next: () => {
           const commentsSignal = this.commentsSignals.get(postId);
           if (commentsSignal) {
             commentsSignal.update((comments) =>
@@ -182,8 +196,13 @@ export class BlogService {
           this.notificationService.showNotification(
             $localize`:@@blog-service.comment-delete-success:Comment deleted successfully`
           );
-          return comment;
-        })
-      );
+        },
+        error: (error) => {
+          this.notificationService.showNotification(
+            $localize`:@@blog-service.comment-delete-error:Failed to delete comment`
+          );
+          this.logger.error(`Failed to delete comment: ${error}`);
+        },
+      });
   }
 }

@@ -2,8 +2,8 @@
   <div class="profile-header">
     <div class="user-info">
       @if (!isEditing()) {
-        <h1 class="user-name">{{ user()?.username }}</h1>
-        <p class="user-email">{{ user()?.email }}</p>
+        <h1 class="user-name">{{ currentUser()?.username }}</h1>
+        <p class="user-email">{{ currentUser()?.email }}</p>
         <button class="btn btn-primary" (click)="toggleEdit()">
           Edit Profile
         </button>

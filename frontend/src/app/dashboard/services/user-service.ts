@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { User, UserPut } from '../../shared/api/models';
 import { UsersService as GeneratedUserService } from '../../shared/api/services/users.service';
 import { LoggerService } from '../../shared/services/logger.service';
@@ -41,23 +41,15 @@ export class UserService {
     this.loadUsers();
   }
 
-  getUserById(userId: number): User | undefined {
-    return this.users().find((user) => user.id === userId);
+  getUserById(userId?: number | null): User | undefined {
+    if (!userId) return undefined;
+    const user = this.users().find((user) => user.id === userId);
+    return user;
   }
 
   updateUser(userId: number, userData: Partial<UserPut>): void {
-    const user = this.getUserById(userId);
-    if (!user) {
-      throw new Error(`User with ID ${userId} not found`);
-    }
-
-    const updatedUser: User = {
-      ...user,
-      ...userData,
-    };
-
     this.generatedUserService
-      .apiUsersUserIdPut({ userId, body: updatedUser })
+      .apiUsersUserIdPut({ userId, body: userData })
       .subscribe({
         next: (response) => {
           const index = this.users().findIndex((u) => u.id === userId);

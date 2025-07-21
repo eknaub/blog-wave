@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { User } from '../../shared/api/models';
 
 @Component({
   selector: 'app-profile',
@@ -41,44 +42,31 @@ export class Profile {
   private readonly userService = inject(UserService);
   private readonly notificationService = inject(NotificationService);
 
+  protected readonly currentUser = computed(() => {
+    return this.userService.getUserById(this.authService.getCurrentUser()?.id);
+  });
+
   protected readonly editUserForm = new FormGroup({
     username: new FormControl('', [...AuthInputValidators.username]),
     email: new FormControl('', [...AuthInputValidators.email]),
   });
 
-  constructor() {
-    // Watch for user changes and patch the form
-    effect(() => {
-      const user = this.user();
-      if (user) {
-        this.editUserForm.patchValue({
-          username: user.username,
-          email: user.email,
-        });
-      }
-    });
-  }
-
   protected readonly isEditing = signal(false);
 
-  protected readonly user = computed(() => {
-    const currentUser = this.authService.getCurrentUser();
-    if (!currentUser) {
-      throw new Error('No current user found');
-    }
-    return this.userService.getUserById(currentUser.id);
-  });
-
   protected readonly postCount = computed(() => {
-    return this.blogService.getPostCountByAuthor()(this.user()?.id);
+    if (!this.currentUser()) {
+      return 0;
+    }
+
+    return this.blogService.getPostCountByAuthor()(this.currentUser()!.id);
   });
 
   protected readonly followerCount = computed(() => {
-    return this.user()?.followersCount ?? 0;
+    return this.currentUser()?.followersCount ?? 0;
   });
 
   protected readonly followingCount = computed(() => {
-    return this.user()?.followingCount ?? 0;
+    return this.currentUser()?.followingCount ?? 0;
   });
 
   toggleEdit() {
@@ -86,7 +74,7 @@ export class Profile {
   }
 
   saveProfile() {
-    if (!this.user()) {
+    if (!this.currentUser) {
       return;
     }
 
@@ -108,7 +96,7 @@ export class Profile {
       return;
     }
 
-    this.userService.updateUser(this.user()!.id, {
+    this.userService.updateUser(this.currentUser()!.id, {
       username: username,
       email: email,
     });

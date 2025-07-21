@@ -1,7 +1,6 @@
 import { Response } from 'express';
 import { ValidatedRequest } from '../middleware/validation';
 import prisma from '../prisma/client';
-import bcrypt from 'bcrypt';
 import {
   sendDeleted,
   sendError,
@@ -19,22 +18,14 @@ class UserController {
 
       const sendData: User[] = await Promise.all(
         data.map(async user => {
-          const followersCount = await prisma.userFollows.count({
-            where: { followingId: user.id },
-          });
-
-          const followingCount = await prisma.userFollows.count({
-            where: { followerId: user.id },
-          });
-
           return {
             id: user.id,
             username: user.username,
             email: user.email,
-            createdAt: user.createdAt || new Date(),
-            updatedAt: user.updatedAt || new Date(),
-            followersCount,
-            followingCount,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+            followersCount: user.followersCount,
+            followingCount: user.followingCount,
           };
         })
       );
@@ -68,9 +59,6 @@ class UserController {
         data: {
           ...validatedUser,
           updatedAt: new Date(),
-          password: validatedUser.password
-            ? await bcrypt.hash(validatedUser.password, 12)
-            : undefined,
         },
       });
 
@@ -145,6 +133,24 @@ class UserController {
         },
       });
 
+      await prisma.users.update({
+        where: { id: userId },
+        data: {
+          followingCount: {
+            increment: 1,
+          },
+        },
+      });
+
+      await prisma.users.update({
+        where: { id: validatedFollower.followId },
+        data: {
+          followersCount: {
+            increment: 1,
+          },
+        },
+      });
+
       sendSuccess(res, newFollow, 'Follower added successfully');
     } catch (error) {
       const errorMessage =
@@ -206,6 +212,24 @@ class UserController {
       const updatedUser = await prisma.userFollows.delete({
         where: {
           id: existingFollow.id,
+        },
+      });
+
+      await prisma.users.update({
+        where: { id: userId },
+        data: {
+          followingCount: {
+            decrement: 1,
+          },
+        },
+      });
+
+      await prisma.users.update({
+        where: { id: unfollowId },
+        data: {
+          followersCount: {
+            decrement: 1,
+          },
         },
       });
 

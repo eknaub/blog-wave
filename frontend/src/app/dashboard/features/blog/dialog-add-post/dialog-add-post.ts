@@ -81,20 +81,7 @@ export class DialogAddPost {
       return;
     }
 
-    this.aiService.getGeneratedPostContent(title).subscribe({
-      next: (data) => {
-        this.postForm.patchValue({ content: data.contents });
-        this.notificationService.showNotification(
-          $localize`:@@dialog-add-post.ai-content-generated:AI content generated successfully`
-        );
-      },
-      error: (error) => {
-        this.notificationService.showNotification(
-          $localize`:@@dialog-add-post.ai-content-error:Failed to generate AI content: ${error.message}`
-        );
-        this.logger.error(`Failed to generate AI content: ${error}`);
-      },
-    });
+    this.aiService.getGeneratedPostContent(title);
   }
 
   protected onNoClick(): void {
@@ -121,23 +108,10 @@ export class DialogAddPost {
 
     this.isSubmitting.set(true);
 
-    this.blogService.uploadPost(postData.title, postData.content).subscribe({
-      next: () => {
-        this.notificationService.showNotification(
-          $localize`:@@dialog-add-post.post-created:Post created successfully`
-        );
-        this.postForm.reset();
-        this.dialogRef.close();
-      },
-      error: (error) => {
-        this.notificationService.showNotification(
-          $localize`:@@dialog-add-post.post-create-error:Failed to create post`
-        );
-        this.logger.error(`Failed to create post: ${error}`);
-      },
-      complete: () => {
-        this.isSubmitting.set(false);
-      },
-    });
+    this.blogService.uploadPost(postData.title, postData.content);
+
+    this.postForm.reset();
+    this.dialogRef.close();
+    this.isSubmitting.set(false);
   }
 }

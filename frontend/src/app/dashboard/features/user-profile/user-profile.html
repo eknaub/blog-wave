@@ -1,1 +1,23 @@
-<p>user-profile works!</p>
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="user-info">
+      <h1 class="user-name">{{ user()?.username }}</h1>
+      <p class="user-email">{{ user()?.email }}</p>
+    </div>
+  </div>
+
+  <div class="profile-stats">
+    <div class="stat-item">
+      <span class="stat-number">{{ postCount() }}</span>
+      <span class="stat-label">Posts</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">{{ followerCount() }}</span>
+      <span class="stat-label">Followers</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">{{ followingCount() }}</span>
+      <span class="stat-label">Following</span>
+    </div>
+  </div>
+</div>

@@ -14,30 +14,27 @@ export class AiService {
   readonly isGeneratingContent = signal<boolean>(false);
   readonly generatedContent = signal('');
 
-  getGeneratedPostContent(contents: string): Observable<Ai> {
+  getGeneratedPostContent(contents: string): void {
     this.isGeneratingContent.set(true);
 
-    return this.generatedAiService.apiAiGet({ content: contents }).pipe(
-      map((response) => {
+    this.generatedAiService.apiAiGet({ content: contents }).subscribe({
+      next: (response) => {
         const content = response.contents || '';
         this.generatedContent.set(content);
         this.notificationService.showNotification(
           $localize`:@@ai-service.content-generated:Content generated successfully`
         );
-        return response;
-      }),
-      catchError((error) => {
-        this.isGeneratingContent.set(false);
+      },
+      error: (error) => {
         this.notificationService.showNotification(
           $localize`:@@ai-service.content-generation-error:Failed to generate content`
         );
         console.error('Error generating content:', error);
-        return throwError(() => error);
-      }),
-      finalize(() => {
+      },
+      complete: () => {
         this.isGeneratingContent.set(false);
-      })
-    );
+      },
+    });
   }
 
   clearGeneratedContent(): void {

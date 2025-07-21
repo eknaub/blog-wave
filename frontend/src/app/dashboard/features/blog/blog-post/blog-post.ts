@@ -14,6 +14,7 @@ import { BlogService } from '../../../services/blog-service';
 import { LoggerService } from '../../../../shared/services/logger.service';
 import { NotificationService } from '../../../../shared/services/notification.service';
 import { Post } from '../../../../shared/api/models';
+import { AuthService } from '../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-blog-post',
@@ -32,13 +33,14 @@ export class BlogPost {
   readonly post = input.required<Post>();
 
   private readonly blogService = inject(BlogService);
+  private readonly authService = inject(AuthService);
   private readonly logger = inject(LoggerService);
   private readonly notificationService = inject(NotificationService);
 
-  protected readonly currentUser = this.blogService.currentUser;
+  protected readonly currentUser = this.authService.getCurrentUser();
 
   protected readonly canDeletePost = computed(
-    () => this.post().author.id === this.currentUser()?.id
+    () => this.post().author.id === this.currentUser?.id
   );
 
   protected readonly formattedContent = computed(() =>
@@ -50,18 +52,6 @@ export class BlogPost {
   );
 
   protected deletePost = (): void => {
-    this.blogService.deletePost(this.post().id).subscribe({
-      next: () => {
-        this.notificationService.showNotification(
-          $localize`:@@blog-post.delete-success:Post deleted successfully`
-        );
-      },
-      error: (error) => {
-        this.notificationService.showNotification(
-          $localize`:@@blog-post.delete-error:Failed to delete post`
-        );
-        this.logger.error(`Failed to delete post: ${error}`);
-      },
-    });
+    this.blogService.deletePost(this.post().id);
   };
 }

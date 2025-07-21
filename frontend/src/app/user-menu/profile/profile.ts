@@ -43,7 +43,16 @@ export class Profile {
   private readonly notificationService = inject(NotificationService);
 
   protected readonly currentUser = computed(() => {
-    return this.userService.getUserById(this.authService.getCurrentUser()?.id);
+    const user = this.userService.getUserById(
+      this.authService.getCurrentUser()?.id
+    );
+
+    this.editUserForm.patchValue({
+      username: user?.username || '',
+      email: user?.email || '',
+    });
+
+    return user;
   });
 
   protected readonly editUserForm = new FormGroup({

@@ -12,52 +12,40 @@
         <div class="setting-item">
           <div class="setting-label">
             <span class="setting-title">Comment Notifications</span>
-            <span class="setting-description"
-              >Get notified when someone comments on your posts</span
-            >
+            <span class="setting-description">
+              Get notified when someone comments on your posts
+            </span>
           </div>
-          <label class="toggle">
-            <input
-              type="checkbox"
-              [checked]="settings().notifications.comments"
-              (change)="updateNotificationSetting('comments', $event)"
-            />
-            <span class="toggle-slider"></span>
-          </label>
+          <mat-slide-toggle
+            [checked]="commentNotifications()"
+            (change)="commentNotifications.set($event.checked)"
+          ></mat-slide-toggle>
         </div>
 
         <div class="setting-item">
           <div class="setting-label">
             <span class="setting-title">Like Notifications</span>
-            <span class="setting-description"
-              >Get notified when someone likes your posts</span
-            >
+            <span class="setting-description">
+              Get notified when someone likes your posts
+            </span>
           </div>
-          <label class="toggle">
-            <input
-              type="checkbox"
-              [checked]="settings().notifications.likes"
-              (change)="updateNotificationSetting('likes', $event)"
-            />
-            <span class="toggle-slider"></span>
-          </label>
+          <mat-slide-toggle
+            [checked]="likeNotifications()"
+            (change)="likeNotifications.set($event.checked)"
+          ></mat-slide-toggle>
         </div>
 
         <div class="setting-item">
           <div class="setting-label">
             <span class="setting-title">Follow Notifications</span>
-            <span class="setting-description"
-              >Get notified when someone follows you</span
-            >
+            <span class="setting-description">
+              Get notified when someone follows you
+            </span>
           </div>
-          <label class="toggle">
-            <input
-              type="checkbox"
-              [checked]="settings().notifications.follows"
-              (change)="updateNotificationSetting('follows', $event)"
-            />
-            <span class="toggle-slider"></span>
-          </label>
+          <mat-slide-toggle
+            [checked]="followNotifications()"
+            (change)="followNotifications.set($event.checked)"
+          ></mat-slide-toggle>
         </div>
       </div>
     </section>
@@ -69,52 +57,40 @@
         <div class="setting-item">
           <div class="setting-label">
             <span class="setting-title">Public Profile</span>
-            <span class="setting-description"
-              >Make your profile visible to everyone</span
-            >
+            <span class="setting-description">
+              Make your profile visible to everyone
+            </span>
           </div>
-          <label class="toggle">
-            <input
-              type="checkbox"
-              [checked]="settings().privacy.profileVisible"
-              (change)="updatePrivacySetting('profileVisible', $event)"
-            />
-            <span class="toggle-slider"></span>
-          </label>
+          <mat-slide-toggle
+            [checked]="publicProfile()"
+            (change)="publicProfile.set($event.checked)"
+          ></mat-slide-toggle>
         </div>
 
         <div class="setting-item">
           <div class="setting-label">
             <span class="setting-title">Show Email</span>
-            <span class="setting-description"
-              >Display your email address on your profile</span
-            >
+            <span class="setting-description">
+              Display your email address on your profile
+            </span>
           </div>
-          <label class="toggle">
-            <input
-              type="checkbox"
-              [checked]="settings().privacy.showEmail"
-              (change)="updatePrivacySetting('showEmail', $event)"
-            />
-            <span class="toggle-slider"></span>
-          </label>
+          <mat-slide-toggle
+            [checked]="showEmail()"
+            (change)="showEmail.set($event.checked)"
+          ></mat-slide-toggle>
         </div>
 
         <div class="setting-item">
           <div class="setting-label">
             <span class="setting-title">Allow Messages</span>
-            <span class="setting-description"
-              >Allow other users to send you direct messages</span
-            >
+            <span class="setting-description">
+              Allow other users to send you direct messages
+            </span>
           </div>
-          <label class="toggle">
-            <input
-              type="checkbox"
-              [checked]="settings().privacy.allowMessages"
-              (change)="updatePrivacySetting('allowMessages', $event)"
-            />
-            <span class="toggle-slider"></span>
-          </label>
+          <mat-slide-toggle
+            [checked]="allowMessages()"
+            (change)="allowMessages.set($event.checked)"
+          ></mat-slide-toggle>
         </div>
       </div>
     </section>
@@ -126,14 +102,14 @@
         <div class="setting-item">
           <div class="setting-label">
             <span class="setting-title">Theme</span>
-            <span class="setting-description"
-              >Choose your preferred color scheme</span
-            >
+            <span class="setting-description">
+              Choose your preferred color scheme
+            </span>
           </div>
           <select
             class="setting-select"
-            [value]="settings().appearance.theme"
-            (change)="updateTheme($event)"
+            [value]="theme()"
+            (change)="theme.set($any($event.target).value)"
           >
             <option value="light">Light</option>
             <option value="dark">Dark</option>
@@ -144,14 +120,14 @@
         <div class="setting-item">
           <div class="setting-label">
             <span class="setting-title">Language</span>
-            <span class="setting-description"
-              >Select your preferred language</span
-            >
+            <span class="setting-description">
+              Select your preferred language
+            </span>
           </div>
           <select
             class="setting-select"
-            [value]="settings().appearance.language"
-            (change)="updateLanguage($event)"
+            [value]="language()"
+            (change)="language.set($any($event.target).value)"
           >
             <option value="en">English</option>
             <option value="es">Español</option>
@@ -161,24 +137,19 @@
         </div>
       </div>
     </section>
-  </div>
 
-  <!-- Actions -->
-  <div class="settings-actions">
-    @if (hasUnsavedChanges()) {
-      <div class="unsaved-indicator">You have unsaved changes</div>
-    }
-    <div class="action-buttons">
-      <button class="btn btn-secondary" (click)="resetSettings()">
-        Reset to Default
-      </button>
-      <button
-        class="btn btn-primary"
-        (click)="saveSettings()"
-        [disabled]="!hasUnsavedChanges()"
-      >
-        Save Changes
-      </button>
+    <div class="settings-actions">
+      @if (hasUnsavedChanges()) {
+        <div class="unsaved-indicator">You have unsaved changes</div>
+      }
+      <div class="action-buttons">
+        <button class="btn btn-secondary" (click)="resetSettings()">
+          Reset to Default
+        </button>
+        <button class="btn btn-primary" (click)="saveSettings()">
+          Save Changes
+        </button>
+      </div>
     </div>
   </div>
 </div>

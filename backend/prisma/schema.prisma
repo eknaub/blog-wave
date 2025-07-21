@@ -41,6 +41,8 @@ model users {
   posts      posts[]
   followers  userFollows[] @relation("followers")
   following  userFollows[] @relation("following")
+  followersCount  Int @default(0)
+  followingCount  Int @default(0)
 }
 
 model userFollows {

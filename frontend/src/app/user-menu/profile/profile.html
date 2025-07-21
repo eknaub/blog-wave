@@ -4,21 +4,76 @@
       @if (!isEditing()) {
         <h1 class="user-name">{{ user()?.username }}</h1>
         <p class="user-email">{{ user()?.email }}</p>
+        <button class="btn btn-primary" (click)="toggleEdit()">
+          Edit Profile
+        </button>
       } @else {
-        <div class="edit-form">
-          <input
-            type="text"
-            [value]="user()?.username"
-            placeholder="Full Name"
-            class="edit-input"
-          />
-          <input
-            type="email"
-            [value]="user()?.email"
-            placeholder="Email"
-            class="edit-input"
-          />
-        </div>
+        <form
+          [formGroup]="editUserForm"
+          (ngSubmit)="saveProfile()"
+          class="edit-form"
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="username"
+              placeholder="Enter your username"
+            />
+            <mat-icon matSuffix>person</mat-icon>
+            @if (editUserForm.get('username')?.hasError('required')) {
+              <mat-error i18n="@@register.username.required">
+                Username is required.
+              </mat-error>
+            }
+            @if (editUserForm.get('username')?.hasError('pattern')) {
+              <mat-error i18n="@@register.username.pattern">
+                Username must be 3-20 characters long and can include letters,
+                numbers, and underscores.
+              </mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+              type="email"
+              matInput
+              formControlName="email"
+              placeholder="Enter your email"
+            />
+            <mat-icon matSuffix>email</mat-icon>
+            @if (editUserForm.get('email')?.hasError('required')) {
+              <mat-error i18n="@@register.email.required">
+                Email is required.
+              </mat-error>
+            }
+            @if (editUserForm.get('email')?.hasError('email')) {
+              <mat-error i18n="@@register.email.invalid">
+                Please enter a valid email address.
+              </mat-error>
+            }
+            @if (editUserForm.get('email')?.hasError('maxlength')) {
+              <mat-error i18n="@@register.email.maxlength">
+                Email cannot exceed 100 characters.
+              </mat-error>
+            }
+          </mat-form-field>
+          <div class="profile-actions">
+            <div class="edit-actions">
+              <button class="btn btn-success" type="submit">
+                Save Changes
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+                (click)="cancelEdit()"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
       }
     </div>
   </div>
@@ -28,20 +83,13 @@
       <span class="stat-number">{{ postCount() }}</span>
       <span class="stat-label">Posts</span>
     </div>
-  </div>
-
-  <div class="profile-actions">
-    @if (!isEditing()) {
-      <button class="btn btn-primary" (click)="toggleEdit()">
-        Edit Profile
-      </button>
-    } @else {
-      <div class="edit-actions">
-        <button class="btn btn-success" (click)="saveProfile()">
-          Save Changes
-        </button>
-        <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
-      </div>
-    }
+    <div class="stat-item">
+      <span class="stat-number">{{ followerCount() }}</span>
+      <span class="stat-label">Followers</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">{{ followingCount() }}</span>
+      <span class="stat-label">Following</span>
+    </div>
   </div>
 </div>

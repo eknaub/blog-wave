@@ -113,10 +113,16 @@ export class Register {
       return;
     }
 
-    this.authService.register({
-      username,
-      password,
-      email,
-    });
+    this.authService
+      .register({
+        username,
+        password,
+        email,
+      })
+      .subscribe({
+        next: () => {
+          // Register successful, navigation handled by service
+        },
+      });
   }
 }

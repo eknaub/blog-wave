@@ -10,6 +10,8 @@ export interface Follower {
 'email': string;
 'createdAt': string;
 'updatedAt': string;
+'followersCount'?: number;
+'followingCount'?: number;
 };
   followingId: number;
   id: number;

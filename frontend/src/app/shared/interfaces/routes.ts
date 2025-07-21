@@ -7,4 +7,5 @@ export enum RouteNames {
   DASHBOARD = 'dashboard',
   USERS = 'users',
   BLOG = 'blog',
+  USER_PROFILE = 'user-profile',
 }

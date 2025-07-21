@@ -1,19 +1,51 @@
-<div class="user-card">
-  <div class="user-avatar">
-    <div class="avatar-placeholder">
-      {{ user().username.charAt(0).toUpperCase() }}
-    </div>
-  </div>
+<mat-card class="container">
+  <mat-card-header class="mat-card-header">
+    <mat-card-title class="mat-card-title">{{
+      user().username
+    }}</mat-card-title>
+    <mat-card-subtitle class="mat-card-subtitle">{{
+      user().email
+    }}</mat-card-subtitle>
+  </mat-card-header>
 
-  <div class="user-info">
-    <h2 class="username">{{ user().username }}</h2>
-    <p class="email">{{ user().email }}</p>
+  <mat-card-content class="mat-card-content">
+    <span i18n="@@user-card.posts-label">Posts</span>
+    <p>{{ postCount() }}</p>
+    <span i18n="@@user-card.followers-label">Followers</span>
+    <p>{{ followerCount() }}</p>
+    <span i18n="@@user-card.following-label">Following</span>
+    <p>{{ followingCount() }}</p>
+  </mat-card-content>
 
-    <div class="stats">
-      <div class="stat-item">
-        <span class="stat-number">{{ postCount() }}</span>
-        <span class="stat-label" i18n="@@user-card.posts-label">Posts</span>
-      </div>
-    </div>
-  </div>
-</div>
+  <mat-card-actions class="mat-card-actions">
+    <button
+      mat-button
+      class="user-btn user-btn--view"
+      (click)="navigateToUserProfile(user().id)"
+      i18n="@@user-card.view-profile"
+    >
+      View Profile
+    </button>
+    @if (!isCurrentUser()) {
+      @if (isFollowing()) {
+        <button
+          mat-button
+          class="user-btn user-btn--unfollow"
+          (click)="unfollowUser()"
+          i18n="@@user-card.unfollow"
+        >
+          Unfollow
+        </button>
+      } @else {
+        <button
+          mat-button
+          class="user-btn user-btn--follow"
+          (click)="followUser()"
+          i18n="@@user-card.follow"
+        >
+          Follow
+        </button>
+      }
+    }
+  </mat-card-actions>
+</mat-card>

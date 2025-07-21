@@ -6,7 +6,6 @@ import {
 } from '../api/models/followerSwagger';
 import { aiSwaggerSchema } from '../api/models/aiSwagger';
 import {
-  extendedUserSchema,
   userPostSwaggerSchema,
   userSwaggerSchema,
   userUpdateSwaggerSchema,
@@ -37,7 +36,6 @@ export const swaggerOptions = {
         Ai: aiSwaggerSchema.definitions?.Ai,
         //User schemas
         User: userSwaggerSchema.definitions?.User,
-        ExtendedUser: extendedUserSchema.definitions?.ExtendedUser,
         UserPost: userPostSwaggerSchema.definitions?.UserPost,
         UserPut: userUpdateSwaggerSchema.definitions?.UserPut,
         BaseFollower: followerBaseSwaggerSchema.definitions?.BaseFollower,

@@ -66,9 +66,6 @@ export class AuthService {
           return false;
         }),
         catchError((error) => {
-          this.notificationService.showNotification(
-            $localize`:@@auth-service.login-error:Login failed`
-          );
           this.logger.error(`Login failed: ${error}`);
           return of(false);
         })
@@ -86,9 +83,6 @@ export class AuthService {
         );
       }),
       catchError((error) => {
-        this.notificationService.showNotification(
-          $localize`:@@auth-service.logout-error:Logout failed`
-        );
         this.logger.error(`Logout failed: ${error}`);
         // Still clear local state even if server logout fails
         this.currentUserSignal.set(null);
@@ -117,6 +111,8 @@ export class AuthService {
       })
       .pipe(
         map((response) => {
+          console.log('Registration response:', response);
+
           if (response) {
             this.setCurrentUser(response);
             this.router.navigate([RouteNames.DASHBOARD]);
@@ -128,9 +124,6 @@ export class AuthService {
           return false;
         }),
         catchError((error) => {
-          this.notificationService.showNotification(
-            $localize`:@@auth-service.registration-error:Registration failed`
-          );
           this.logger.error(`Registration failed: ${error}`);
           return of(false);
         })
@@ -149,9 +142,6 @@ export class AuthService {
         const user = JSON.parse(storedUser);
         this.currentUserSignal.set(user);
       } catch (error) {
-        this.notificationService.showNotification(
-          $localize`:@@auth-service.invalid-user:Invalid user data in local storage`
-        );
         this.logger.error(`Invalid user data in local storage: ${error}`);
         localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
       }

@@ -115,9 +115,7 @@ class UserController {
   ): Promise<void> {
     try {
       const userId = req.validatedParams!.userId;
-      const foundUser = await getUserOrNotFound(userId, res, {
-        fetchExtendedUser: true,
-      });
+      const foundUser = await getUserOrNotFound(userId, res);
 
       sendSuccess(res, foundUser, 'User retrieved successfully');
     } catch (error) {

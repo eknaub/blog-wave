@@ -215,7 +215,6 @@ router.delete(
   `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWERS}/${RouteIds.UNFOLLOW_ID}`,
   requireAuth,
   validateParams(UnfollowIdParamSchema),
-  validateBody(FollowerCreateSchema),
   userController.removeFollower.bind(userController)
 );
 router.get(

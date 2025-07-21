@@ -6,6 +6,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { Comment, CommentPost, Post, PostPost } from '../../shared/api/models';
 import { PostsService as GeneratedPostsService } from '../../shared/api/services/posts.service';
 import { CommentsService as GeneratedCommentsService } from '../../shared/api/services/comments.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class BlogService {
   private readonly notificationService = inject(NotificationService);
   private readonly generatedPostsService = inject(GeneratedPostsService);
   private readonly generatedCommentsService = inject(GeneratedCommentsService);
+  private readonly router = inject(Router);
 
   private readonly commentsSignals = new Map<
     number,
@@ -27,6 +29,10 @@ export class BlogService {
   readonly postsError = signal<string | null>(null);
 
   readonly currentUser = computed(() => this.authService.getCurrentUser());
+
+  navigateToUserProfile(userId: number): void {
+    this.router.navigate(['/dashboard', 'user-profile', userId]);
+  }
 
   constructor() {
     this.loadPosts();
@@ -77,8 +83,10 @@ export class BlogService {
       });
   }
 
-  getPostCountByAuthor = computed(() => (authorId: number) => {
-    return this.posts().filter((post) => post.author.id === authorId).length;
+  getPostCountByAuthor = computed(() => (authorId?: number) => {
+    return (
+      this.posts().filter((post) => post.author.id === authorId).length || 0
+    );
   });
 
   uploadPost(title: string, content: string): Observable<Post> {

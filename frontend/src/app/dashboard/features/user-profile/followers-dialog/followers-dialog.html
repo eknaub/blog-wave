@@ -4,13 +4,13 @@
   @if (dialogType === FollowersDialogType.FOLLOWERS) {
     <ul>
       @for (user of followers; track user.id) {
-        <li>{{ user.follower.username }}</li>
+        <li>{{ user.follower?.username }}</li>
       }
     </ul>
   } @else if (dialogType === FollowersDialogType.FOLLOWING) {
     <ul>
       @for (user of following; track user.id) {
-        <li>{{ user.following.username }}</li>
+        <li>{{ user.following?.username }}</li>
       }
     </ul>
   }

@@ -11,7 +11,8 @@ export const FollowerSchema = z.object({
   id: z.number().int().positive(),
   followerId: z.number().int().positive(),
   followingId: z.number().int().positive(),
-  following: BaseUserSchema,
+  following: BaseUserSchema.optional(),
+  follower: BaseUserSchema.optional(),
 });
 
 export const FollowerCreateSchema = z.object({

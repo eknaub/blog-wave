@@ -29,6 +29,13 @@ export class UserCard {
 
   readonly user = input.required<User>();
 
+  constructor() {
+    const currentUser = this.authService.getLoggedInUser();
+    if (currentUser) {
+      this.userFollowersService.setUserId(currentUser.id);
+    }
+  }
+
   protected readonly postCount = computed(() => {
     return this.blogService.getPostCountByAuthor()(this.user().id);
   });
@@ -45,43 +52,57 @@ export class UserCard {
     this.blogService.navigateToUserProfile(userId);
   };
 
-  protected readonly isCurrentUser = computed(() => {
-    const currentUser = this.authService.getCurrentUser();
+  protected readonly isSelectedUserCurrentUser = computed(() => {
+    const currentUser = this.authService.getLoggedInUser();
     return currentUser ? currentUser.id === this.user().id : false;
   });
 
   protected readonly followUser = () => {
-    if (this.isCurrentUser()) {
+    const currentUser = this.authService.getLoggedInUser();
+
+    if (this.isSelectedUserCurrentUser() || !currentUser) {
       return;
     }
-    this.userFollowersService.followUser(this.user().id).subscribe({
-      next: () => {
-        this.userService.refetchUsers();
-        this.userFollowersService.refetchFollowersAndFollowing();
-      },
-      error: (err) => {
-        this.logger.error(`Failed to follow user: ${err}`);
-      },
-    });
+
+    this.userFollowersService
+      .followUser(currentUser.id, this.user().id)
+      .subscribe({
+        next: () => {
+          this.userService.refetchUsers();
+          this.userFollowersService.refetchFollowersAndFollowing(
+            this.user().id
+          );
+        },
+        error: (err) => {
+          this.logger.error(`Failed to follow user: ${err}`);
+        },
+      });
   };
 
   protected readonly unfollowUser = () => {
-    if (this.isCurrentUser()) {
+    const currentUser = this.authService.getLoggedInUser();
+
+    if (this.isSelectedUserCurrentUser() || !currentUser) {
       return;
     }
-    this.userFollowersService.unfollowUser(this.user().id).subscribe({
-      next: () => {
-        this.userService.refetchUsers();
-        this.userFollowersService.refetchFollowersAndFollowing();
-      },
-      error: (err) => {
-        this.logger.error(`Failed to unfollow user: ${err}`);
-      },
-    });
+
+    this.userFollowersService
+      .unfollowUser(currentUser.id, this.user().id)
+      .subscribe({
+        next: () => {
+          this.userService.refetchUsers();
+          this.userFollowersService.refetchFollowersAndFollowing(
+            this.user().id
+          );
+        },
+        error: (err) => {
+          this.logger.error(`Failed to unfollow user: ${err}`);
+        },
+      });
   };
 
   protected readonly isFollowing = computed(() => {
-    const currentUser = this.authService.getCurrentUser();
+    const currentUser = this.authService.getLoggedInUser();
     if (!currentUser) {
       return false;
     }

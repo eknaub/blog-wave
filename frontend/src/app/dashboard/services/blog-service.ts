@@ -29,7 +29,7 @@ export class BlogService {
   readonly postsError = signal<string | null>(null);
 
   private readonly currentUser = computed(() =>
-    this.authService.getCurrentUser()
+    this.authService.getLoggedInUser()
   );
 
   navigateToUserProfile(userId: number): void {

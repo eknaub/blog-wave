@@ -23,7 +23,7 @@ export class Home {
 
   protected readonly RouteNames = RouteNames;
   protected readonly currentUserName = computed(() => {
-    const user = this.authService.getCurrentUser();
+    const user = this.authService.getLoggedInUser();
     return user ? user.username : '';
   });
 

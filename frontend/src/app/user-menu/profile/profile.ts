@@ -42,7 +42,7 @@ export class Profile {
 
   protected readonly currentUser = computed(() => {
     const user = this.userService.getUserById(
-      this.authService.getCurrentUser()?.id
+      this.authService.getLoggedInUser()?.id
     );
 
     this.editUserForm.patchValue({

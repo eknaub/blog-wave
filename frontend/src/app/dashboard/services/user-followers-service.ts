@@ -1,38 +1,54 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { FollowersService as GeneratedFollowersService } from '../../shared/api/services';
-import { AuthService } from '../../shared/services/auth.service';
 import { Follower } from '../../shared/api/models';
 import { LoggerService } from '../../shared/services/logger.service';
+
+//TODO: This service needs rebuilding, dont like how it works
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserFollowersService {
   private readonly followerService = inject(GeneratedFollowersService);
-  private readonly authService = inject(AuthService);
   private readonly logger = inject(LoggerService);
 
-  readonly followers = signal<Follower[]>([]);
-  readonly following = signal<Follower[]>([]);
+  readonly userId = signal<number | null>(null);
+  readonly followers = signal<Follower[] | null>(null);
+  readonly following = signal<Follower[] | null>(null);
 
   constructor() {
-    this.fetchFollowers();
-    this.fetchFollowing();
+    effect(() => {
+      const id = this.userId();
+      if (id !== null) {
+        this.fetchFollowers(id);
+        this.fetchFollowing(id);
+      }
+    });
   }
 
-  refetchFollowersAndFollowing() {
-    this.fetchFollowers();
-    this.fetchFollowing();
+  setUserId(id: number) {
+    this.userId.set(id);
   }
 
-  private fetchFollowing() {
-    const currentUserId = this.authService.getCurrentUser()?.id;
-    if (!currentUserId) {
-      throw new Error('No current user found');
+  refetchFollowersAndFollowing(userId: number) {
+    if (userId === null) {
+      this.logger.warn(
+        'User ID is not set, cannot refetch followers and following'
+      );
+      return;
+    }
+
+    this.fetchFollowers(userId);
+    this.fetchFollowing(userId);
+  }
+
+  fetchFollowing(userId: number) {
+    if (!userId) {
+      throw new Error('User ID is not set, cannot fetch following');
     }
     this.followerService
       .apiUsersUserIdFollowingGet({
-        userId: currentUserId,
+        userId: userId,
       })
       .subscribe({
         next: (following) => {
@@ -45,14 +61,13 @@ export class UserFollowersService {
       });
   }
 
-  private fetchFollowers() {
-    const currentUserId = this.authService.getCurrentUser()?.id;
-    if (!currentUserId) {
-      throw new Error('No current user found');
+  fetchFollowers(userId: number) {
+    if (!userId) {
+      throw new Error('User ID is not set, cannot fetch followers');
     }
     this.followerService
       .apiUsersUserIdFollowersGet({
-        userId: currentUserId,
+        userId: userId,
       })
       .subscribe({
         next: (followers) => {
@@ -65,25 +80,39 @@ export class UserFollowersService {
       });
   }
 
-  isFollowing(userId: number): boolean {
-    return this.following().some((follower) => follower.followingId === userId);
+  isFollowing(followingId: number): boolean {
+    const following = this.following();
+
+    if (!following) {
+      this.logger.warn('Following list is not loaded');
+      return false;
+    }
+
+    return following.some((follower) => follower.followingId === followingId);
   }
 
-  isFollower(userId: number): boolean {
-    return this.followers().some((follower) => follower.followerId === userId);
+  isFollower(followerId: number): boolean {
+    const followers = this.followers();
+
+    if (!followers) {
+      this.logger.warn('Followers list is not loaded');
+      return false;
+    }
+
+    return followers.some((follower) => follower.followerId === followerId);
   }
 
-  followUser(userId: number) {
+  followUser(currentUserId: number, followId: number) {
     return this.followerService.apiUsersUserIdFollowersPost({
-      userId: this.authService.getCurrentUser()?.id ?? 0,
-      body: { followId: userId },
+      userId: currentUserId,
+      body: { followId: followId },
     });
   }
 
-  unfollowUser(userId: number) {
+  unfollowUser(currentUserId: number, unfollowId: number) {
     return this.followerService.apiUsersUserIdFollowersUnfollowIdDelete({
-      userId: this.authService.getCurrentUser()?.id ?? 0,
-      unfollowId: userId,
+      userId: currentUserId,
+      unfollowId: unfollowId,
     });
   }
 }

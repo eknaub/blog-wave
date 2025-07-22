@@ -51,7 +51,7 @@ export class BlogPostComment {
   private readonly notificationService = inject(NotificationService);
   private readonly logger = inject(LoggerService);
 
-  protected readonly currentUser = this.authService.getCurrentUser();
+  protected readonly currentUser = this.authService.getLoggedInUser();
   protected readonly panelState = signal(false);
 
   protected readonly commentForm = new FormGroup({

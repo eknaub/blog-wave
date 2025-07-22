@@ -32,7 +32,7 @@ export class AuthService {
   private readonly currentUserSignal = signal<User | null>(null);
 
   readonly isAuthenticated = computed(() => this.currentUserSignal() !== null);
-  readonly getCurrentUser = computed(() => this.currentUserSignal());
+  readonly getLoggedInUser = computed(() => this.currentUserSignal());
 
   constructor() {
     this.checkExistingAuth();

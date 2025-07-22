@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -43,11 +48,20 @@ export class FollowersDialog {
   private readonly followersService = inject(UserFollowersService);
   protected readonly data = inject(MAT_DIALOG_DATA) as {
     type: FollowersDialogType;
+    userId: number;
   };
 
-  protected readonly followers = this.followersService.followers();
-  protected readonly following = this.followersService.following();
+  protected readonly followers = computed(() => {
+    return this.followersService.followers();
+  });
+  protected readonly following = computed(() => {
+    return this.followersService.following();
+  });
   protected readonly dialogType = this.data.type;
+
+  constructor() {
+    this.followersService.setUserId(this.data.userId);
+  }
 
   protected readonly dialogTitle =
     this.dialogType === FollowersDialogType.FOLLOWERS

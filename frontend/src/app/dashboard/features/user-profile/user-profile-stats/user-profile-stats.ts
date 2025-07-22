@@ -46,6 +46,7 @@ export class UserProfileStats {
     this.dialog.open(FollowersDialog, {
       data: {
         type: FollowersDialogType.FOLLOWERS,
+        userId: this.user()?.id ?? 0,
       },
     });
   };
@@ -55,6 +56,7 @@ export class UserProfileStats {
     this.dialog.open(FollowersDialog, {
       data: {
         type: FollowersDialogType.FOLLOWING,
+        userId: this.user()?.id ?? 0,
       },
     });
   };

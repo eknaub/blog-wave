@@ -37,7 +37,7 @@ export class BlogPost {
   private readonly logger = inject(LoggerService);
   private readonly notificationService = inject(NotificationService);
 
-  protected readonly currentUser = this.authService.getCurrentUser();
+  protected readonly currentUser = this.authService.getLoggedInUser();
 
   protected readonly canDeletePost = computed(
     () => this.post().author.id === this.currentUser?.id

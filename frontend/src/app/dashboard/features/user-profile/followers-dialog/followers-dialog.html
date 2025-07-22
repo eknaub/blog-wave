@@ -1,0 +1,20 @@
+<h2>{{ dialogTitle }}</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content class="dialog-content">
+  @if (dialogType === FollowersDialogType.FOLLOWERS) {
+    <ul>
+      @for (user of followers; track user.id) {
+        <li>{{ user.follower.username }}</li>
+      }
+    </ul>
+  } @else if (dialogType === FollowersDialogType.FOLLOWING) {
+    <ul>
+      @for (user of following; track user.id) {
+        <li>{{ user.following.username }}</li>
+      }
+    </ul>
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

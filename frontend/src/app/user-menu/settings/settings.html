@@ -1,18 +1,27 @@
 <div class="settings-container">
   <div class="settings-header">
-    <h1>Settings</h1>
-    <p>Manage your account preferences and privacy settings</p>
+    <h1 i18n="@@settings.title">Settings</h1>
+    <p i18n="@@settings.subtitle">
+      Manage your account preferences and privacy settings
+    </p>
   </div>
 
   <div class="settings-content">
     <!-- Notifications Section -->
     <section class="settings-section">
-      <h2>Notifications</h2>
+      <h2 i18n="@@settings.notifications.title">Notifications</h2>
       <div class="setting-group">
         <div class="setting-item">
           <div class="setting-label">
-            <span class="setting-title">Comment Notifications</span>
-            <span class="setting-description">
+            <span
+              class="setting-title"
+              i18n="@@settings.notifications.comment.title"
+              >Comment Notifications</span
+            >
+            <span
+              class="setting-description"
+              i18n="@@settings.notifications.comment.desc"
+            >
               Get notified when someone comments on your posts
             </span>
           </div>
@@ -24,8 +33,15 @@
 
         <div class="setting-item">
           <div class="setting-label">
-            <span class="setting-title">Like Notifications</span>
-            <span class="setting-description">
+            <span
+              class="setting-title"
+              i18n="@@settings.notifications.like.title"
+              >Like Notifications</span
+            >
+            <span
+              class="setting-description"
+              i18n="@@settings.notifications.like.desc"
+            >
               Get notified when someone likes your posts
             </span>
           </div>
@@ -37,8 +53,15 @@
 
         <div class="setting-item">
           <div class="setting-label">
-            <span class="setting-title">Follow Notifications</span>
-            <span class="setting-description">
+            <span
+              class="setting-title"
+              i18n="@@settings.notifications.follow.title"
+              >Follow Notifications</span
+            >
+            <span
+              class="setting-description"
+              i18n="@@settings.notifications.follow.desc"
+            >
               Get notified when someone follows you
             </span>
           </div>
@@ -52,12 +75,17 @@
 
     <!-- Privacy Section -->
     <section class="settings-section">
-      <h2>Privacy</h2>
+      <h2 i18n="@@settings.privacy.title">Privacy</h2>
       <div class="setting-group">
         <div class="setting-item">
           <div class="setting-label">
-            <span class="setting-title">Public Profile</span>
-            <span class="setting-description">
+            <span class="setting-title" i18n="@@settings.privacy.public.title"
+              >Public Profile</span
+            >
+            <span
+              class="setting-description"
+              i18n="@@settings.privacy.public.desc"
+            >
               Make your profile visible to everyone
             </span>
           </div>
@@ -69,8 +97,13 @@
 
         <div class="setting-item">
           <div class="setting-label">
-            <span class="setting-title">Show Email</span>
-            <span class="setting-description">
+            <span class="setting-title" i18n="@@settings.privacy.email.title"
+              >Show Email</span
+            >
+            <span
+              class="setting-description"
+              i18n="@@settings.privacy.email.desc"
+            >
               Display your email address on your profile
             </span>
           </div>
@@ -82,8 +115,13 @@
 
         <div class="setting-item">
           <div class="setting-label">
-            <span class="setting-title">Allow Messages</span>
-            <span class="setting-description">
+            <span class="setting-title" i18n="@@settings.privacy.messages.title"
+              >Allow Messages</span
+            >
+            <span
+              class="setting-description"
+              i18n="@@settings.privacy.messages.desc"
+            >
               Allow other users to send you direct messages
             </span>
           </div>
@@ -97,12 +135,17 @@
 
     <!-- Appearance Section -->
     <section class="settings-section">
-      <h2>Appearance</h2>
+      <h2 i18n="@@settings.appearance.title">Appearance</h2>
       <div class="setting-group">
         <div class="setting-item">
           <div class="setting-label">
-            <span class="setting-title">Theme</span>
-            <span class="setting-description">
+            <span class="setting-title" i18n="@@settings.appearance.theme.title"
+              >Theme</span
+            >
+            <span
+              class="setting-description"
+              i18n="@@settings.appearance.theme.desc"
+            >
               Choose your preferred color scheme
             </span>
           </div>
@@ -110,17 +153,31 @@
             class="setting-select"
             [value]="theme()"
             (change)="theme.set($any($event.target).value)"
+            i18n-label="@@settings.appearance.theme.select"
           >
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-            <option value="auto">Auto</option>
+            <option value="light" i18n="@@settings.appearance.theme.light">
+              Light
+            </option>
+            <option value="dark" i18n="@@settings.appearance.theme.dark">
+              Dark
+            </option>
+            <option value="auto" i18n="@@settings.appearance.theme.auto">
+              Auto
+            </option>
           </select>
         </div>
 
         <div class="setting-item">
           <div class="setting-label">
-            <span class="setting-title">Language</span>
-            <span class="setting-description">
+            <span
+              class="setting-title"
+              i18n="@@settings.appearance.language.title"
+              >Language</span
+            >
+            <span
+              class="setting-description"
+              i18n="@@settings.appearance.language.desc"
+            >
               Select your preferred language
             </span>
           </div>
@@ -128,11 +185,20 @@
             class="setting-select"
             [value]="language()"
             (change)="language.set($any($event.target).value)"
+            i18n-label="@@settings.appearance.language.select"
           >
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
+            <option value="en" i18n="@@settings.appearance.language.en">
+              English
+            </option>
+            <option value="es" i18n="@@settings.appearance.language.es">
+              Español
+            </option>
+            <option value="fr" i18n="@@settings.appearance.language.fr">
+              Français
+            </option>
+            <option value="de" i18n="@@settings.appearance.language.de">
+              Deutsch
+            </option>
           </select>
         </div>
       </div>
@@ -140,14 +206,16 @@
 
     <div class="settings-actions">
       @if (hasUnsavedChanges()) {
-        <div class="unsaved-indicator">You have unsaved changes</div>
+        <div class="unsaved-indicator" i18n="@@settings.unsaved">
+          You have unsaved changes
+        </div>
       }
       <div class="action-buttons">
         <button class="btn btn-secondary" (click)="resetSettings()">
-          Reset to Default
+          <span i18n="@@settings.reset">Reset to Default</span>
         </button>
         <button class="btn btn-primary" (click)="saveSettings()">
-          Save Changes
+          <span i18n="@@settings.save">Save Changes</span>
         </button>
       </div>
     </div>

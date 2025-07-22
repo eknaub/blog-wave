@@ -5,7 +5,7 @@
         <h1 class="user-name">{{ currentUser()?.username }}</h1>
         <p class="user-email">{{ currentUser()?.email }}</p>
         <button class="btn btn-primary" (click)="toggleEdit()">
-          Edit Profile
+          <span i18n="@@profile.edit.button">Edit Profile</span>
         </button>
       } @else {
         <form
@@ -14,12 +14,13 @@
           class="edit-form"
         >
           <mat-form-field appearance="outline">
-            <mat-label>Username</mat-label>
+            <mat-label i18n="@@profile.username.label">Username</mat-label>
             <input
               type="text"
               matInput
               formControlName="username"
               placeholder="Enter your username"
+              i18n-placeholder="@@profile.username.placeholder"
             />
             <mat-icon matSuffix>person</mat-icon>
             @if (editUserForm.get('username')?.hasError('required')) {
@@ -35,12 +36,13 @@
             }
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
+            <mat-label i18n="@@profile.email.label">Email</mat-label>
             <input
               type="email"
               matInput
               formControlName="email"
               placeholder="Enter your email"
+              i18n-placeholder="@@profile.email.placeholder"
             />
             <mat-icon matSuffix>email</mat-icon>
             @if (editUserForm.get('email')?.hasError('required')) {
@@ -62,14 +64,14 @@
           <div class="profile-actions">
             <div class="edit-actions">
               <button class="btn btn-success" type="submit">
-                Save Changes
+                <span i18n="@@profile.save.button">Save Changes</span>
               </button>
               <button
                 class="btn btn-secondary"
                 type="button"
                 (click)="cancelEdit()"
               >
-                Cancel
+                <span i18n="@@profile.cancel.button">Cancel</span>
               </button>
             </div>
           </div>
@@ -77,19 +79,5 @@
       }
     </div>
   </div>
-
-  <div class="profile-stats">
-    <div class="stat-item">
-      <span class="stat-number">{{ postCount() }}</span>
-      <span class="stat-label">Posts</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-number">{{ followerCount() }}</span>
-      <span class="stat-label">Followers</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-number">{{ followingCount() }}</span>
-      <span class="stat-label">Following</span>
-    </div>
-  </div>
+  <app-user-profile-stats [user]="currentUser()"></app-user-profile-stats>
 </div>

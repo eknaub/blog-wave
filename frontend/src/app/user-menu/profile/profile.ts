@@ -4,10 +4,8 @@ import {
   signal,
   computed,
   inject,
-  effect,
 } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
-import { BlogService } from '../../dashboard/services/blog-service';
 import { UserService } from '../../dashboard/services/user-service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthInputValidators } from '../../shared/utils/validators';
@@ -18,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { User } from '../../shared/api/models';
+import { UserProfileStats } from '../../dashboard/features/user-profile/user-profile-stats/user-profile-stats';
 
 @Component({
   selector: 'app-profile',
@@ -34,11 +32,11 @@ import { User } from '../../shared/api/models';
     MatCardModule,
     MatIconModule,
     MatError,
+    UserProfileStats,
   ],
 })
 export class Profile {
   private readonly authService = inject(AuthService);
-  private readonly blogService = inject(BlogService);
   private readonly userService = inject(UserService);
   private readonly notificationService = inject(NotificationService);
 
@@ -62,22 +60,6 @@ export class Profile {
 
   protected readonly isEditing = signal(false);
 
-  protected readonly postCount = computed(() => {
-    if (!this.currentUser()) {
-      return 0;
-    }
-
-    return this.blogService.getPostCountByAuthor()(this.currentUser()!.id);
-  });
-
-  protected readonly followerCount = computed(() => {
-    return this.currentUser()?.followersCount ?? 0;
-  });
-
-  protected readonly followingCount = computed(() => {
-    return this.currentUser()?.followingCount ?? 0;
-  });
-
   toggleEdit() {
     this.isEditing.update((editing) => !editing);
   }
@@ -93,14 +75,14 @@ export class Profile {
 
     if (!username || !email) {
       this.notificationService.showNotification(
-        'Username and email are required'
+        $localize`:@@profile.form.required:Username and email are required`
       );
       return;
     }
 
     if (this.editUserForm.invalid) {
       this.notificationService.showNotification(
-        'Please fix the errors in the form'
+        $localize`:@@profile.form.invalid:Please fix the errors in the form`
       );
       return;
     }

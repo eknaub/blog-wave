@@ -1,0 +1,18 @@
+@if (user()) {
+  <div class="profile-stats">
+    <button class="stat-item" type="button" (click)="navigateToPosts()">
+      <span class="stat-number">{{ postCount() }}</span>
+      <span class="stat-label">Posts</span>
+    </button>
+    <mat-divider [vertical]="true"></mat-divider>
+    <button class="stat-item" type="button" (click)="openFollowersDialog()">
+      <span class="stat-number">{{ followerCount() }}</span>
+      <span class="stat-label">Followers</span>
+    </button>
+    <mat-divider [vertical]="true"></mat-divider>
+    <button class="stat-item" type="button" (click)="openFollowingDialog()">
+      <span class="stat-number">{{ followingCount() }}</span>
+      <span class="stat-label">Following</span>
+    </button>
+  </div>
+}

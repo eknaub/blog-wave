@@ -58,7 +58,7 @@ export class UserService {
             updatedUsers[index] = response;
             this.users.set(updatedUsers);
             this.notificationService.showNotification(
-              'User updated successfully'
+              $localize`:@@user.updated.success:User updated successfully`
             );
             this.refetchUsers();
           }

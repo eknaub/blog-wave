@@ -5,14 +5,23 @@
 export interface Follower {
   followerId: number;
   following: {
-'id': number;
-'username': string;
-'email': string;
-'createdAt': string;
-'updatedAt': string;
-'followersCount'?: number;
-'followingCount'?: number;
-};
+    id: number;
+    username: string;
+    email: string;
+    createdAt: string;
+    updatedAt: string;
+    followersCount?: number;
+    followingCount?: number;
+  };
+  follower: {
+    id: number;
+    username: string;
+    email: string;
+    createdAt: string;
+    updatedAt: string;
+    followersCount?: number;
+    followingCount?: number;
+  };
   followingId: number;
   id: number;
 }

@@ -3,6 +3,8 @@ export enum RouteIds {
   UNFOLLOW_ID = ':unfollowId',
   POST_ID = ':postId',
   COMMENT_ID = ':commentId',
+  CATEGORY_ID = ':categoryId',
+  TAG_ID = ':tagId',
 }
 
 export enum Routes {
@@ -11,6 +13,8 @@ export enum Routes {
   COMMENTS = 'comments',
   AUTH = 'auth',
   AI = 'ai',
+  TAGS = 'tags',
+  CATEGORIES = 'categories',
 }
 
 export enum UserRoutes {

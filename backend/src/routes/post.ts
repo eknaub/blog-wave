@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import PostController from '../controllers/post';
 import {
-  OptionalUserIdQuerySchema,
-  PostIdParamSchema,
   validateBody,
   validateParams,
   validateQuery,
-} from '../middleware/validation';
+} from '../middleware/requestValidation';
+import { PostIdParamSchema } from '../middleware/requestParamValidation';
+import { OptionalUserIdQuerySchema } from '../middleware/requestQueryValidation';
 import { requireAuth } from '../middleware/auth';
 import {
   PostCreateSchema,
@@ -124,39 +124,39 @@ import { RouteIds } from '../utils/enums';
  *               $ref: '#/components/schemas/Post'
  */
 
-const router = Router();
+const postRouter = Router();
 const postController = new PostController();
 
-router.get(
+postRouter.get(
   '/',
   validateQuery(OptionalUserIdQuerySchema),
   postController.getPosts.bind(postController)
 );
-router.post(
+postRouter.post(
   '/',
   requireAuth,
   validateBody(PostCreateSchema),
   postController.postPost.bind(postController)
 );
-router.put(
+postRouter.put(
   `/${RouteIds.POST_ID}`,
   requireAuth,
   validateParams(PostIdParamSchema),
   validateBody(PostUpdateSchema),
   postController.putPost.bind(postController)
 );
-router.patch(
+postRouter.patch(
   `/${RouteIds.POST_ID}/publish`,
   requireAuth,
   validateParams(PostIdParamSchema),
   validateBody(PostPublishSchema),
   postController.publishPost.bind(postController)
 );
-router.delete(
+postRouter.delete(
   `/${RouteIds.POST_ID}`,
   requireAuth,
   validateParams(PostIdParamSchema),
   postController.deletePost.bind(postController)
 );
 
-export default router;
+export default postRouter;

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import AuthController from '../controllers/auth';
-import { validateBody } from '../middleware/validation';
+import { validateBody } from '../middleware/requestValidation';
 import { requireAuth } from '../middleware/auth';
 import { UserCreateSchema } from '../api/models/user';
 import { LoginSchema } from '../api/models/login';
@@ -81,28 +81,28 @@ import { AuthRoutes } from '../utils/enums';
  *         description: Unauthorized
  */
 
-const router = Router();
+const authRouter = Router();
 const authController = new AuthController();
 
-router.post(
+authRouter.post(
   `/${AuthRoutes.REGISTER}`,
   validateBody(UserCreateSchema),
   authController.register.bind(authController)
 );
-router.post(
+authRouter.post(
   `/${AuthRoutes.LOGIN}`,
   validateBody(LoginSchema),
   authController.login.bind(authController)
 );
-router.post(
+authRouter.post(
   `/${AuthRoutes.LOGOUT}`,
   requireAuth,
   authController.logout.bind(authController)
 );
-router.get(
+authRouter.get(
   `/${AuthRoutes.PROFILE}`,
   requireAuth,
   authController.getProfile.bind(authController)
 );
 
-export default router;
+export default authRouter;

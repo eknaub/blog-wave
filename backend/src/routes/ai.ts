@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import AiController from '../controllers/ai';
-import { AiContentParamSchema, validateQuery } from '../middleware/validation';
+import { validateQuery } from '../middleware/requestValidation';
+import { AiContentParamSchema } from '../middleware/requestParamValidation';
 
-const router = Router();
+const aiRouter = Router();
 const aiController = new AiController();
 
 /**
@@ -28,10 +29,10 @@ const aiController = new AiController();
  *             schema:
  *               $ref: '#/components/schemas/Ai'
  */
-router.get(
+aiRouter.get(
   '/',
   validateQuery(AiContentParamSchema),
   aiController.getGeneratedPostContent.bind(aiController)
 );
 
-export default router;
+export default aiRouter;

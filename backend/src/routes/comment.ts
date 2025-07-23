@@ -1,12 +1,11 @@
 import { Router } from 'express';
 import { RouteIds, Routes } from '../utils/enums';
 import CommentController from '../controllers/comment';
+import { validateBody, validateParams } from '../middleware/requestValidation';
 import {
   PostIdParamSchema,
   PostAndCommentIdParamSchema,
-  validateBody,
-  validateParams,
-} from '../middleware/validation';
+} from '../middleware/requestParamValidation';
 import {
   CommentCreateSchema,
   CommentUpdateSchema,
@@ -114,33 +113,33 @@ import { requireAuth } from '../middleware/auth';
  *               $ref: '#/components/schemas/Comment'
  */
 
-const router = Router();
+const commentRouter = Router();
 const commentController = new CommentController();
 
-router.get(
+commentRouter.get(
   `/${RouteIds.POST_ID}/${Routes.COMMENTS}`,
   validateParams(PostIdParamSchema),
   commentController.getComments.bind(commentController)
 );
-router.post(
+commentRouter.post(
   `/${RouteIds.POST_ID}/${Routes.COMMENTS}`,
   requireAuth,
   validateParams(PostIdParamSchema),
   validateBody(CommentCreateSchema),
   commentController.postComment.bind(commentController)
 );
-router.put(
+commentRouter.put(
   `/${RouteIds.POST_ID}/${Routes.COMMENTS}/${RouteIds.COMMENT_ID}`,
   requireAuth,
   validateParams(PostAndCommentIdParamSchema),
   validateBody(CommentUpdateSchema),
   commentController.putComment.bind(commentController)
 );
-router.delete(
+commentRouter.delete(
   `/${RouteIds.POST_ID}/${Routes.COMMENTS}/${RouteIds.COMMENT_ID}`,
   requireAuth,
   validateParams(PostAndCommentIdParamSchema),
   commentController.deleteComment.bind(commentController)
 );
 
-export default router;
+export default commentRouter;

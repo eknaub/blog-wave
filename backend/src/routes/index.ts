@@ -1,17 +1,21 @@
 import { Router } from 'express';
-import userRoutes from './user';
-import postRoutes from './post';
-import authRoutes from './auth';
-import commentRoutes from './comment';
-import aiRoutes from './ai';
 import { Routes } from '../utils/enums';
+import authRouter from './auth';
+import commentRouter from './comment';
+import userRouter from './user';
+import postRouter from './post';
+import aiRouter from './ai';
+import tagRouter from './tag';
+import categoryRouter from './category';
 
 const router = Router();
 
-router.use(`/${Routes.USERS}`, userRoutes);
-router.use(`/${Routes.POSTS}`, postRoutes);
-router.use(`/${Routes.POSTS}`, commentRoutes);
-router.use(`/${Routes.AUTH}`, authRoutes);
-router.use(`/${Routes.AI}`, aiRoutes);
+router.use(`/${Routes.USERS}`, userRouter);
+router.use(`/${Routes.POSTS}`, postRouter);
+router.use(`/${Routes.POSTS}`, commentRouter);
+router.use(`/${Routes.AUTH}`, authRouter);
+router.use(`/${Routes.AI}`, aiRouter);
+router.use(`/${Routes.TAGS}`, tagRouter);
+router.use(`/${Routes.CATEGORIES}`, categoryRouter);
 
 export default router;

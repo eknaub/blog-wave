@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import passport from '../config/passportConfig';
 import prisma from '../prisma/client';
-import { ValidatedRequest } from '../middleware/validation';
+import { ValidatedRequest } from '../middleware/requestValidation';
 import { Login } from '../api/models/login';
 import {
   sendConflict,

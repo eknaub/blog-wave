@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { ValidatedRequest } from '../middleware/validation';
+import { ValidatedRequest } from '../middleware/requestValidation';
 import { sendError, sendSuccess } from '../utils/response';
 import { Ai } from '../api/models/ai';
 import ai from '../prisma/ai';

@@ -21,6 +21,16 @@ import {
   commentUpdateSwaggerSchema,
 } from '../api/models/commentSwagger';
 import { loginSwaggerSchema } from '../api/models/loginSwagger';
+import {
+  categoryPostSwaggerSchema,
+  categoryPutSwaggerSchema,
+  categorySwaggerSchema,
+} from '../api/models/categorySwagger';
+import {
+  tagPostSwaggerSchema,
+  tagPutSwaggerSchema,
+  tagSwaggerSchema,
+} from '../api/models/tagSwagger';
 
 export const swaggerOptions = {
   definition: {
@@ -51,6 +61,14 @@ export const swaggerOptions = {
         CommentPut: commentUpdateSwaggerSchema.definitions?.CommentPut,
         // Login schema
         Login: loginSwaggerSchema.definitions?.Login,
+        // Category schemas
+        Category: categorySwaggerSchema.definitions?.Category,
+        CategoryPost: categoryPostSwaggerSchema.definitions?.CategoryPost,
+        CategoryPut: categoryPutSwaggerSchema.definitions?.CategoryPut,
+        // Tag schemas
+        Tag: tagSwaggerSchema.definitions?.Tag,
+        TagPost: tagPostSwaggerSchema.definitions?.TagPost,
+        TagPut: tagPutSwaggerSchema.definitions?.TagPut,
       },
     },
   },

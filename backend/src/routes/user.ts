@@ -1,11 +1,10 @@
 import { Router } from 'express';
 import UserController from '../controllers/user';
+import { validateBody, validateParams } from '../middleware/requestValidation';
 import {
-  validateBody,
-  validateParams,
   UserIdParamSchema,
   UnfollowIdParamSchema,
-} from '../middleware/validation';
+} from '../middleware/requestParamValidation';
 import { requireAuth } from '../middleware/auth';
 import { RouteIds, UserRoutes } from '../utils/enums';
 import { FollowerCreateSchema } from '../api/models/follower';
@@ -181,53 +180,53 @@ import { UserUpdateSchema } from '../api/models/user';
  *                 $ref: '#/components/schemas/Follower'
  */
 
-const router = Router();
+const userRouter = Router();
 const userController = new UserController();
 
-router.get('/', userController.getUsers.bind(userController));
-router.put(
+userRouter.get('/', userController.getUsers.bind(userController));
+userRouter.put(
   `/${RouteIds.USER_ID}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   validateBody(UserUpdateSchema),
   userController.putUser.bind(userController)
 );
-router.delete(
+userRouter.delete(
   `/${RouteIds.USER_ID}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.deleteUser.bind(userController)
 );
-router.get(
+userRouter.get(
   `/${RouteIds.USER_ID}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.getUser.bind(userController)
 );
-router.post(
+userRouter.post(
   `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWERS}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   validateBody(FollowerCreateSchema),
   userController.addFollower.bind(userController)
 );
-router.delete(
+userRouter.delete(
   `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWERS}/${RouteIds.UNFOLLOW_ID}`,
   requireAuth,
   validateParams(UnfollowIdParamSchema),
   userController.removeFollower.bind(userController)
 );
-router.get(
+userRouter.get(
   `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWERS}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.getFollowers.bind(userController)
 );
-router.get(
+userRouter.get(
   `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWING}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.getFollowing.bind(userController)
 );
 
-export default router;
+export default userRouter;

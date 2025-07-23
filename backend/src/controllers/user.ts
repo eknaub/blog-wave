@@ -1,7 +1,8 @@
 import { Response } from 'express';
-import { ValidatedRequest } from '../middleware/validation';
+import { ValidatedRequest } from '../middleware/requestValidation';
 import prisma from '../prisma/client';
 import {
+  sendCreated,
   sendDeleted,
   sendError,
   sendSuccess,
@@ -16,6 +17,7 @@ class UserController {
     try {
       const data = await prisma.users.findMany();
 
+      //Omits sensitive information like password
       const sendData: User[] = await Promise.all(
         data.map(async user => {
           return {
@@ -151,7 +153,7 @@ class UserController {
         },
       });
 
-      sendSuccess(res, newFollow, 'Follower added successfully');
+      sendCreated(res, newFollow, 'Follower added successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
@@ -233,7 +235,7 @@ class UserController {
         },
       });
 
-      sendSuccess(res, updatedUser, 'Follower removed successfully');
+      sendDeleted(res, updatedUser, 'Follower removed successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);

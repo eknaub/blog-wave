@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
-  MatDialogActions,
   MatDialogContent,
   MatDialogModule,
   MatDialogRef,
@@ -35,7 +34,6 @@ export enum FollowersDialogType {
     FormsModule,
     MatButtonModule,
     MatDialogContent,
-    MatDialogActions,
     MatDialogModule,
     ReactiveFormsModule,
     MatDividerModule,

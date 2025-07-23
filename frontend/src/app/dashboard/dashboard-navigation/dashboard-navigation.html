@@ -1,7 +1,7 @@
 <mat-drawer-container class="dashboard-navigator-container">
   <mat-drawer mode="side" opened class="dashboard-drawer">
-    <mat-divider></mat-divider>
     <mat-nav-list class="dashboard-nav-list">
+      <h1 class="navigation-group-title">Dashboard</h1>
       <a
         mat-list-item
         [routerLink]="'/' + RouteNames.DASHBOARD"
@@ -12,7 +12,8 @@
         <mat-icon matListItemIcon>dashboard</mat-icon>
         <span matListItemTitle i18n="@@dashboard-navigation.stats">Stats</span>
       </a>
-
+      <mat-divider></mat-divider>
+      <h1 class="navigation-group-title">Management</h1>
       <a
         mat-list-item
         [routerLink]="'/' + RouteNames.DASHBOARD + '/' + RouteNames.USERS"
@@ -24,7 +25,8 @@
           >Authors</span
         >
       </a>
-
+      <mat-divider></mat-divider>
+      <h1 class="navigation-group-title">Content Management</h1>
       <a
         mat-list-item
         [routerLink]="'/' + RouteNames.DASHBOARD + '/' + RouteNames.BLOG"
@@ -35,6 +37,26 @@
         <span matListItemTitle i18n="@@dashboard-navigation.blog-posts"
           >Blog Posts</span
         >
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="'/' + RouteNames.DASHBOARD + '/' + RouteNames.CATEGORY"
+        routerLinkActive="active-nav-item"
+        class="dashboard-nav-item"
+      >
+        <mat-icon matListItemIcon>category</mat-icon>
+        <span matListItemTitle i18n="@@dashboard-navigation.categories"
+          >Categories</span
+        >
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="'/' + RouteNames.DASHBOARD + '/' + RouteNames.TAGS"
+        routerLinkActive="active-nav-item"
+        class="dashboard-nav-item"
+      >
+        <mat-icon matListItemIcon>label</mat-icon>
+        <span matListItemTitle i18n="@@dashboard-navigation.tags">Tags</span>
       </a>
     </mat-nav-list>
   </mat-drawer>

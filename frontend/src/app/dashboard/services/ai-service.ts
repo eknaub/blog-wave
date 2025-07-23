@@ -1,7 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { NotificationService } from '../../shared/services/notification.service';
-import { catchError, finalize, map, Observable, throwError } from 'rxjs';
-import { Ai } from '../../shared/api/models';
 import { AiService as GeneratedAiService } from '../../shared/api/services/ai.service';
 
 @Injectable({

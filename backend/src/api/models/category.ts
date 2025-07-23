@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const CategorySchema = z.object({
   id: z.number().int().positive(),
-  name: z.string().min(2).max(100),
+  name: z.string().min(1).max(100),
   description: z.string().max(500).optional(),
   createdAt: z.date(),
   updatedAt: z.date(),

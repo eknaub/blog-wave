@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './header/header';
-import { GlobalLoadingComponent } from './shared/components/global-loading.component';
+import { GlobalLoadingComponent } from './shared/components/global-loading/global-loading.component';
 
 @Component({
   selector: 'app-root',

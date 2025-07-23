@@ -8,4 +8,6 @@ export enum RouteNames {
   USERS = 'users',
   BLOG = 'blog',
   USER_PROFILE = 'user-profile',
+  TAGS = 'tags',
+  CATEGORY = 'category',
 }

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserProfileStats } from './user-profile-stats';
+import { DeleteElementDialog } from './delete-element-dialog';
 
-describe('UserProfileStats', () => {
-  let component: UserProfileStats;
-  let fixture: ComponentFixture<UserProfileStats>;
+describe('DeleteElementDialog', () => {
+  let component: DeleteElementDialog;
+  let fixture: ComponentFixture<DeleteElementDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserProfileStats],
+      imports: [DeleteElementDialog],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UserProfileStats);
+    fixture = TestBed.createComponent(DeleteElementDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

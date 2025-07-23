@@ -8,9 +8,8 @@ describe('FollowersDialog', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FollowersDialog]
-    })
-    .compileComponents();
+      imports: [FollowersDialog],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FollowersDialog);
     component = fixture.componentInstance;

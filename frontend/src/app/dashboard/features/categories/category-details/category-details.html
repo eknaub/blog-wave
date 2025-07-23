@@ -1,0 +1,77 @@
+<div>
+  <div class="header">
+    <h1 i18n="@@categoryDetails.title">{{ getTitle() }}</h1>
+    <button mat-button (click)="goBack()" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+      <span i18n="@@categoryDetails.back">Back</span>
+    </button>
+  </div>
+  <form
+    [formGroup]="categoryForm"
+    (submit)="saveCategory()"
+    id="categoryForm"
+    class="category-form"
+  >
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label i18n="@@categoryDetails.nameLabel">Name</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="name"
+        placeholder="Enter category name"
+        i18n-placeholder="@@categoryDetails.namePlaceholder"
+      />
+      @if (categoryForm.get('name')?.hasError('required')) {
+        <mat-error i18n="@@categoryDetails.nameRequired"
+          >Name is required.</mat-error
+        >
+      }
+      @if (categoryForm.get('name')?.hasError('maxlength')) {
+        <mat-error i18n="@@categoryDetails.nameMaxlength"
+          >Name cannot exceed 100 characters.</mat-error
+        >
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label i18n="@@categoryDetails.descriptionLabel"
+        >Description</mat-label
+      >
+      <textarea
+        matInput
+        formControlName="description"
+        rows="6"
+        placeholder="Write your category description here..."
+        i18n-placeholder="@@categoryDetails.descriptionPlaceholder"
+        class="content-textarea"
+      ></textarea>
+      <mat-error
+        *ngIf="categoryForm.get('description')?.hasError('maxlength')"
+        i18n="@@categoryDetails.descriptionMaxlength"
+      >
+        Description cannot exceed 500 characters.
+      </mat-error>
+    </mat-form-field>
+    <div class="form-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="categoryForm.invalid"
+        i18n="@@categoryDetails.save"
+      >
+        Save Category
+      </button>
+      @if (!isCreateRoute()) {
+        <button
+          mat-raised-button
+          color="warn"
+          type="button"
+          (click)="openDeleteCategoryDialog()"
+          i18n="@@categoryDetails.delete"
+        >
+          Delete Category
+        </button>
+      }
+    </div>
+  </form>
+</div>

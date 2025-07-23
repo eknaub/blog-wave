@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { map, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { User, UserPut } from '../../shared/api/models';
 import { UsersService as GeneratedUserService } from '../../shared/api/services/users.service';
 import { LoggerService } from '../../shared/services/logger.service';

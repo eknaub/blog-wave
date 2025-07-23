@@ -39,3 +39,21 @@ export const CommentInputValidators = {
     Validators.maxLength(1000),
   ],
 };
+
+export const CategoryInputValidators = {
+  name: [
+    Validators.required,
+    Validators.minLength(1),
+    Validators.maxLength(100),
+  ],
+  description: [Validators.maxLength(500)],
+};
+
+export const TagInputValidators = {
+  name: [
+    Validators.required,
+    Validators.minLength(1),
+    Validators.maxLength(50),
+  ],
+  description: [Validators.maxLength(500)],
+};

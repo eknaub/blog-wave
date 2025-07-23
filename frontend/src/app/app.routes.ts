@@ -64,6 +64,38 @@ export const routes: Routes = [
           ),
       },
       {
+        path: RouteNames.CATEGORY,
+        title: 'Category',
+        loadComponent: () =>
+          import('./dashboard/features/categories/categories').then(
+            (m) => m.Categories
+          ),
+        children: [
+          {
+            path: 'new',
+            title: 'New Category',
+            loadComponent: () =>
+              import(
+                './dashboard/features/categories/category-details/category-details'
+              ).then((m) => m.CategoryDetails),
+          },
+          {
+            path: ':id',
+            title: 'Category Details',
+            loadComponent: () =>
+              import(
+                './dashboard/features/categories/category-details/category-details'
+              ).then((m) => m.CategoryDetails),
+          },
+        ],
+      },
+      {
+        path: RouteNames.TAGS,
+        title: 'Tags',
+        loadComponent: () =>
+          import('./dashboard/features/tags/tags').then((m) => m.Tags),
+      },
+      {
         path: RouteNames.BLOG,
         title: 'Blog',
         loadComponent: () =>

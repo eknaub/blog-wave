@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const TagSchema = z.object({
   id: z.number().int().positive(),
   name: z.string().min(1).max(50),
-  description: z.string().optional(),
+  description: z.string().max(500).optional(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

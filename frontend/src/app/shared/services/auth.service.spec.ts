@@ -1,17 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
-import {
-  provideHttpClientTesting,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { AuthService, LoginCredentials } from './auth.service';
 import { BaseHttpService } from './http.service';
 import { LoggerService } from './logger.service';
 import { RouteNames } from '../interfaces/routes';
-import { User } from '../interfaces/user';
 import { of, throwError } from 'rxjs';
+import { User } from '../api/models';
 
 describe('AuthService', () => {
   let service: AuthService;

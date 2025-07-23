@@ -8,8 +8,10 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { AiService } from './services/ai.service';
 import { AuthService } from './services/auth.service';
+import { CategoriesService } from './services/categories.service';
 import { CommentsService } from './services/comments.service';
 import { PostsService } from './services/posts.service';
+import { TagsService } from './services/tags.service';
 import { UsersService } from './services/users.service';
 import { FollowersService } from './services/followers.service';
 
@@ -23,8 +25,10 @@ import { FollowersService } from './services/followers.service';
   providers: [
     AiService,
     AuthService,
+    CategoriesService,
     CommentsService,
     PostsService,
+    TagsService,
     UsersService,
     FollowersService,
     ApiConfiguration

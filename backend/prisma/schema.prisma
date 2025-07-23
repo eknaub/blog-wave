@@ -1,3 +1,5 @@
+// https://www.prisma.io/docs/orm/prisma-schema/data-model/relations
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,15 +9,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model users {
+  id         Int        @id @default(autoincrement())
+  username   String     @unique @db.VarChar(50)
+  email      String     @unique @db.VarChar(255)
+  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime  @default(now()) @db.Timestamptz(6)
+  password   String     @db.VarChar(255)
+  followersCount  Int @default(0)
+  followingCount  Int @default(0)
+  comments   comments[] @relation("UserComments")
+  posts      posts[]    @relation("UserPosts")
+  followers  userFollows[] @relation("UserFollowers")
+  following  userFollows[] @relation("UserFollowing")
+  postUpvotes   postUpvotes[] @relation("UserPostUpvotes")
+  commentUpvotes commentUpvotes[] @relation("UserCommentUpvotes")
+}
+
+model userFollows {
+  id          Int    @id @default(autoincrement())
+  followerId  Int
+  followingId Int
+  follower    users  @relation("UserFollowing", fields: [followerId], references: [id])
+  following   users  @relation("UserFollowers", fields: [followingId], references: [id])
+  @@unique([followerId, followingId])
+}
+
 model comments {
-  id         Int       @id @default(autoincrement())
+  id Int       @id @default(autoincrement())
   content    String
   postId    Int
   authorId  Int
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @db.Timestamptz(6)
-  author      users     @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_comments_author")
-  posts      posts     @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_comments_post")
+  commentUpvotes commentUpvotes[] @relation("CommentUpvotes")
+  author      users     @relation("UserComments", fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_comments_author")
+  posts      posts     @relation("PostComments", fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_comments_post")
 }
 
 model posts {
@@ -26,30 +55,65 @@ model posts {
   published  Boolean?   @default(false)
   createdAt DateTime  @default(now()) @db.Timestamptz(6)
   updatedAt DateTime  @default(now()) @db.Timestamptz(6)
-  comments   comments[]
-  author      users      @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_posts_author")
+  author      users      @relation("UserPosts", fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_posts_author")
+  categories postCategory[] @relation("PostCategories")
+  comments   comments[] @relation("PostComments")
+  tags       postTags[] @relation("PostTags")
+  postUpvotes    postUpvotes[] @relation("PostUpvotes")
 }
 
-model users {
-  id         Int        @id @default(autoincrement())
-  username   String     @unique @db.VarChar(50)
-  email      String     @unique @db.VarChar(255)
-  createdAt DateTime  @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime  @default(now()) @db.Timestamptz(6)
-  password   String     @db.VarChar(255)
-  comments   comments[]
-  posts      posts[]
-  followers  userFollows[] @relation("followers")
-  following  userFollows[] @relation("following")
-  followersCount  Int @default(0)
-  followingCount  Int @default(0)
+model postUpvotes {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  userId    Int
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @db.Timestamptz(6)
+  post      posts    @relation("PostUpvotes", fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_upvotes_post")
+  user      users    @relation("UserPostUpvotes", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_upvotes_user")
+  @@unique([postId, userId])
 }
 
-model userFollows {
-  id          Int    @id @default(autoincrement())
-  followerId  Int
-  followingId Int
-  follower    users  @relation("following", fields: [followerId], references: [id])
-  following   users  @relation("followers", fields: [followingId], references: [id])
-  @@unique([followerId, followingId])
+model commentUpvotes {
+  id        Int      @id @default(autoincrement())
+  commentId Int
+  userId    Int
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @db.Timestamptz(6)
+  comment   comments @relation("CommentUpvotes", fields: [commentId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_upvotes_comment")
+  user      users    @relation("UserCommentUpvotes", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_upvotes_user")
+  @@unique([commentId, userId])
+}
+
+model tags {
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.VarChar(64)
+  description String? @db.VarChar(512)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @db.Timestamptz(6)
+  posts postTags[] @relation("PostTags")
+}
+
+model postTags {
+  postId   Int
+  tagId    Int
+  post     posts @relation("PostTags", fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tag      tags  @relation("PostTags", fields: [tagId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  @@id([postId, tagId])
+}
+
+model category {
+  id  Int @id @default(autoincrement())
+  name String @unique @db.VarChar(255)
+  description String? @db.VarChar(512)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @db.Timestamptz(6)
+  posts postCategory[] @relation("PostCategories")
+}
+
+model postCategory {
+  postId      Int
+  categoryId  Int
+  post        posts     @relation("PostCategories", fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  category    category  @relation("PostCategories", fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  @@id([postId, categoryId])
 }

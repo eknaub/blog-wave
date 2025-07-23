@@ -1,36 +1,75 @@
 <app-dashboard-content-wrapper title="Tags" i18n-title="@@stats.page-title">
-  <table mat-table [dataSource]="myDataArray()">
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-    </ng-container>
+  @if (!isMainRoute()) {
+    <router-outlet></router-outlet>
+  } @else {
+    <div class="action-button-container">
+      <button
+        matButton="elevated"
+        (click)="navigateToNewTag()"
+        class="action-button"
+      >
+        Add tag
+      </button>
+    </div>
+    <table mat-table [dataSource]="tableData()">
+      <ng-container [matColumnDef]="this.TagColumnsEnum.ID">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        <td mat-footer-cell *matFooterCellDef>Total</td>
+      </ng-container>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-    </ng-container>
+      <ng-container [matColumnDef]="this.TagColumnsEnum.NAME">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
 
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef>Description</th>
-      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
-    </ng-container>
+      <ng-container [matColumnDef]="this.TagColumnsEnum.DESCRIPTION">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
 
-    <ng-container matColumnDef="createdAt">
-      <th mat-header-cell *matHeaderCellDef>Created At</th>
-      <td mat-cell *matCellDef="let element">{{ element.createdAt | date }}</td>
-    </ng-container>
+      <ng-container [matColumnDef]="this.TagColumnsEnum.CREATED_AT">
+        <th mat-header-cell *matHeaderCellDef>Created At</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.createdAt | date }}
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
 
-    <ng-container matColumnDef="updatedAt">
-      <th mat-header-cell *matHeaderCellDef>Updated At</th>
-      <td mat-cell *matCellDef="let element">{{ element.updatedAt | date }}</td>
-    </ng-container>
+      <ng-container [matColumnDef]="this.TagColumnsEnum.UPDATED_AT">
+        <th mat-header-cell *matHeaderCellDef>Updated At</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.updatedAt | date }}
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
 
-    <ng-container matColumnDef="age">
-      <th mat-header-cell *matHeaderCellDef>Age</th>
-      <td mat-cell *matCellDef="let element">{{ element.age }}</td>
-    </ng-container>
+      <ng-container [matColumnDef]="this.TagColumnsEnum.ACTIONS">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            (click)="navigateToTagEdit(element.id)"
+            color="primary"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="openDeleteDialog(element.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+        <td mat-footer-cell *matFooterCellDef>{{ tableData().length }}</td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+      <tr mat-footer-row *matFooterRowDef="displayedColumns()"></tr>
+    </table>
+  }
 </app-dashboard-content-wrapper>

@@ -1,0 +1,14 @@
+.action-button-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  justify-content: flex-end;
+}
+
+.action-button {
+  padding: 8px 16px;
+}
+
+tr.mat-mdc-footer-row td {
+  font-weight: bold;
+}

@@ -44,12 +44,11 @@
         i18n-placeholder="@@categoryDetails.descriptionPlaceholder"
         class="content-textarea"
       ></textarea>
-      <mat-error
-        *ngIf="categoryForm.get('description')?.hasError('maxlength')"
-        i18n="@@categoryDetails.descriptionMaxlength"
-      >
-        Description cannot exceed 500 characters.
-      </mat-error>
+      @if (categoryForm.get('description')?.hasError('maxlength')) {
+        <mat-error i18n="@@categoryDetails.descriptionMaxlength">
+          Description cannot exceed 500 characters.
+        </mat-error>
+      }
     </mat-form-field>
     <div class="form-actions">
       <button

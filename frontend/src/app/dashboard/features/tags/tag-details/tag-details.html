@@ -1,0 +1,74 @@
+<div>
+  <div class="header">
+    <h1 i18n="@@tagsDetails.title">{{ getTitle() }}</h1>
+    <button mat-button (click)="goBack()" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+      <span i18n="@@tagsDetails.back">Back</span>
+    </button>
+  </div>
+  <form
+    [formGroup]="tagsForm"
+    (submit)="saveTags()"
+    id="tagsForm"
+    class="tag-form"
+  >
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label i18n="@@tagsDetails.nameLabel">Name</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="name"
+        placeholder="Enter tag name"
+        i18n-placeholder="@@tagsDetails.namePlaceholder"
+      />
+      @if (tagsForm.get('name')?.hasError('required')) {
+        <mat-error i18n="@@tagsDetails.nameRequired"
+          >Name is required.</mat-error
+        >
+      }
+      @if (tagsForm.get('name')?.hasError('maxlength')) {
+        <mat-error i18n="@@tagsDetails.nameMaxlength"
+          >Name cannot exceed 100 characters.</mat-error
+        >
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label i18n="@@tagsDetails.descriptionLabel">Description</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        rows="6"
+        placeholder="Write your tag description here..."
+        i18n-placeholder="@@tagsDetails.descriptionPlaceholder"
+        class="content-textarea"
+      ></textarea>
+      @if (tagsForm.get('description')?.hasError('maxlength')) {
+        <mat-error i18n="@@tagsDetails.descriptionMaxlength">
+          Description cannot exceed 500 characters.
+        </mat-error>
+      }
+    </mat-form-field>
+    <div class="form-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="tagsForm.invalid"
+        i18n="@@tagsDetails.save"
+      >
+        Save Tag
+      </button>
+      @if (!isCreateRoute()) {
+        <button
+          mat-raised-button
+          color="warn"
+          type="button"
+          (click)="openDeleteTagsDialog()"
+          i18n="@@tagsDetails.delete"
+        >
+          Delete Tag
+        </button>
+      }
+    </div>
+  </form>
+</div>

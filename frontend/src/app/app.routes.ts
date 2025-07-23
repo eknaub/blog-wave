@@ -94,6 +94,25 @@ export const routes: Routes = [
         title: 'Tags',
         loadComponent: () =>
           import('./dashboard/features/tags/tags').then((m) => m.Tags),
+
+        children: [
+          {
+            path: 'new',
+            title: 'New Tag',
+            loadComponent: () =>
+              import('./dashboard/features/tags/tag-details/tag-details').then(
+                (m) => m.TagDetails
+              ),
+          },
+          {
+            path: ':id',
+            title: 'Tag Details',
+            loadComponent: () =>
+              import('./dashboard/features/tags/tag-details/tag-details').then(
+                (m) => m.TagDetails
+              ),
+          },
+        ],
       },
       {
         path: RouteNames.BLOG,

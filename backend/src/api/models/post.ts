@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import { UserDetailSchema } from './user';
+import { CategorySchema } from './category';
+import { TagSchema } from './tag';
 
 export const PostSchema = z.object({
   id: z.number().int().positive(),
@@ -25,6 +27,8 @@ export const PostSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   author: UserDetailSchema,
+  categories: z.array(CategorySchema).nonempty(),
+  tags: z.array(TagSchema).nonempty(),
 });
 
 export const PostDetailSchema = z.object({
@@ -39,13 +43,18 @@ export const PostCreateSchema = z.object({
   content: PostSchema.shape.content,
   authorId: z.number().int().positive(),
   published: PostSchema.shape.published.optional(),
+  categories: z.array(z.number().int().positive()).nonempty(),
+  tags: z.array(z.number().int().positive()).nonempty(),
 });
 
-export const PostPublishSchema = z.object({
-  published: z.boolean(),
+export const PostUpdateSchema = z.object({
+  title: PostSchema.shape.title.optional(),
+  content: PostSchema.shape.content.optional(),
+  published: PostSchema.shape.published.optional(),
+  authorId: z.number().int().positive().optional(),
+  categories: z.array(z.number().int().positive()).nonempty().optional(),
+  tags: z.array(z.number().int().positive()).nonempty().optional(),
 });
-
-export const PostUpdateSchema = PostCreateSchema.partial();
 
 export type Post = z.infer<typeof PostSchema>;
 export type PostCreate = z.infer<typeof PostCreateSchema>;

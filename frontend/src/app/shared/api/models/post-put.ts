@@ -4,7 +4,9 @@
 
 export interface PostPut {
   authorId?: number;
+  categories?: Array<number>;
   content?: string;
   published?: boolean;
+  tags?: Array<number>;
   title?: string;
 }

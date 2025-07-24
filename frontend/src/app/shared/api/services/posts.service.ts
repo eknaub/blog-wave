@@ -17,8 +17,6 @@ import { apiPostsPost } from '../fn/posts/api-posts-post';
 import { ApiPostsPost$Params } from '../fn/posts/api-posts-post';
 import { apiPostsPostIdDelete } from '../fn/posts/api-posts-post-id-delete';
 import { ApiPostsPostIdDelete$Params } from '../fn/posts/api-posts-post-id-delete';
-import { apiPostsPostIdPublishPatch } from '../fn/posts/api-posts-post-id-publish-patch';
-import { ApiPostsPostIdPublishPatch$Params } from '../fn/posts/api-posts-post-id-publish-patch';
 import { apiPostsPostIdPut } from '../fn/posts/api-posts-post-id-put';
 import { ApiPostsPostIdPut$Params } from '../fn/posts/api-posts-post-id-put';
 import { Post } from '../models/post';
@@ -157,39 +155,6 @@ export class PostsService extends BaseService {
    */
   apiPostsPostIdDelete(params: ApiPostsPostIdDelete$Params, context?: HttpContext): Observable<Post> {
     return this.apiPostsPostIdDelete$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Post>): Post => r.body)
-    );
-  }
-
-  /** Path part for operation `apiPostsPostIdPublishPatch()` */
-  static readonly ApiPostsPostIdPublishPatchPath = '/api/posts/{postId}/publish';
-
-  /**
-   * Publish a post.
-   *
-   *
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiPostsPostIdPublishPatch()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  apiPostsPostIdPublishPatch$Response(params: ApiPostsPostIdPublishPatch$Params, context?: HttpContext): Observable<StrictHttpResponse<Post>> {
-    return apiPostsPostIdPublishPatch(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * Publish a post.
-   *
-   *
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiPostsPostIdPublishPatch$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  apiPostsPostIdPublishPatch(params: ApiPostsPostIdPublishPatch$Params, context?: HttpContext): Observable<Post> {
-    return this.apiPostsPostIdPublishPatch$Response(params, context).pipe(
       map((r: StrictHttpResponse<Post>): Post => r.body)
     );
   }

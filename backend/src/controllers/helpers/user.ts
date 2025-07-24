@@ -3,7 +3,7 @@ import prisma from '../../prisma/client';
 import { sendNotFound } from '../../utils/response';
 import { User } from '../../api/models/user';
 
-export async function getUserOrNotFound(
+export async function fetchUserIfExists(
   userId: number | undefined,
   res: Response
 ): Promise<User | null> {

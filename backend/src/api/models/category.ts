@@ -20,6 +20,12 @@ export const CategoryPutSchema = CategorySchema.partial().omit({
   updatedAt: true,
 });
 
+export const CategoryPostRelationSchema = z.object({
+  categoryId: z.number().int().positive(),
+  postId: z.number().int().positive(),
+});
+
 export type Category = z.infer<typeof CategorySchema>;
 export type CategoryPost = z.infer<typeof CategoryPostSchema>;
 export type CategoryPut = z.infer<typeof CategoryPutSchema>;
+export type CategoryPostRelation = z.infer<typeof CategoryPostRelationSchema>;

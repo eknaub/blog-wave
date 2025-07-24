@@ -8,7 +8,7 @@ import {
   sendSuccess,
   sendUpdated,
 } from '../utils/response';
-import { getUserOrNotFound } from './helpers/user';
+import { fetchUserIfExists } from './helpers/user';
 import { FollowerCreate } from '../api/models/follower';
 import { User, UserUpdate } from '../api/models/user';
 
@@ -47,7 +47,7 @@ class UserController {
     try {
       const userId = req.validatedParams!.userId;
       const validatedUser: UserUpdate = req.validatedBody!;
-      await getUserOrNotFound(userId, res);
+      await fetchUserIfExists(userId, res);
 
       const updatedUser = await prisma.users.update({
         select: {
@@ -78,7 +78,7 @@ class UserController {
   ): Promise<void> {
     try {
       const userId = req.validatedParams!.userId;
-      await getUserOrNotFound(userId, res);
+      await fetchUserIfExists(userId, res);
 
       const deletedUser = await prisma.users.delete({
         select: {
@@ -105,7 +105,7 @@ class UserController {
   ): Promise<void> {
     try {
       const userId = req.validatedParams!.userId;
-      const foundUser = await getUserOrNotFound(userId, res);
+      const foundUser = await fetchUserIfExists(userId, res);
 
       sendSuccess(res, foundUser, 'User retrieved successfully');
     } catch (error) {
@@ -122,7 +122,7 @@ class UserController {
     try {
       const userId = req.validatedParams!.userId;
       const validatedFollower: FollowerCreate = req.validatedBody!;
-      await getUserOrNotFound(userId, res);
+      await fetchUserIfExists(userId, res);
 
       if (userId === validatedFollower.followId) {
         return sendError(res, 'You cannot follow yourself', 400);
@@ -172,7 +172,7 @@ class UserController {
     try {
       const userId = req.validatedParams!.userId;
       const unfollowId = req.validatedParams!.unfollowId;
-      await getUserOrNotFound(userId, res);
+      await fetchUserIfExists(userId, res);
 
       if (userId === unfollowId) {
         return sendError(res, 'You cannot unfollow yourself', 400);
@@ -249,7 +249,7 @@ class UserController {
   ): Promise<void> {
     try {
       const userId = req.validatedParams!.userId;
-      await getUserOrNotFound(userId, res);
+      await fetchUserIfExists(userId, res);
 
       const followers = await prisma.userFollows.findMany({
         where: { followingId: userId },
@@ -280,7 +280,7 @@ class UserController {
   ): Promise<void> {
     try {
       const userId = req.validatedParams!.userId;
-      await getUserOrNotFound(userId, res);
+      await fetchUserIfExists(userId, res);
 
       const following = await prisma.userFollows.findMany({
         where: { followerId: userId },

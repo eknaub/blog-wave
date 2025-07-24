@@ -1,11 +1,13 @@
-import { getPostOrNotFound, PrismaReturnedPost, toPostDto } from './post';
+import { fetchPostIfExists, mapPostToDto, PrismaReturnedPost } from './post';
 import prisma from '../../prisma/client';
 import { Response } from 'express';
 import { sendNotFound } from '../../utils/response';
-import { getUserOrNotFound } from './user';
+import { fetchUserIfExists } from './user';
 import { Post } from '../../api/models/post';
 import { UserDetail } from '../../api/models/user';
 import { Comment } from '../../api/models/comment';
+import { fetchTagsByPostId } from './tag';
+import { fetchCategoriesByPostId } from './category';
 
 export interface PrismaReturnedComment {
   id: number;
@@ -16,7 +18,7 @@ export interface PrismaReturnedComment {
   authorId: number;
 }
 
-export function toCommentDto(
+export function mapCommentToDto(
   comment: PrismaReturnedComment | Comment,
   post: PrismaReturnedPost | Post,
   author: UserDetail
@@ -31,11 +33,16 @@ export function toCommentDto(
       username: author.username,
       email: author.email,
     },
-    post: toPostDto(post, author),
+    post: mapPostToDto(
+      post,
+      author,
+      'categories' in post ? post.categories : [],
+      'tags' in post ? post.tags : []
+    ),
   };
 }
 
-export async function getCommentOrNotFound(
+export async function fetchCommentIfExists(
   commentId: number | undefined,
   res: Response
 ): Promise<Comment | null> {
@@ -63,20 +70,22 @@ export async function getCommentOrNotFound(
     return null;
   }
 
-  const foundUser = await getUserOrNotFound(foundComment.authorId, res);
+  const foundUser = await fetchUserIfExists(foundComment.authorId, res);
   if (!foundUser) {
-    // getUserOrNotFound already sends a response, just return
     return null;
   }
 
-  const foundPost = await getPostOrNotFound(foundComment.postId, res);
+  const foundPost = await fetchPostIfExists(foundComment.postId, res);
   if (!foundPost) {
-    // getPostOrNotFound already sends a response, just return
     return null;
   }
-  const post = toPostDto(foundPost, foundUser);
 
-  const comment = toCommentDto(foundComment, post, foundUser);
+  const categories = await fetchCategoriesByPostId(foundPost.id);
+  const tags = await fetchTagsByPostId(foundPost.id);
+
+  const post = mapPostToDto(foundPost, foundUser, categories, tags);
+
+  const comment = mapCommentToDto(foundComment, post, foundUser);
 
   return comment as Comment;
 }

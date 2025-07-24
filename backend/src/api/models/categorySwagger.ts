@@ -3,6 +3,7 @@ import {
   CategoryPostSchema,
   CategorySchema,
   CategoryPutSchema,
+  CategoryPostRelationSchema,
 } from './category';
 
 export const categorySwaggerSchema = zodToJsonSchema(
@@ -18,4 +19,9 @@ export const categoryPostSwaggerSchema = zodToJsonSchema(
 export const categoryPutSwaggerSchema = zodToJsonSchema(
   CategoryPutSchema,
   'CategoryPut'
+);
+
+export const categoryPostRelationSwaggerSchema = zodToJsonSchema(
+  CategoryPostRelationSchema,
+  'CategoryPostRelation'
 );

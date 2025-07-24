@@ -8,9 +8,9 @@ import {
   sendSuccess,
   sendUpdated,
 } from '../utils/response';
-import { getCommentOrNotFound, toCommentDto } from './helpers/comment';
-import { getPostOrNotFound } from './helpers/post';
-import { getUserOrNotFound } from './helpers/user';
+import { fetchCommentIfExists, mapCommentToDto } from './helpers/comment';
+import { fetchUserIfExists } from './helpers/user';
+import { fetchPostIfExists } from './helpers/post';
 
 class CommentController {
   async getComments(
@@ -34,14 +34,13 @@ class CommentController {
         },
       });
 
-      const foundPost = await getPostOrNotFound(postId, res);
+      const foundPost = await fetchPostIfExists(postId, res);
       if (!foundPost) {
-        // getPostOrNotFound already sends a response, just return
         return;
       }
 
       const commentObjects = comments.map(comment =>
-        toCommentDto(comment, foundPost, comment.author)
+        mapCommentToDto(comment, foundPost, comment.author)
       );
       sendSuccess(res, commentObjects, 'Comments retrieved successfully');
     } catch (error) {
@@ -61,18 +60,16 @@ class CommentController {
       const postId = req.validatedParams!.postId;
       const validatedComment: CommentCreate = { ...req.validatedBody!, postId };
 
-      const foundAuthor = await getUserOrNotFound(
+      const foundAuthor = await fetchUserIfExists(
         validatedComment.authorId,
         res
       );
       if (!foundAuthor) {
-        // getUserOrNotFound already sends a response, just return
         return;
       }
 
-      const foundPost = await getPostOrNotFound(postId, res);
+      const foundPost = await fetchPostIfExists(postId, res);
       if (!foundPost) {
-        // getPostOrNotFound already sends a response, just return
         return;
       }
 
@@ -86,11 +83,12 @@ class CommentController {
         },
       });
 
-      const sendComment: Comment = toCommentDto(
+      const sendComment: Comment = mapCommentToDto(
         createdComment,
         foundPost,
         foundAuthor
       );
+
       sendCreated(res, sendComment, 'Comment created successfully');
     } catch (error) {
       const errorMessage =
@@ -114,15 +112,13 @@ class CommentController {
       const commentId = req.validatedParams!.commentId;
       const validatedComment: CommentUpdate = req.validatedBody!;
 
-      const foundComment = await getCommentOrNotFound(commentId, res);
+      const foundComment = await fetchCommentIfExists(commentId, res);
       if (!foundComment) {
-        // getCommentOrNotFound already sends a response, just return
         return;
       }
 
-      const foundPost = await getPostOrNotFound(postId, res);
+      const foundPost = await fetchPostIfExists(postId, res);
       if (!foundPost) {
-        // getPostOrNotFound already sends a response, just return
         return;
       }
 
@@ -136,11 +132,12 @@ class CommentController {
         },
       });
 
-      const sendComment: Comment = toCommentDto(
+      const sendComment: Comment = mapCommentToDto(
         updatedComment,
         foundPost,
         foundComment.author
       );
+
       sendUpdated(res, sendComment, 'Comment updated successfully');
     } catch (error) {
       const errorMessage =
@@ -163,15 +160,13 @@ class CommentController {
       const postId = req.validatedParams!.postId;
       const commentId = req.validatedParams!.commentId;
 
-      const foundComment = await getCommentOrNotFound(commentId, res);
+      const foundComment = await fetchCommentIfExists(commentId, res);
       if (!foundComment) {
-        // getCommentOrNotFound already sends a response, just return
         return;
       }
 
-      const foundPost = await getPostOrNotFound(postId, res);
+      const foundPost = await fetchPostIfExists(postId, res);
       if (!foundPost) {
-        // getPostOrNotFound already sends a response, just return
         return;
       }
 
@@ -181,11 +176,12 @@ class CommentController {
         },
       });
 
-      const sendComment: Comment = toCommentDto(
+      const sendComment: Comment = mapCommentToDto(
         deletedComment,
         foundPost,
         foundComment.author
       );
+
       sendDeleted(res, sendComment, 'Comment deleted successfully');
     } catch (error) {
       const errorMessage =

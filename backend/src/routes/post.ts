@@ -8,11 +8,7 @@ import {
 import { PostIdParamSchema } from '../middleware/requestParamValidation';
 import { OptionalUserIdQuerySchema } from '../middleware/requestQueryValidation';
 import { requireAuth } from '../middleware/auth';
-import {
-  PostCreateSchema,
-  PostPublishSchema,
-  PostUpdateSchema,
-} from '../api/models/post';
+import { PostCreateSchema, PostUpdateSchema } from '../api/models/post';
 import { RouteIds } from '../utils/enums';
 
 /**
@@ -97,31 +93,6 @@ import { RouteIds } from '../utils/enums';
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Post'
- *
- * /api/posts/{postId}/publish:
- *   patch:
- *     tags:
- *       - Posts
- *     summary: Publish a post
- *     parameters:
- *       - in: path
- *         name: postId
- *         required: true
- *         schema:
- *           type: integer
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/PostPut'
- *     responses:
- *       200:
- *         description: Post published
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Post'
  */
 
 const postRouter = Router();
@@ -144,13 +115,6 @@ postRouter.put(
   validateParams(PostIdParamSchema),
   validateBody(PostUpdateSchema),
   postController.putPost.bind(postController)
-);
-postRouter.patch(
-  `/${RouteIds.POST_ID}/publish`,
-  requireAuth,
-  validateParams(PostIdParamSchema),
-  validateBody(PostPublishSchema),
-  postController.publishPost.bind(postController)
 );
 postRouter.delete(
   `/${RouteIds.POST_ID}`,

@@ -20,6 +20,12 @@ export const TagPutSchema = TagSchema.partial().omit({
   updatedAt: true,
 });
 
+export const TagPostRelationSchema = z.object({
+  tagId: z.number().int().positive(),
+  postId: z.number().int().positive(),
+});
+
 export type Tag = z.infer<typeof TagSchema>;
 export type TagPost = z.infer<typeof TagPostSchema>;
 export type TagPut = z.infer<typeof TagPutSchema>;
+export type TagPostRelation = z.infer<typeof TagPostRelationSchema>;

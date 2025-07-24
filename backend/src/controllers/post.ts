@@ -9,8 +9,14 @@ import {
   sendSuccess,
   sendUpdated,
 } from '../utils/response';
-import { getUserOrNotFound } from './helpers/user';
-import { getPostOrNotFound, toPostDto } from './helpers/post';
+import { fetchUserIfExists } from './helpers/user';
+import {
+  associatePostRelations,
+  fetchPostIfExists,
+  mapPostToDto,
+} from './helpers/post';
+import { fetchCategoriesByPostId } from './helpers/category';
+import { fetchTagsByPostId } from './helpers/tag';
 
 class PostController {
   async getPosts(
@@ -36,7 +42,14 @@ class PostController {
         posts = posts.filter(post => post.authorId === userId);
       }
 
-      const postObjects = posts.map(post => toPostDto(post, post.author));
+      const postObjects = await Promise.all(
+        posts.map(async post => {
+          const categories = await fetchCategoriesByPostId(post.id);
+          const tags = await fetchTagsByPostId(post.id);
+          return mapPostToDto(post, post.author, categories, tags);
+        })
+      );
+
       sendSuccess(res, postObjects, 'Posts retrieved successfully');
     } catch (error) {
       const errorMessage =
@@ -51,9 +64,8 @@ class PostController {
   ): Promise<void> {
     try {
       const validatedPost: PostCreate = req.validatedBody!;
-      const foundUser = await getUserOrNotFound(validatedPost.authorId, res);
+      const foundUser = await fetchUserIfExists(validatedPost.authorId, res);
       if (!foundUser) {
-        // getUserOrNotFound already sends a response, just return
         return;
       }
 
@@ -65,7 +77,19 @@ class PostController {
         },
       });
 
-      const sendPost: Post = toPostDto(createdPost, foundUser);
+      const { createdCategories, createdTags } = await associatePostRelations(
+        createdPost.id,
+        validatedPost.categories,
+        validatedPost.tags
+      );
+
+      const sendPost: Post = mapPostToDto(
+        createdPost,
+        foundUser,
+        createdCategories,
+        createdTags
+      );
+
       sendCreated(res, sendPost, 'Post created successfully');
     } catch (error) {
       const errorMessage =
@@ -82,9 +106,8 @@ class PostController {
       const postId = req.validatedParams!.postId;
       const validatedPost: PostUpdate = req.validatedBody!;
 
-      const foundPost = await getPostOrNotFound(postId, res);
+      const foundPost = await fetchPostIfExists(postId, res);
       if (!foundPost) {
-        // getPostOrNotFound already sends a response, just return
         return;
       }
 
@@ -94,11 +117,27 @@ class PostController {
           title: validatedPost.title,
           content: validatedPost.content,
           authorId: validatedPost.authorId,
+          published: validatedPost.published,
           updatedAt: new Date(),
         },
       });
 
-      const sendPost: Post = toPostDto(updatedPost, foundPost.author);
+      await associatePostRelations(
+        updatedPost.id,
+        validatedPost.categories || [],
+        validatedPost.tags || []
+      );
+
+      const categories = await fetchCategoriesByPostId(postId);
+      const tags = await fetchTagsByPostId(postId);
+
+      const sendPost: Post = mapPostToDto(
+        updatedPost,
+        foundPost.author,
+        categories,
+        tags
+      );
+
       sendUpdated(res, sendPost, 'Post updated successfully');
     } catch (error) {
       const errorMessage =
@@ -114,9 +153,8 @@ class PostController {
     try {
       const postId = req.validatedParams!.postId;
 
-      const foundPost = await getPostOrNotFound(postId, res);
+      const foundPost = await fetchPostIfExists(postId, res);
       if (!foundPost) {
-        // getPostOrNotFound already sends a response, just return
         return;
       }
 
@@ -124,49 +162,20 @@ class PostController {
         where: { id: postId },
       });
 
-      const sendPost: Post = toPostDto(deletedPost, foundPost.author);
+      const categories = await fetchCategoriesByPostId(postId);
+      const tags = await fetchTagsByPostId(postId);
+
+      const sendPost: Post = mapPostToDto(
+        deletedPost,
+        foundPost.author,
+        categories,
+        tags
+      );
       sendDeleted(res, sendPost, 'Post deleted successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
       sendError(res, 'Failed to delete post', 500, [errorMessage]);
-    }
-  }
-
-  async publishPost(
-    req: ValidatedRequest<Post, unknown, { postId: number }>,
-    res: Response
-  ): Promise<void> {
-    try {
-      const postId = req.validatedParams!.postId;
-      const { published } = req.validatedBody!;
-
-      const foundPost = await getPostOrNotFound(postId, res);
-      if (!foundPost) {
-        // getPostOrNotFound already sends a response, just return
-        return;
-      }
-
-      const updatedPost = await prisma.posts.update({
-        where: { id: postId },
-        data: {
-          published,
-          updatedAt: new Date(),
-        },
-      });
-
-      const sendPost: Post = toPostDto(updatedPost, foundPost.author);
-      sendUpdated(
-        res,
-        sendPost,
-        'Post publication status updated successfully'
-      );
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      sendError(res, 'Failed to update post publication status', 500, [
-        errorMessage,
-      ]);
     }
   }
 }

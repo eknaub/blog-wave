@@ -8,10 +8,24 @@ export interface Post {
 'username': string;
 'email': string;
 };
+  categories: Array<{
+'id': number;
+'name': string;
+'description'?: string;
+'createdAt': string;
+'updatedAt': string;
+}>;
   content: string;
   createdAt: string;
   id: number;
   published?: boolean;
+  tags: Array<{
+'id': number;
+'name': string;
+'description'?: string;
+'createdAt': string;
+'updatedAt': string;
+}>;
   title: string;
   updatedAt: string;
 }

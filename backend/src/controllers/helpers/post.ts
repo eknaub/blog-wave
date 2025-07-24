@@ -2,8 +2,12 @@ import prisma from '../../prisma/client';
 import { Response } from 'express';
 import { sendNotFound } from '../../utils/response';
 import { Post } from '../../api/models/post';
-import { getUserOrNotFound } from './user';
+import { fetchUserIfExists } from './user';
 import { User, UserDetail } from '../../api/models/user';
+import { Category } from '../../api/models/category';
+import { Tag } from '../../api/models/tag';
+import { fetchCategoriesByPostId, mapCategoryToDto } from './category';
+import { fetchTagsByPostId, mapTagToDto } from './tag';
 
 export interface PrismaReturnedPost {
   id: number;
@@ -15,9 +19,11 @@ export interface PrismaReturnedPost {
   authorId: number;
 }
 
-export function toPostDto(
+export function mapPostToDto(
   post: PrismaReturnedPost | Post,
-  author: User | UserDetail
+  author: User | UserDetail,
+  categories: Category[],
+  tags: Tag[]
 ): Post {
   return {
     id: post.id,
@@ -31,10 +37,15 @@ export function toPostDto(
     },
     createdAt: post.createdAt ?? new Date(),
     updatedAt: post.updatedAt ?? new Date(),
+    categories: [
+      mapCategoryToDto(categories[0]),
+      ...categories.slice(1).map(cat => mapCategoryToDto(cat)),
+    ],
+    tags: [mapTagToDto(tags[0]), ...tags.slice(1).map(tag => mapTagToDto(tag))],
   };
 }
 
-export async function getPostOrNotFound(
+export async function fetchPostIfExists(
   postId: number | undefined,
   res: Response
 ): Promise<Post | null> {
@@ -63,14 +74,45 @@ export async function getPostOrNotFound(
     return null;
   }
 
-  const foundUser = await getUserOrNotFound(foundPost.authorId, res);
+  const foundUser = await fetchUserIfExists(foundPost.authorId, res);
   if (!foundUser) {
     // getUserOrNotFound already sends a response, just return
     return null;
   }
 
+  // Fetch categories and tags associated with the post
+  const categories = await fetchCategoriesByPostId(postId);
+  const tags = await fetchTagsByPostId(postId);
+
   // Return the found post with the user information
-  const post = toPostDto(foundPost, foundUser);
+  const post = mapPostToDto(foundPost, foundUser, categories, tags);
 
   return post;
+}
+
+export async function associatePostRelations(
+  postId: number,
+  categoryIds: number[],
+  tagIds: number[]
+): Promise<{
+  createdCategories: Category[];
+  createdTags: Tag[];
+}> {
+  await prisma.postCategory.createMany({
+    data: categoryIds.map(categoryId => ({
+      postId,
+      categoryId,
+    })),
+  });
+
+  await prisma.postTags.createMany({
+    data: tagIds.map(tagId => ({
+      postId,
+      tagId,
+    })),
+  });
+
+  const tags = await fetchTagsByPostId(postId);
+  const categories = await fetchCategoriesByPostId(postId);
+  return { createdCategories: categories, createdTags: tags };
 }

@@ -3,6 +3,7 @@ import TagController from '../controllers/tag';
 import { validateBody, validateParams } from '../middleware/requestValidation';
 import { TagIdParamSchema } from '../middleware/requestParamValidation';
 import { TagPostSchema, TagPutSchema } from '../api/models/tag';
+import { requireAuth } from '../middleware/auth';
 
 const tagRouter = Router();
 const tagController = new TagController();
@@ -107,25 +108,29 @@ const tagController = new TagController();
  *         description: Tag not found
  */
 
-tagRouter.get('/', tagController.getTags.bind(tagController));
+tagRouter.get('/', requireAuth, tagController.getTags.bind(tagController));
 tagRouter.post(
   '/',
+  requireAuth,
   validateBody(TagPostSchema),
   tagController.postTag.bind(tagController)
 );
 tagRouter.put(
   '/:tagId',
+  requireAuth,
   validateBody(TagPutSchema),
   validateParams(TagIdParamSchema),
   tagController.updateTag.bind(tagController)
 );
 tagRouter.delete(
   '/:tagId',
+  requireAuth,
   validateParams(TagIdParamSchema),
   tagController.deleteTag.bind(tagController)
 );
 tagRouter.get(
   '/:tagId',
+  requireAuth,
   validateParams(TagIdParamSchema),
   tagController.getTagById.bind(tagController)
 );

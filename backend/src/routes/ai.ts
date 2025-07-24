@@ -2,6 +2,7 @@ import { Router } from 'express';
 import AiController from '../controllers/ai';
 import { validateQuery } from '../middleware/requestValidation';
 import { AiContentParamSchema } from '../middleware/requestParamValidation';
+import { requireAuth } from '../middleware/auth';
 
 const aiRouter = Router();
 const aiController = new AiController();
@@ -31,6 +32,7 @@ const aiController = new AiController();
  */
 aiRouter.get(
   '/',
+  requireAuth,
   validateQuery(AiContentParamSchema),
   aiController.getGeneratedPostContent.bind(aiController)
 );

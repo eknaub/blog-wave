@@ -3,6 +3,7 @@ import CategoryController from '../controllers/category';
 import { validateBody, validateParams } from '../middleware/requestValidation';
 import { CategoryPostSchema, CategoryPutSchema } from '../api/models/category';
 import { CategoryIdParamSchema } from '../middleware/requestParamValidation';
+import { requireAuth } from '../middleware/auth';
 
 const categoryRouter = Router();
 const categoryController = new CategoryController();
@@ -109,26 +110,31 @@ const categoryController = new CategoryController();
 
 categoryRouter.get(
   '/',
+  requireAuth,
   categoryController.getCategories.bind(categoryController)
 );
 categoryRouter.post(
   '/',
+  requireAuth,
   validateBody(CategoryPostSchema),
   categoryController.postCategory.bind(categoryController)
 );
 categoryRouter.put(
   '/:categoryId',
+  requireAuth,
   validateBody(CategoryPutSchema),
   validateParams(CategoryIdParamSchema),
   categoryController.updateCategory.bind(categoryController)
 );
 categoryRouter.delete(
   '/:categoryId',
+  requireAuth,
   validateParams(CategoryIdParamSchema),
   categoryController.deleteCategory.bind(categoryController)
 );
 categoryRouter.get(
   '/:categoryId',
+  requireAuth,
   validateParams(CategoryIdParamSchema),
   categoryController.getCategoryById.bind(categoryController)
 );

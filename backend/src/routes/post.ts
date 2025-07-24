@@ -100,6 +100,7 @@ const postController = new PostController();
 
 postRouter.get(
   '/',
+  requireAuth,
   validateQuery(OptionalUserIdQuerySchema),
   postController.getPosts.bind(postController)
 );

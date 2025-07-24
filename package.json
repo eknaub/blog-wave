@@ -1,6 +1,9 @@
 {
   "name": "odin-blog-api",
   "version": "0.0.0",
+  "scripts": {
+    "release": "changeset"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.29.5"
   }

@@ -6,6 +6,7 @@ import session from 'express-session';
 import passport from './config/passportConfig';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swaggerConfig';
+import { apiLimiter } from './config/rateLimitConfig';
 
 const app = express();
 const PORT = 3000;
@@ -24,6 +25,9 @@ app.get('/api-docs/swagger.json', (req, res) => {
   res.send(swaggerSpec);
 });
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Apply api rate limiting
+app.use('/api', apiLimiter);
 
 app.use(
   session({

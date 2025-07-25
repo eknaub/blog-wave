@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { sendError } from '../utils/response';
 
-interface ValidatedRequest<TBody = any, TQuery = any, TParams = any>
+interface ValidatedRequest<TBody = unknown, TQuery = unknown, TParams = unknown>
   extends Request {
   validatedBody?: TBody;
   validatedQuery?: TQuery;

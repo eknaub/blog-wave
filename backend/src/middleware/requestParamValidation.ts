@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
-const positiveNumberParam = (paramName: string, label?: string) =>
+const positiveNumberParam = (
+  paramName: string,
+  label?: string
+): z.ZodObject<{ [key: string]: z.ZodEffects<z.ZodString, number, string> }> =>
   z.object({
     [paramName]: z.string().transform((val, ctx) => {
       const parsed = Number(val);

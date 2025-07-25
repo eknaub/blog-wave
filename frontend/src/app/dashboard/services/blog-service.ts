@@ -91,7 +91,7 @@ export class BlogService {
     );
   });
 
-  uploadPost(title: string, content: string): void {
+  uploadPost(newPost: PostPost): void {
     const user = this.currentUser();
     if (!user) {
       this.notificationService.showNotification(
@@ -100,26 +100,27 @@ export class BlogService {
       return;
     }
 
-    const newPost: PostPost = {
-      title,
-      content,
-      authorId: user.id,
-    };
-
-    this.generatedPostsService.apiPostsPost({ body: newPost }).subscribe({
-      next: (post) => {
-        this.posts.update((posts) => [...posts, post]);
-        this.notificationService.showNotification(
-          $localize`:@@blog-service.post-upload-success:Post uploaded successfully`
-        );
-      },
-      error: (error) => {
-        this.notificationService.showNotification(
-          $localize`:@@blog-service.post-upload-error:Failed to upload post`
-        );
-        this.logger.error(`Failed to upload post: ${error}`);
-      },
-    });
+    this.generatedPostsService
+      .apiPostsPost({
+        body: {
+          ...newPost,
+          authorId: user.id,
+        },
+      })
+      .subscribe({
+        next: (post) => {
+          this.posts.update((posts) => [...posts, post]);
+          this.notificationService.showNotification(
+            $localize`:@@blog-service.post-upload-success:Post uploaded successfully`
+          );
+        },
+        error: (error) => {
+          this.notificationService.showNotification(
+            $localize`:@@blog-service.post-upload-error:Failed to upload post`
+          );
+          this.logger.error(`Failed to upload post: ${error}`);
+        },
+      });
   }
 
   deletePost(postId: number): void {

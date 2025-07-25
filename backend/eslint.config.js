@@ -34,6 +34,7 @@ module.exports = [
       ...eslint.configs.recommended.rules,
 
       // TypeScript specific rules
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_' },

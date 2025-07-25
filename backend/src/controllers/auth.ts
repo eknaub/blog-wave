@@ -10,7 +10,7 @@ import {
   sendError,
   sendSuccess,
 } from '../utils/response';
-import { UserCreate } from '../api/models/user';
+import { User, UserCreate } from '../api/models/user';
 
 class AuthController {
   async register(
@@ -67,38 +67,44 @@ class AuthController {
   }
 
   login(req: ValidatedRequest<Login>, res: Response, next: NextFunction): void {
-    passport.authenticate('local', (err: any, user: any, info: any) => {
-      if (err) {
-        sendError(res, 'Authentication error', 500, [err.message]);
-        return;
-      }
-      if (!user) {
-        sendError(res, 'Authentication failed', 401, [
-          info.message || 'Invalid credentials',
-        ]);
-        return;
-      }
-
-      req.logIn(user, err => {
+    passport.authenticate(
+      'local',
+      (err: unknown, user: User, info: unknown) => {
         if (err) {
-          sendError(res, 'Login failed', 500, [err.message]);
+          const errorMessage = err instanceof Error ? err.message : String(err);
+          sendError(res, 'Authentication error', 500, [errorMessage]);
           return;
         }
-        sendSuccess(
-          res,
-          {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            created_at: user.created_at,
-            updated_at: user.updated_at,
-          },
-          'Login successful',
-          200
-        );
-        return;
-      });
-    })(req, res, next);
+        if (!user) {
+          sendError(res, 'Authentication failed', 401, [
+            typeof info === 'object' && info !== null && 'message' in info
+              ? (info as { message?: string }).message || 'Invalid credentials'
+              : 'Invalid credentials',
+          ]);
+          return;
+        }
+
+        req.logIn(user, err => {
+          if (err) {
+            sendError(res, 'Login failed', 500, [err.message]);
+            return;
+          }
+          sendSuccess(
+            res,
+            {
+              id: user.id,
+              username: user.username,
+              email: user.email,
+              createdAt: user.createdAt,
+              updatedAt: user.updatedAt,
+            },
+            'Login successful',
+            200
+          );
+          return;
+        });
+      }
+    )(req, res, next);
   }
 
   logout(req: Request, res: Response): void {

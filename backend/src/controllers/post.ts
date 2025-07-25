@@ -74,6 +74,7 @@ class PostController {
           title: validatedPost.title,
           content: validatedPost.content,
           authorId: validatedPost.authorId,
+          published: validatedPost.published ?? false,
         },
       });
 
@@ -162,16 +163,7 @@ class PostController {
         where: { id: postId },
       });
 
-      const categories = await fetchCategoriesByPostId(postId);
-      const tags = await fetchTagsByPostId(postId);
-
-      const sendPost: Post = mapPostToDto(
-        deletedPost,
-        foundPost.author,
-        categories,
-        tags
-      );
-      sendDeleted(res, sendPost, 'Post deleted successfully');
+      sendDeleted(res, deletedPost, 'Post deleted successfully');
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);

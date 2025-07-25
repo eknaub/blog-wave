@@ -29,6 +29,8 @@ export const PostInputValidators = {
     Validators.minLength(1),
     Validators.maxLength(5000),
   ],
+  categories: [Validators.required],
+  tags: [Validators.required],
 };
 
 export const CommentInputValidators = {

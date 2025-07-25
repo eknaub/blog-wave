@@ -1,6 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -26,6 +28,12 @@ import { LoggerService } from '../../../../shared/services/logger.service';
 import { NotificationService } from '../../../../shared/services/notification.service';
 import { AiService } from '../../../services/ai-service';
 import { PostInputValidators } from '../../../../shared/utils/validators';
+import { AuthService } from '../../../../shared/services/auth.service';
+import { MatOptionModule } from '@angular/material/core';
+import { CategoryService } from '../../../services/category-service';
+import { TagService } from '../../../services/tag-service';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-dialog-add-post',
@@ -43,6 +51,9 @@ import { PostInputValidators } from '../../../../shared/utils/validators';
     ReactiveFormsModule,
     MatDividerModule,
     MatIconModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatCheckboxModule,
   ],
 })
 export class DialogAddPost {
@@ -51,10 +62,26 @@ export class DialogAddPost {
   private readonly dialogRef = inject(MatDialogRef<DialogAddPost>);
   private readonly notificationService = inject(NotificationService);
   private readonly aiService = inject(AiService);
+  private readonly authService = inject(AuthService);
+  private readonly categoriesService = inject(CategoryService);
+  private readonly tagsService = inject(TagService);
+
+  private readonly currentUser = computed(() =>
+    this.authService.getLoggedInUser()
+  );
+
+  protected readonly categories = this.categoriesService.categories;
+  protected readonly tags = this.tagsService.tags;
 
   protected readonly postForm = new FormGroup({
     title: new FormControl('', [...PostInputValidators.title]),
     content: new FormControl('', [...PostInputValidators.content]),
+    categories: new FormControl<number[]>(
+      [],
+      [...PostInputValidators.categories]
+    ),
+    tags: new FormControl<number[]>([], [...PostInputValidators.tags]),
+    published: new FormControl<boolean>(false),
   });
 
   protected readonly isGeneratingContent = this.aiService.isGeneratingContent;
@@ -68,6 +95,14 @@ export class DialogAddPost {
 
   protected get canGenerateAIContent(): boolean {
     return !this.isGeneratingContent() && !!this.postForm.value.title?.trim();
+  }
+
+  constructor() {
+    effect(() => {
+      this.postForm.patchValue({
+        content: this.aiService.generatedContent(),
+      });
+    });
   }
 
   protected generateAIContent(): void {
@@ -107,7 +142,16 @@ export class DialogAddPost {
 
     this.isSubmitting.set(true);
 
-    this.blogService.uploadPost(postData.title, postData.content);
+    const post = {
+      title: postData.title.trim(),
+      content: postData.content.trim(),
+      categories: postData.categories || [],
+      tags: postData.tags || [],
+      published: postData.published ?? false,
+      authorId: this.currentUser()?.id ?? 0,
+    };
+
+    this.blogService.uploadPost(post);
 
     this.postForm.reset();
     this.dialogRef.close();

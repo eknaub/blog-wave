@@ -9,7 +9,6 @@ import { AuthService } from '../shared/services/auth.service';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { click } from '../shared/testing';
 import { RouteNames } from '../shared/interfaces/routes';
 
 describe('Header', () => {

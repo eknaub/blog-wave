@@ -9,7 +9,6 @@ import {
 import { DashboardContentWrapper } from '../../dashboard-content-wrapper/dashboard-content-wrapper';
 import { MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
-import { LoggerService } from '../../../shared/services/logger.service';
 import { TagService } from '../../services/tag-service';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';

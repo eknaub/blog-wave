@@ -9,13 +9,13 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { Login } from '../../models/login';
-import { User } from '../../models/user';
+import { UserLoginRes } from '../../models/user-login-res';
 
 export interface ApiAuthLoginPost$Params {
       body: Login
 }
 
-export function apiAuthLoginPost(http: HttpClient, rootUrl: string, params: ApiAuthLoginPost$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+export function apiAuthLoginPost(http: HttpClient, rootUrl: string, params: ApiAuthLoginPost$Params, context?: HttpContext): Observable<StrictHttpResponse<UserLoginRes>> {
   const rb = new RequestBuilder(rootUrl, apiAuthLoginPost.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
@@ -26,7 +26,7 @@ export function apiAuthLoginPost(http: HttpClient, rootUrl: string, params: ApiA
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<User>;
+      return r as StrictHttpResponse<UserLoginRes>;
     })
   );
 }

@@ -25,7 +25,7 @@ import { AuthRoutes } from '../utils/enums';
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/UserRegisterRes'
  *       400:
  *         description: Validation error
  *
@@ -46,24 +46,9 @@ import { AuthRoutes } from '../utils/enums';
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/UserLoginRes'
  *       401:
  *         description: Invalid credentials
- *
- * /api/auth/logout:
- *   post:
- *     tags:
- *       - Auth
- *     summary: Logout the current user
- *     responses:
- *       200:
- *         description: Logout successful
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Login'
- *       401:
- *         description: Unauthorized
  *
  * /api/auth/profile:
  *   get:
@@ -93,11 +78,6 @@ authRouter.post(
   `/${AuthRoutes.LOGIN}`,
   validateBody(LoginSchema),
   authController.login.bind(authController)
-);
-authRouter.post(
-  `/${AuthRoutes.LOGOUT}`,
-  requireAuth,
-  authController.logout.bind(authController)
 );
 authRouter.get(
   `/${AuthRoutes.PROFILE}`,

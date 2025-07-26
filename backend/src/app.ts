@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import router from './routes';
 import prisma from './prisma/client';
-import session from 'express-session';
 import passport from './config/passportConfig';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swaggerConfig';
@@ -29,21 +28,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Apply api rate limiting
 app.use('/api', apiLimiter);
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || '',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 24 hours
-    },
-  })
-);
-
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -55,5 +40,5 @@ process.on('SIGINT', async () => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.info(`Server is running on http://localhost:${PORT}`);
 });

@@ -47,7 +47,19 @@ export const UserUpdateSchema = z.object({
   email: BaseUserSchema.shape.email,
 });
 
+export const UserLoginResSchema = z.object({
+  token: z.string(),
+  user: BaseUserSchema,
+});
+
+export const UserRegisterResSchema = z.object({
+  token: z.string(),
+  user: BaseUserSchema,
+});
+
 export type User = z.infer<typeof BaseUserSchema>;
+export type UserLoginRes = z.infer<typeof UserLoginResSchema>;
+export type UserRegisterRes = z.infer<typeof UserRegisterResSchema>;
 export type UserCreate = z.infer<typeof UserCreateSchema>;
 export type UserUpdate = z.infer<typeof UserUpdateSchema>;
 export type UserDetail = z.infer<typeof UserDetailSchema>;

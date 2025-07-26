@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import passport from '../config/passportConfig';
+import { JWT_SECRET } from '../config/passportConfig';
 import prisma from '../prisma/client';
 import { ValidatedRequest } from '../middleware/requestValidation';
 import { Login } from '../api/models/login';
@@ -10,7 +10,9 @@ import {
   sendError,
   sendSuccess,
 } from '../utils/response';
-import { User, UserCreate } from '../api/models/user';
+import { UserCreate } from '../api/models/user';
+import jwt from 'jsonwebtoken';
+import { filterUserPassword } from './helpers/user';
 
 class AuthController {
   async register(
@@ -47,16 +49,26 @@ class AuthController {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        select: {
-          id: true,
-          username: true,
-          email: true,
-          createdAt: true,
-          updatedAt: true,
-        },
       });
 
-      sendCreated(res, user, 'User registered successfully');
+      const token = jwt.sign(
+        {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+        },
+        JWT_SECRET,
+        { expiresIn: '6h' }
+      );
+
+      sendCreated(
+        res,
+        {
+          token,
+          user: filterUserPassword(user),
+        },
+        'User registered successfully'
+      );
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
@@ -66,55 +78,49 @@ class AuthController {
     }
   }
 
-  login(req: ValidatedRequest<Login>, res: Response, next: NextFunction): void {
-    passport.authenticate(
-      'local',
-      (err: unknown, user: User, info: unknown) => {
-        if (err) {
-          const errorMessage = err instanceof Error ? err.message : String(err);
-          sendError(res, 'Authentication error', 500, [errorMessage]);
-          return;
-        }
-        if (!user) {
-          sendError(res, 'Authentication failed', 401, [
-            typeof info === 'object' && info !== null && 'message' in info
-              ? (info as { message?: string }).message || 'Invalid credentials'
-              : 'Invalid credentials',
-          ]);
-          return;
-        }
+  async login(req: ValidatedRequest<Login>, res: Response): Promise<void> {
+    try {
+      const { username, password } = req.validatedBody!;
+      const user = await prisma.users.findFirst({
+        where: { username },
+      });
 
-        req.logIn(user, err => {
-          if (err) {
-            sendError(res, 'Login failed', 500, [err.message]);
-            return;
-          }
-          sendSuccess(
-            res,
-            {
-              id: user.id,
-              username: user.username,
-              email: user.email,
-              createdAt: user.createdAt,
-              updatedAt: user.updatedAt,
-            },
-            'Login successful',
-            200
-          );
-          return;
-        });
-      }
-    )(req, res, next);
-  }
-
-  logout(req: Request, res: Response): void {
-    req.logout(err => {
-      if (err) {
-        sendError(res, 'Logout failed', 500, [err.message]);
+      if (!user) {
+        sendError(res, 'Authentication failed', 401, ['Invalid credentials']);
         return;
       }
-      sendSuccess(res, null, 'Logout successful', 200);
-    });
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        sendError(res, 'Authentication failed', 401, ['Invalid credentials']);
+        return;
+      }
+
+      // Generate JWT token
+      const token = jwt.sign(
+        {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+        },
+        JWT_SECRET,
+        { expiresIn: '6h' }
+      );
+
+      sendSuccess(
+        res,
+        {
+          token,
+          user: filterUserPassword(user),
+        },
+        'Login successful',
+        200
+      );
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      sendError(res, 'Authentication error', 500, [errorMessage]);
+    }
   }
 
   getProfile(req: Request, res: Response): void {

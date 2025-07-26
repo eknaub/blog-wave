@@ -8,6 +8,7 @@ import { User } from '../api/models';
 import { AuthService as GeneratedAuthService } from '../api/services/auth.service';
 
 export const LOCAL_STORAGE_CURRENT_USER_KEY = 'currentUser';
+export const LOCAL_STORAGE_TOKEN_KEY = 'authToken';
 
 export interface LoginCredentials {
   username: string;
@@ -28,10 +29,13 @@ export class AuthService {
   private readonly notificationService = inject(NotificationService);
   private readonly logger = inject(LoggerService);
   private readonly generatedAuthService = inject(GeneratedAuthService);
+  private readonly jwtToken = signal<string | null>(
+    localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)
+  );
 
   private readonly currentUserSignal = signal<User | null>(null);
 
-  readonly isAuthenticated = computed(() => this.currentUserSignal() !== null);
+  readonly isAuthenticated = computed(() => !!this.jwtToken());
   readonly getLoggedInUser = computed(() => this.currentUserSignal());
 
   constructor() {
@@ -56,11 +60,13 @@ export class AuthService {
       .pipe(
         map((response) => {
           if (response) {
-            this.setCurrentUser(response);
+            this.setCurrentUser(response.user);
             this.router.navigate([RouteNames.DASHBOARD]);
             this.notificationService.showNotification(
               $localize`:@@auth-service.login-success:Login successful`
             );
+            localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, response.token);
+            this.jwtToken.set(response.token);
             return true;
           }
           return false;
@@ -73,24 +79,15 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    return this.generatedAuthService.apiAuthLogoutPost().pipe(
-      map(() => {
-        this.currentUserSignal.set(null);
-        localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
-        this.router.navigate([RouteNames.LOGIN]);
-        this.notificationService.showNotification(
-          $localize`:@@auth-service.logout-success:Logout successful`
-        );
-      }),
-      catchError((error) => {
-        this.logger.error(`Logout failed: ${error}`);
-        // Still clear local state even if server logout fails
-        this.currentUserSignal.set(null);
-        localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
-        this.router.navigate([RouteNames.LOGIN]);
-        return of(void 0);
-      })
+    localStorage.removeItem(LOCAL_STORAGE_CURRENT_USER_KEY);
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+    this.jwtToken.set(null);
+    this.currentUserSignal.set(null);
+    this.router.navigate([RouteNames.LOGIN]);
+    this.notificationService.showNotification(
+      $localize`:@@auth-service.logout-success:Logout successful`
     );
+    return of();
   }
 
   register(credentials: RegisterCredentials): Observable<boolean> {
@@ -111,14 +108,14 @@ export class AuthService {
       })
       .pipe(
         map((response) => {
-          console.log('Registration response:', response);
-
           if (response) {
-            this.setCurrentUser(response);
+            this.setCurrentUser(response.user);
             this.router.navigate([RouteNames.DASHBOARD]);
             this.notificationService.showNotification(
               $localize`:@@auth-service.registration-success:Registration successful`
             );
+            localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, response.token);
+            this.jwtToken.set(response.token);
             return true;
           }
           return false;

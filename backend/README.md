@@ -28,7 +28,7 @@ This is the backend part of the Blog API project. It is built using Express and 
    Create a `.env` file in the `backend` directory and add your database connection string:
    ```
    DATABASE_URL=postgresql://<username>:<password>@localhost:5432/<database>
-   SESSION_SECRET=<your-session-secret>
+   JWT_SECRET=<your-session-secret>
    ```
 
 ### Running the Application

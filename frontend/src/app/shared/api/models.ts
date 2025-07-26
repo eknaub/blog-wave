@@ -20,5 +20,7 @@ export type { Tag } from './models/tag';
 export type { TagPost } from './models/tag-post';
 export type { TagPut } from './models/tag-put';
 export type { User } from './models/user';
+export type { UserLoginRes } from './models/user-login-res';
 export type { UserPost } from './models/user-post';
 export type { UserPut } from './models/user-put';
+export type { UserRegisterRes } from './models/user-register-res';

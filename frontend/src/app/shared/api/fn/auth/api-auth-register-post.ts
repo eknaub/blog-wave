@@ -8,14 +8,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { User } from '../../models/user';
 import { UserPost } from '../../models/user-post';
+import { UserRegisterRes } from '../../models/user-register-res';
 
 export interface ApiAuthRegisterPost$Params {
       body: UserPost
 }
 
-export function apiAuthRegisterPost(http: HttpClient, rootUrl: string, params: ApiAuthRegisterPost$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+export function apiAuthRegisterPost(http: HttpClient, rootUrl: string, params: ApiAuthRegisterPost$Params, context?: HttpContext): Observable<StrictHttpResponse<UserRegisterRes>> {
   const rb = new RequestBuilder(rootUrl, apiAuthRegisterPost.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
@@ -26,7 +26,7 @@ export function apiAuthRegisterPost(http: HttpClient, rootUrl: string, params: A
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<User>;
+      return r as StrictHttpResponse<UserRegisterRes>;
     })
   );
 }

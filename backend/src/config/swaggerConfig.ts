@@ -6,7 +6,9 @@ import {
 } from '../api/models/followerSwagger';
 import { aiSwaggerSchema } from '../api/models/aiSwagger';
 import {
+  userLoginResSwaggerSchema,
   userPostSwaggerSchema,
+  userRegisterResSwaggerSchema,
   userSwaggerSchema,
   userUpdateSwaggerSchema,
 } from '../api/models/userSwagger';
@@ -46,6 +48,9 @@ export const swaggerOptions = {
         Ai: aiSwaggerSchema.definitions?.Ai,
         //User schemas
         User: userSwaggerSchema.definitions?.User,
+        UserLoginRes: userLoginResSwaggerSchema.definitions?.UserLoginRes,
+        UserRegisterRes:
+          userRegisterResSwaggerSchema.definitions?.UserRegisterRes,
         UserPost: userPostSwaggerSchema.definitions?.UserPost,
         UserPut: userUpdateSwaggerSchema.definitions?.UserPut,
         BaseFollower: followerBaseSwaggerSchema.definitions?.BaseFollower,

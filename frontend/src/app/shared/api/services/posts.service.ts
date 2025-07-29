@@ -19,7 +19,12 @@ import { apiPostsPostIdDelete } from '../fn/posts/api-posts-post-id-delete';
 import { ApiPostsPostIdDelete$Params } from '../fn/posts/api-posts-post-id-delete';
 import { apiPostsPostIdPut } from '../fn/posts/api-posts-post-id-put';
 import { ApiPostsPostIdPut$Params } from '../fn/posts/api-posts-post-id-put';
+import { apiPostsPostIdVotesGet } from '../fn/posts/api-posts-post-id-votes-get';
+import { ApiPostsPostIdVotesGet$Params } from '../fn/posts/api-posts-post-id-votes-get';
+import { apiPostsPostIdVotesPost } from '../fn/posts/api-posts-post-id-votes-post';
+import { ApiPostsPostIdVotesPost$Params } from '../fn/posts/api-posts-post-id-votes-post';
 import { Post } from '../models/post';
+import { PostVote } from '../models/post-vote';
 
 @Injectable({ providedIn: 'root' })
 export class PostsService extends BaseService {
@@ -155,6 +160,72 @@ export class PostsService extends BaseService {
    */
   apiPostsPostIdDelete(params: ApiPostsPostIdDelete$Params, context?: HttpContext): Observable<Post> {
     return this.apiPostsPostIdDelete$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Post>): Post => r.body)
+    );
+  }
+
+  /** Path part for operation `apiPostsPostIdVotesGet()` */
+  static readonly ApiPostsPostIdVotesGetPath = '/api/posts/{postId}/votes';
+
+  /**
+   * Get all votes for a post (likes/dislikes).
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiPostsPostIdVotesGet()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiPostsPostIdVotesGet$Response(params: ApiPostsPostIdVotesGet$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PostVote>>> {
+    return apiPostsPostIdVotesGet(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Get all votes for a post (likes/dislikes).
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiPostsPostIdVotesGet$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiPostsPostIdVotesGet(params: ApiPostsPostIdVotesGet$Params, context?: HttpContext): Observable<Array<PostVote>> {
+    return this.apiPostsPostIdVotesGet$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<PostVote>>): Array<PostVote> => r.body)
+    );
+  }
+
+  /** Path part for operation `apiPostsPostIdVotesPost()` */
+  static readonly ApiPostsPostIdVotesPostPath = '/api/posts/{postId}/votes';
+
+  /**
+   * Vote (like or dislike) on a post.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiPostsPostIdVotesPost()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  apiPostsPostIdVotesPost$Response(params: ApiPostsPostIdVotesPost$Params, context?: HttpContext): Observable<StrictHttpResponse<Post>> {
+    return apiPostsPostIdVotesPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Vote (like or dislike) on a post.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiPostsPostIdVotesPost$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  apiPostsPostIdVotesPost(params: ApiPostsPostIdVotesPost$Params, context?: HttpContext): Observable<Post> {
+    return this.apiPostsPostIdVotesPost$Response(params, context).pipe(
       map((r: StrictHttpResponse<Post>): Post => r.body)
     );
   }

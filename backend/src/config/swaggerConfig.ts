@@ -16,6 +16,8 @@ import {
   postCreateSwaggerSchema,
   postSwaggerSchema,
   postUpdateSwaggerSchema,
+  postVoteBaseSwaggerSchema,
+  postVoteSwaggerSchema,
 } from '../api/models/postSwagger';
 import {
   commentCreateSwaggerSchema,
@@ -60,6 +62,8 @@ export const swaggerOptions = {
         Post: postSwaggerSchema.definitions?.Post,
         PostPost: postCreateSwaggerSchema.definitions?.PostPost,
         PostPut: postUpdateSwaggerSchema.definitions?.PostPut,
+        PostVote: postVoteSwaggerSchema.definitions?.PostVote,
+        PostVoteUpdate: postVoteBaseSwaggerSchema.definitions?.PostVoteUpdate,
         // Comment schemas
         Comment: commentSwaggerSchema.definitions?.Comment,
         CommentPost: commentCreateSwaggerSchema.definitions?.CommentCreatePost,

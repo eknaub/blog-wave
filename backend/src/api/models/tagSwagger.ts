@@ -1,5 +1,6 @@
 import zodToJsonSchema from 'zod-to-json-schema';
 import {
+  TagDetailsSchema,
   TagPostRelationSchema,
   TagPostSchema,
   TagPutSchema,
@@ -7,6 +8,11 @@ import {
 } from './tag';
 
 export const tagSwaggerSchema = zodToJsonSchema(TagSchema, 'Tag');
+
+export const tagDetailsSwaggerSchema = zodToJsonSchema(
+  TagDetailsSchema,
+  'TagDetails'
+);
 
 export const tagPostSwaggerSchema = zodToJsonSchema(TagPostSchema, 'TagPost');
 

@@ -6,10 +6,17 @@ import {
   validateQuery,
 } from '../middleware/requestValidation';
 import { PostIdParamSchema } from '../middleware/requestParamValidation';
-import { OptionalUserIdQuerySchema } from '../middleware/requestQueryValidation';
+import {
+  OptionalUserIdQuerySchema,
+  VotesQuerySchema,
+} from '../middleware/requestQueryValidation';
 import { requireAuth } from '../middleware/auth';
-import { PostCreateSchema, PostUpdateSchema } from '../api/models/post';
-import { RouteIds } from '../utils/enums';
+import {
+  PostCreateSchema,
+  PostUpdateSchema,
+  PostVoteUpdateSchema,
+} from '../api/models/post';
+import { PostSubRoutes, RouteIds } from '../utils/enums';
 
 /**
  * @openapi
@@ -93,6 +100,68 @@ import { RouteIds } from '../utils/enums';
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Post'
+ * /api/posts/{postId}/votes:
+ *  post:
+ *    tags:
+ *      - Posts
+ *    summary: Vote (like or dislike) on a post
+ *    parameters:
+ *      - in: path
+ *        name: postId
+ *        required: true
+ *        schema:
+ *          type: integer
+ *        description: ID of the post to vote on
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/PostVoteUpdate'
+ *    responses:
+ *      200:
+ *        description: Vote registered and post returned
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Post'
+ *      400:
+ *        description: Invalid vote or already voted this way
+ *      401:
+ *        description: Unauthorized
+ *      404:
+ *        description: Post not found
+ *  get:
+ *    tags:
+ *      - Posts
+ *    summary: Get all votes for a post (likes/dislikes)
+ *    parameters:
+ *      - in: path
+ *        name: postId
+ *        required: true
+ *        schema:
+ *          type: integer
+ *        description: ID of the post
+ *      - in: query
+ *        name: type
+ *        required: false
+ *        schema:
+ *          type: string
+ *          enum: [LIKE, DISLIKE]
+ *        description: Filter by vote type (LIKE or DISLIKE)
+ *    responses:
+ *      200:
+ *        description: List of votes for the post
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/PostVote'
+ *      401:
+ *        description: Unauthorized
+ *      404:
+ *        description: Post not found
  */
 
 const postRouter = Router();
@@ -122,6 +191,20 @@ postRouter.delete(
   requireAuth,
   validateParams(PostIdParamSchema),
   postController.deletePost.bind(postController)
+);
+postRouter.post(
+  `/${RouteIds.POST_ID}/${PostSubRoutes.VOTES}`,
+  requireAuth,
+  validateParams(PostIdParamSchema),
+  validateBody(PostVoteUpdateSchema),
+  postController.votePost.bind(postController)
+);
+postRouter.get(
+  `/${RouteIds.POST_ID}/${PostSubRoutes.VOTES}`,
+  requireAuth,
+  validateParams(PostIdParamSchema),
+  validateQuery(VotesQuerySchema),
+  postController.getPostVotes.bind(postController)
 );
 
 export default postRouter;

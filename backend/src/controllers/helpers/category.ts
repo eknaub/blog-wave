@@ -1,4 +1,4 @@
-import { Category } from '../../api/models/category';
+import { Category, CategoryDetails } from '../../api/models/category';
 import prisma from '../../prisma/client';
 
 export function mapCategoryToDto(category: Category): Category {
@@ -8,6 +8,14 @@ export function mapCategoryToDto(category: Category): Category {
     description: category.description,
     createdAt: category.createdAt,
     updatedAt: category.updatedAt,
+  };
+}
+
+export function mapCategoryToDetailDto(category: Category): CategoryDetails {
+  return {
+    id: category.id,
+    name: category.name,
+    description: category.description,
   };
 }
 

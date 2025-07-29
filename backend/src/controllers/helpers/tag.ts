@@ -1,4 +1,4 @@
-import { Tag } from '../../api/models/tag';
+import { Tag, TagDetails } from '../../api/models/tag';
 import prisma from '../../prisma/client';
 
 export function mapTagToDto(tag: Tag): Tag {
@@ -8,6 +8,14 @@ export function mapTagToDto(tag: Tag): Tag {
     description: tag.description,
     createdAt: tag.createdAt,
     updatedAt: tag.updatedAt,
+  };
+}
+
+export function mapTagToDetailsDto(tag: Tag): TagDetails {
+  return {
+    id: tag.id,
+    name: tag.name,
+    description: tag.description,
   };
 }
 

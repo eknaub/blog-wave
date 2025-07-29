@@ -8,6 +8,11 @@ export const CategorySchema = z.object({
   updatedAt: z.date(),
 });
 
+export const CategoryDetailsSchema = CategorySchema.omit({
+  createdAt: true,
+  updatedAt: true,
+});
+
 export const CategoryPostSchema = CategorySchema.omit({
   id: true,
   createdAt: true,
@@ -26,6 +31,7 @@ export const CategoryPostRelationSchema = z.object({
 });
 
 export type Category = z.infer<typeof CategorySchema>;
+export type CategoryDetails = z.infer<typeof CategoryDetailsSchema>;
 export type CategoryPost = z.infer<typeof CategoryPostSchema>;
 export type CategoryPut = z.infer<typeof CategoryPutSchema>;
 export type CategoryPostRelation = z.infer<typeof CategoryPostRelationSchema>;

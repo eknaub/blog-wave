@@ -40,7 +40,7 @@ class CommentController {
       }
 
       const commentObjects = comments.map(comment =>
-        mapCommentToDto(comment, foundPost, comment.author)
+        mapCommentToDto(comment, comment.author)
       );
       sendSuccess(res, commentObjects, 'Comments retrieved successfully');
     } catch (error) {
@@ -83,11 +83,7 @@ class CommentController {
         },
       });
 
-      const sendComment: Comment = mapCommentToDto(
-        createdComment,
-        foundPost,
-        foundAuthor
-      );
+      const sendComment: Comment = mapCommentToDto(createdComment, foundAuthor);
 
       sendCreated(res, sendComment, 'Comment created successfully');
     } catch (error) {
@@ -134,7 +130,6 @@ class CommentController {
 
       const sendComment: Comment = mapCommentToDto(
         updatedComment,
-        foundPost,
         foundComment.author
       );
 
@@ -178,7 +173,6 @@ class CommentController {
 
       const sendComment: Comment = mapCommentToDto(
         deletedComment,
-        foundPost,
         foundComment.author
       );
 

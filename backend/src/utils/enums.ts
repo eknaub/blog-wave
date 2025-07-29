@@ -17,7 +17,11 @@ export enum Routes {
   CATEGORIES = 'categories',
 }
 
-export enum UserRoutes {
+export enum PostSubRoutes {
+  VOTES = 'votes',
+}
+
+export enum UserSubRoutes {
   FOLLOWERS = 'followers',
   FOLLOWING = 'following',
 }

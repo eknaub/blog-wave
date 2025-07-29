@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { UserDetailSchema } from './user';
-import { PostDetailSchema } from './post';
 
 export const CommentSchema = z.object({
   id: z.number().int().positive(),
@@ -16,7 +15,6 @@ export const CommentSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   author: UserDetailSchema,
-  post: PostDetailSchema,
 });
 
 export const CommentCreateSchema = z.object({

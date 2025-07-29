@@ -6,7 +6,7 @@ import {
   UnfollowIdParamSchema,
 } from '../middleware/requestParamValidation';
 import { requireAuth } from '../middleware/auth';
-import { RouteIds, UserRoutes } from '../utils/enums';
+import { RouteIds, UserSubRoutes } from '../utils/enums';
 import { FollowerCreateSchema } from '../api/models/follower';
 import { UserUpdateSchema } from '../api/models/user';
 
@@ -204,26 +204,26 @@ userRouter.get(
   userController.getUser.bind(userController)
 );
 userRouter.post(
-  `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWERS}`,
+  `/${RouteIds.USER_ID}/${UserSubRoutes.FOLLOWERS}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   validateBody(FollowerCreateSchema),
   userController.addFollower.bind(userController)
 );
 userRouter.delete(
-  `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWERS}/${RouteIds.UNFOLLOW_ID}`,
+  `/${RouteIds.USER_ID}/${UserSubRoutes.FOLLOWERS}/${RouteIds.UNFOLLOW_ID}`,
   requireAuth,
   validateParams(UnfollowIdParamSchema),
   userController.removeFollower.bind(userController)
 );
 userRouter.get(
-  `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWERS}`,
+  `/${RouteIds.USER_ID}/${UserSubRoutes.FOLLOWERS}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.getFollowers.bind(userController)
 );
 userRouter.get(
-  `/${RouteIds.USER_ID}/${UserRoutes.FOLLOWING}`,
+  `/${RouteIds.USER_ID}/${UserSubRoutes.FOLLOWING}`,
   requireAuth,
   validateParams(UserIdParamSchema),
   userController.getFollowing.bind(userController)

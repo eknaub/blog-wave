@@ -1,7 +1,20 @@
 import { z } from 'zod';
 import { UserDetailSchema } from './user';
-import { CategorySchema } from './category';
-import { TagSchema } from './tag';
+import { CategoryDetailsSchema } from './category';
+import { TagDetailsSchema } from './tag';
+
+export const PostVoteSchema = z.object({
+  id: z.number().int().positive(),
+  postId: z.number().int().positive(),
+  userId: z.number().int().positive(),
+  value: z.enum(['LIKE', 'DISLIKE']),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+export const PostVoteUpdateSchema = z.object({
+  value: z.enum(['LIKE', 'DISLIKE']),
+});
 
 export const PostSchema = z.object({
   id: z.number().int().positive(),
@@ -27,8 +40,9 @@ export const PostSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   author: UserDetailSchema,
-  categories: z.array(CategorySchema).nonempty(),
-  tags: z.array(TagSchema).nonempty(),
+  categories: z.array(CategoryDetailsSchema).nonempty(),
+  tags: z.array(TagDetailsSchema).nonempty(),
+  votesCount: z.number().default(0),
 });
 
 export const PostDetailSchema = z.object({
@@ -59,3 +73,5 @@ export const PostUpdateSchema = z.object({
 export type Post = z.infer<typeof PostSchema>;
 export type PostCreate = z.infer<typeof PostCreateSchema>;
 export type PostUpdate = z.infer<typeof PostUpdateSchema>;
+export type PostVote = z.infer<typeof PostVoteSchema>;
+export type PostVoteUpdate = z.infer<typeof PostVoteUpdateSchema>;

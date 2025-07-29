@@ -1,13 +1,10 @@
-import { fetchPostIfExists, mapPostToDto, PrismaReturnedPost } from './post';
+import { fetchPostIfExists } from './post';
 import prisma from '../../prisma/client';
 import { Response } from 'express';
 import { sendNotFound } from '../../utils/response';
 import { fetchUserIfExists } from './user';
-import { Post } from '../../api/models/post';
 import { UserDetail } from '../../api/models/user';
 import { Comment } from '../../api/models/comment';
-import { fetchTagsByPostId } from './tag';
-import { fetchCategoriesByPostId } from './category';
 
 export interface PrismaReturnedComment {
   id: number;
@@ -20,7 +17,6 @@ export interface PrismaReturnedComment {
 
 export function mapCommentToDto(
   comment: PrismaReturnedComment | Comment,
-  post: PrismaReturnedPost | Post,
   author: UserDetail
 ): Comment {
   return {
@@ -33,12 +29,6 @@ export function mapCommentToDto(
       username: author.username,
       email: author.email,
     },
-    post: mapPostToDto(
-      post,
-      author,
-      'categories' in post ? post.categories : [],
-      'tags' in post ? post.tags : []
-    ),
   };
 }
 
@@ -80,12 +70,7 @@ export async function fetchCommentIfExists(
     return null;
   }
 
-  const categories = await fetchCategoriesByPostId(foundPost.id);
-  const tags = await fetchTagsByPostId(foundPost.id);
-
-  const post = mapPostToDto(foundPost, foundUser, categories, tags);
-
-  const comment = mapCommentToDto(foundComment, post, foundUser);
+  const comment = mapCommentToDto(foundComment, foundUser);
 
   return comment as Comment;
 }

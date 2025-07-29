@@ -18,3 +18,16 @@ export const OptionalUserIdQuerySchema = z.object({
       return parsed;
     }),
 });
+
+export const VotesQuerySchema = z.object({
+  type: z.string().transform((val, ctx) => {
+    if (val !== 'LIKE' && val !== 'DISLIKE') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Like must be either "LIKE" or "DISLIKE"',
+      });
+      return z.NEVER;
+    }
+    return val as 'LIKE' | 'DISLIKE';
+  }),
+});

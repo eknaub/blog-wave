@@ -23,6 +23,8 @@ import {
   commentCreateSwaggerSchema,
   commentSwaggerSchema,
   commentUpdateSwaggerSchema,
+  commentVoteSwaggerSchema,
+  commentVoteUpdateSwaggerSchema,
 } from '../api/models/commentSwagger';
 import { loginSwaggerSchema } from '../api/models/loginSwagger';
 import {
@@ -68,6 +70,9 @@ export const swaggerOptions = {
         Comment: commentSwaggerSchema.definitions?.Comment,
         CommentPost: commentCreateSwaggerSchema.definitions?.CommentCreatePost,
         CommentPut: commentUpdateSwaggerSchema.definitions?.CommentPut,
+        CommentVote: commentVoteSwaggerSchema.definitions?.CommentVote,
+        CommentVoteUpdate:
+          commentVoteUpdateSwaggerSchema.definitions?.CommentVoteUpdate,
         // Login schema
         Login: loginSwaggerSchema.definitions?.Login,
         // Category schemas

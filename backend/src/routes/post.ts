@@ -16,7 +16,7 @@ import {
   PostUpdateSchema,
   PostVoteUpdateSchema,
 } from '../api/models/post';
-import { PostSubRoutes, RouteIds } from '../utils/enums';
+import { RouteIds, Routes } from '../utils/enums';
 
 /**
  * @openapi
@@ -193,14 +193,14 @@ postRouter.delete(
   postController.deletePost.bind(postController)
 );
 postRouter.post(
-  `/${RouteIds.POST_ID}/${PostSubRoutes.VOTES}`,
+  `/${RouteIds.POST_ID}/${Routes.VOTES}`,
   requireAuth,
   validateParams(PostIdParamSchema),
   validateBody(PostVoteUpdateSchema),
   postController.votePost.bind(postController)
 );
 postRouter.get(
-  `/${RouteIds.POST_ID}/${PostSubRoutes.VOTES}`,
+  `/${RouteIds.POST_ID}/${Routes.VOTES}`,
   requireAuth,
   validateParams(PostIdParamSchema),
   validateQuery(VotesQuerySchema),

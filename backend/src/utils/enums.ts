@@ -15,9 +15,6 @@ export enum Routes {
   AI = 'ai',
   TAGS = 'tags',
   CATEGORIES = 'categories',
-}
-
-export enum PostSubRoutes {
   VOTES = 'votes',
 }
 

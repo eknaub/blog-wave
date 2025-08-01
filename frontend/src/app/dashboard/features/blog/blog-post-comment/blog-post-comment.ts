@@ -21,7 +21,6 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { effect } from '@angular/core';
 import { NotificationService } from '../../../../shared/services/notification.service';
-import { LoggerService } from '../../../../shared/services/logger.service';
 import { CommentInputValidators } from '../../../../shared/utils/validators';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { CommentsService } from '../../../services/comment-service';

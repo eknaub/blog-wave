@@ -4,7 +4,6 @@ import {
   computed,
   inject,
   input,
-  signal,
 } from '@angular/core';
 import { BlogPostComment } from '../blog-post-comment/blog-post-comment';
 import { MatChipsModule } from '@angular/material/chips';

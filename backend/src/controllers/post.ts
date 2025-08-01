@@ -278,13 +278,9 @@ class PostController {
         return;
       }
 
-      let votes = await prisma.postVotes.findMany({
+      const votes = await prisma.postVotes.findMany({
         where: { postId: postId, value: type },
       });
-
-      if (type) {
-        votes = votes.filter(vote => vote.value === type);
-      }
 
       sendSuccess(res, votes, 'Post votes retrieved successfully');
     } catch (error) {

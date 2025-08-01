@@ -307,13 +307,9 @@ class CommentController {
         return;
       }
 
-      let votes = await prisma.commentVotes.findMany({
+      const votes = await prisma.commentVotes.findMany({
         where: { commentId: commentId, value: type },
       });
-
-      if (type) {
-        votes = votes.filter(vote => vote.value === type);
-      }
 
       sendSuccess(res, votes, 'Comment votes retrieved successfully');
     } catch (error) {

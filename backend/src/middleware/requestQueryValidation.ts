@@ -29,7 +29,7 @@ export const OptionalVotesQuerySchema = z.object({
       if (val !== 'LIKE' && val !== 'DISLIKE') {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Like must be either "LIKE" or "DISLIKE"',
+          message: 'Type must be either "LIKE" or "DISLIKE"',
         });
         return z.NEVER;
       }

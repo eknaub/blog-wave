@@ -49,10 +49,12 @@ class CommentController {
         return;
       }
 
-      const commentObjects = comments.map(async comment => {
-        const commentVotes = await fetchVotesByCommentId(comment.id);
-        return mapCommentToDto(comment, comment.author, commentVotes);
-      });
+      const commentObjects = await Promise.all(
+        comments.map(async comment => {
+          const commentVotes = await fetchVotesByCommentId(comment.id);
+          return mapCommentToDto(comment, comment.author, commentVotes);
+        })
+      );
 
       sendSuccess(res, commentObjects, 'Comments retrieved successfully');
     } catch (error) {
@@ -238,14 +240,18 @@ class CommentController {
         },
       });
 
-      if (existingVote) {
+      if (existingVote && existingVote.value === validatedVote.value) {
+        await prisma.commentVotes.delete({
+          where: { id: existingVote.id },
+        });
+        await prisma.comments.update({
+          where: { id: commentId },
+          data: { votesCount: { decrement: 1 } },
+        });
+      } else if (existingVote) {
         await prisma.commentVotes.update({
-          where: {
-            id: existingVote.id,
-          },
-          data: {
-            value: validatedVote.value,
-          },
+          where: { id: existingVote.id },
+          data: { value: validatedVote.value },
         });
       } else {
         await prisma.commentVotes.create({
@@ -285,7 +291,11 @@ class CommentController {
   }
 
   async getCommentVotes(
-    req: ValidatedRequest<unknown, { type: VoteType }, { commentId: number }>,
+    req: ValidatedRequest<
+      unknown,
+      { type: VoteType | undefined },
+      { commentId: number }
+    >,
     res: Response
   ): Promise<void> {
     try {
@@ -297,9 +307,13 @@ class CommentController {
         return;
       }
 
-      const votes = await prisma.commentVotes.findMany({
+      let votes = await prisma.commentVotes.findMany({
         where: { commentId: commentId, value: type },
       });
+
+      if (type) {
+        votes = votes.filter(vote => vote.value === type);
+      }
 
       sendSuccess(res, votes, 'Comment votes retrieved successfully');
     } catch (error) {

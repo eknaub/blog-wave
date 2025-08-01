@@ -16,7 +16,7 @@ import {
   CommentVoteUpdateSchema,
 } from '../api/models/comment';
 import { requireAuth } from '../middleware/auth';
-import { VotesQuerySchema } from '../middleware/requestQueryValidation';
+import { OptionalVotesQuerySchema } from '../middleware/requestQueryValidation';
 
 /**
  * @openapi
@@ -229,7 +229,7 @@ commentRouter.get(
   `/${RouteIds.POST_ID}/${Routes.COMMENTS}/${RouteIds.COMMENT_ID}/${Routes.VOTES}`,
   requireAuth,
   validateParams(PostAndCommentIdParamSchema),
-  validateQuery(VotesQuerySchema),
+  validateQuery(OptionalVotesQuerySchema),
   commentController.getCommentVotes.bind(commentController)
 );
 

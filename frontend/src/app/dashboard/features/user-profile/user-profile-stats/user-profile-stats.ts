@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { User } from '../../../../shared/api/models';
-import { BlogService } from '../../../services/blog-service';
+import { PostsService } from '../../../services/post-service';
 import { MatDivider } from '@angular/material/divider';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import {
 })
 export class UserProfileStats {
   readonly user = input.required<User | undefined>();
-  private readonly blogService = inject(BlogService);
+  private readonly postsService = inject(PostsService);
   private readonly router = inject(Router);
   private readonly dialog = inject(MatDialog);
 
@@ -26,7 +26,7 @@ export class UserProfileStats {
       return 0;
     }
 
-    return this.blogService.getPostCountByAuthor()(this.user()?.id);
+    return this.postsService.getPostCountByAuthor()(this.user()?.id);
   });
 
   protected readonly followerCount = computed(() => {
@@ -42,7 +42,6 @@ export class UserProfileStats {
   };
 
   protected readonly openFollowersDialog = () => {
-    console.log('Open followers dialog for user:', this.user()?.id);
     this.dialog.open(FollowersDialog, {
       data: {
         type: FollowersDialogType.FOLLOWERS,
@@ -52,7 +51,6 @@ export class UserProfileStats {
   };
 
   protected readonly openFollowingDialog = () => {
-    console.log('Open following dialog for user:', this.user()?.id);
     this.dialog.open(FollowersDialog, {
       data: {
         type: FollowersDialogType.FOLLOWING,

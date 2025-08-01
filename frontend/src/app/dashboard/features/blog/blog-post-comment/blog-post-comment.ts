@@ -21,10 +21,11 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { effect } from '@angular/core';
 import { NotificationService } from '../../../../shared/services/notification.service';
-import { BlogService } from '../../../services/blog-service';
 import { LoggerService } from '../../../../shared/services/logger.service';
 import { CommentInputValidators } from '../../../../shared/utils/validators';
 import { AuthService } from '../../../../shared/services/auth.service';
+import { CommentsService } from '../../../services/comment-service';
+import { VoteEnum } from '../../../../shared/interfaces/enums';
 
 @Component({
   selector: 'app-blog-post-comment',
@@ -46,10 +47,10 @@ import { AuthService } from '../../../../shared/services/auth.service';
 export class BlogPostComment {
   readonly postId = input.required<number>();
 
-  private readonly blogService = inject(BlogService);
+  private readonly commentsService = inject(CommentsService);
   private readonly authService = inject(AuthService);
   private readonly notificationService = inject(NotificationService);
-  private readonly logger = inject(LoggerService);
+  protected readonly VoteEnum = VoteEnum;
 
   protected readonly currentUser = this.authService.getLoggedInUser();
   protected readonly panelState = signal(false);
@@ -59,14 +60,14 @@ export class BlogPostComment {
   });
 
   protected readonly comments = computed(() => {
-    return this.blogService.getCommentsByPostId(this.postId())();
+    return this.commentsService.getCommentsByPostId(this.postId())();
   });
 
   constructor() {
     effect(() => {
       const id = this.postId();
       if (id) {
-        this.blogService.loadCommentsForPost(id);
+        this.commentsService.loadCommentsForPost(id);
       }
     });
   }
@@ -85,7 +86,7 @@ export class BlogPostComment {
       return;
     }
 
-    this.blogService.uploadCommentToPost(
+    this.commentsService.uploadCommentToPost(
       this.postId(),
       this.commentForm.value.comment
     );
@@ -94,6 +95,31 @@ export class BlogPostComment {
   };
 
   protected deleteComment = (commentId: number): void => {
-    this.blogService.deleteComment(this.postId(), commentId);
+    this.commentsService.deleteComment(this.postId(), commentId);
+  };
+
+  protected vote = (commentId: number, vote: VoteEnum) => {
+    this.commentsService.voteComment(this.postId(), commentId, vote);
+  };
+
+  protected getVotesCount = (commentId: number) =>
+    computed(() => this.commentsService.getCommentVotesCount(commentId))();
+
+  protected hasUserLikedPost = (commentId: number) => {
+    return computed(() => {
+      return this.commentsService.hasUserVotedOnComment(
+        commentId,
+        VoteEnum.LIKE
+      );
+    })();
+  };
+
+  protected hasUserDislikedPost = (commentId: number) => {
+    return computed(() => {
+      return this.commentsService.hasUserVotedOnComment(
+        commentId,
+        VoteEnum.DISLIKE
+      );
+    })();
   };
 }

@@ -208,11 +208,14 @@ class PostController {
       });
 
       if (existingVote && existingVote.value === validatedVote.value) {
-        sendError(res, 'You have already voted this way', 400);
-        return;
-      }
-
-      if (existingVote) {
+        await prisma.postVotes.delete({
+          where: { id: existingVote.id },
+        });
+        await prisma.posts.update({
+          where: { id: postId },
+          data: { votesCount: { decrement: 1 } },
+        });
+      } else if (existingVote) {
         await prisma.postVotes.update({
           where: { id: existingVote.id },
           data: { value: validatedVote.value },
@@ -259,7 +262,11 @@ class PostController {
   }
 
   async getPostVotes(
-    req: ValidatedRequest<unknown, { type: VoteType }, { postId: number }>,
+    req: ValidatedRequest<
+      unknown,
+      { type: VoteType | undefined },
+      { postId: number }
+    >,
     res: Response
   ): Promise<void> {
     try {
@@ -271,9 +278,13 @@ class PostController {
         return;
       }
 
-      const votes = await prisma.postVotes.findMany({
+      let votes = await prisma.postVotes.findMany({
         where: { postId: postId, value: type },
       });
+
+      if (type) {
+        votes = votes.filter(vote => vote.value === type);
+      }
 
       sendSuccess(res, votes, 'Post votes retrieved successfully');
     } catch (error) {

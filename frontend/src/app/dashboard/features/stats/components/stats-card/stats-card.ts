@@ -25,7 +25,7 @@ export class StatsCard {
 
   protected readonly hasErrors = computed(() => {
     return (
-      this.statsService.blogServiceError() ||
+      this.statsService.postsServiceError() ||
       this.statsService.userServiceError()
     );
   });

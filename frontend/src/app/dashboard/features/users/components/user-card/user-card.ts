@@ -5,7 +5,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { BlogService } from '../../../../services/blog-service';
+import { PostsService } from '../../../../services/post-service';
 import { User } from '../../../../../shared/api/models';
 import { MatCardModule } from '@angular/material/card';
 import { AuthService } from '../../../../../shared/services/auth.service';
@@ -22,7 +22,7 @@ import { LoggerService } from '../../../../../shared/services/logger.service';
 })
 export class UserCard {
   private readonly userService = inject(UserService);
-  private readonly blogService = inject(BlogService);
+  private readonly postsService = inject(PostsService);
   private readonly authService = inject(AuthService);
   private readonly userFollowersService = inject(UserFollowersService);
   private readonly logger = inject(LoggerService);
@@ -37,7 +37,7 @@ export class UserCard {
   }
 
   protected readonly postCount = computed(() => {
-    return this.blogService.getPostCountByAuthor()(this.user().id);
+    return this.postsService.getPostCountByAuthor()(this.user().id);
   });
 
   protected readonly followerCount = computed(() => {
@@ -49,7 +49,7 @@ export class UserCard {
   });
 
   protected readonly navigateToUserProfile = (userId: number) => {
-    this.blogService.navigateToUserProfile(userId);
+    this.postsService.navigateToUserProfile(userId);
   };
 
   protected readonly isSelectedUserCurrentUser = computed(() => {

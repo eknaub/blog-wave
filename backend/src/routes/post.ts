@@ -8,7 +8,7 @@ import {
 import { PostIdParamSchema } from '../middleware/requestParamValidation';
 import {
   OptionalUserIdQuerySchema,
-  VotesQuerySchema,
+  OptionalVotesQuerySchema,
 } from '../middleware/requestQueryValidation';
 import { requireAuth } from '../middleware/auth';
 import {
@@ -203,7 +203,7 @@ postRouter.get(
   `/${RouteIds.POST_ID}/${Routes.VOTES}`,
   requireAuth,
   validateParams(PostIdParamSchema),
-  validateQuery(VotesQuerySchema),
+  validateQuery(OptionalVotesQuerySchema),
   postController.getPostVotes.bind(postController)
 );
 

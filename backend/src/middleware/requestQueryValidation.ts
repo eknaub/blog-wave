@@ -19,15 +19,20 @@ export const OptionalUserIdQuerySchema = z.object({
     }),
 });
 
-export const VotesQuerySchema = z.object({
-  type: z.string().transform((val, ctx) => {
-    if (val !== 'LIKE' && val !== 'DISLIKE') {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Like must be either "LIKE" or "DISLIKE"',
-      });
-      return z.NEVER;
-    }
-    return val as 'LIKE' | 'DISLIKE';
-  }),
+export const OptionalVotesQuerySchema = z.object({
+  type: z
+    .string()
+    .optional()
+    .transform((val, ctx) => {
+      if (!val) return undefined;
+
+      if (val !== 'LIKE' && val !== 'DISLIKE') {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Like must be either "LIKE" or "DISLIKE"',
+        });
+        return z.NEVER;
+      }
+      return val as 'LIKE' | 'DISLIKE';
+    }),
 });

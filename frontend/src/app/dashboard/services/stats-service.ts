@@ -1,22 +1,22 @@
 import { inject, Injectable, computed } from '@angular/core';
-import { BlogService } from './blog-service';
+import { PostsService } from './post-service';
 import { UserService } from './user-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StatsService {
-  private readonly blogService = inject(BlogService);
+  private readonly postsService = inject(PostsService);
   private readonly userService = inject(UserService);
 
-  readonly blogServiceError = computed(() => this.blogService.postsError());
+  readonly postsServiceError = computed(() => this.postsService.postsError());
   readonly userServiceError = computed(() => this.userService.usersError());
 
   readonly isLoading = computed(
-    () => this.blogService.postsLoading() || this.userService.usersLoading()
+    () => this.postsService.postsLoading() || this.userService.usersLoading()
   );
 
-  readonly posts = computed(() => this.blogService.posts().length);
+  readonly posts = computed(() => this.postsService.posts().length);
 
   readonly users = computed(() => this.userService.users().length);
 }

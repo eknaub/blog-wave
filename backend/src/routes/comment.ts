@@ -1,7 +1,11 @@
 import { Router } from 'express';
 import { RouteIds, Routes } from '../utils/enums';
 import CommentController from '../controllers/comment';
-import { validateBody, validateParams } from '../middleware/requestValidation';
+import {
+  validateBody,
+  validateParams,
+  validateQuery,
+} from '../middleware/requestValidation';
 import {
   PostIdParamSchema,
   PostAndCommentIdParamSchema,
@@ -9,8 +13,10 @@ import {
 import {
   CommentCreateSchema,
   CommentUpdateSchema,
+  CommentVoteUpdateSchema,
 } from '../api/models/comment';
 import { requireAuth } from '../middleware/auth';
+import { OptionalVotesQuerySchema } from '../middleware/requestQueryValidation';
 
 /**
  * @openapi
@@ -111,6 +117,76 @@ import { requireAuth } from '../middleware/auth';
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Comment'
+ * /api/posts/{postId}/comments/{commentId}/votes:
+ *  post:
+ *    tags:
+ *      - Comments
+ *    summary: Vote (like or dislike) on a comment for a post
+ *    parameters:
+ *       - in: path
+ *         name: postId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: commentId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/CommentVoteUpdate'
+ *    responses:
+ *      200:
+ *        description: Vote registered and comment returned
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Comment'
+ *      400:
+ *        description: Invalid vote or already voted this way
+ *      401:
+ *        description: Unauthorized
+ *      404:
+ *        description: Comment not found
+ *  get:
+ *    tags:
+ *      - Comments
+ *    summary: Get all votes for comments on a post (likes/dislikes)
+ *    parameters:
+ *      - in: path
+ *        name: postId
+ *        required: true
+ *        schema:
+ *          type: integer
+ *      - in: path
+ *        name: commentId
+ *        required: true
+ *        schema:
+ *          type: integer
+ *      - in: query
+ *        name: type
+ *        required: false
+ *        schema:
+ *          type: string
+ *          enum: [LIKE, DISLIKE]
+ *        description: Filter by vote type (LIKE or DISLIKE)
+ *    responses:
+ *      200:
+ *        description: List of votes for comments on the post
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/CommentVote'
+ *      401:
+ *        description: Unauthorized
+ *      404:
+ *        description: Post or comment not found
  */
 
 const commentRouter = Router();
@@ -141,6 +217,20 @@ commentRouter.delete(
   requireAuth,
   validateParams(PostAndCommentIdParamSchema),
   commentController.deleteComment.bind(commentController)
+);
+commentRouter.post(
+  `/${RouteIds.POST_ID}/${Routes.COMMENTS}/${RouteIds.COMMENT_ID}/${Routes.VOTES}`,
+  requireAuth,
+  validateParams(PostAndCommentIdParamSchema),
+  validateBody(CommentVoteUpdateSchema),
+  commentController.voteComment.bind(commentController)
+);
+commentRouter.get(
+  `/${RouteIds.POST_ID}/${Routes.COMMENTS}/${RouteIds.COMMENT_ID}/${Routes.VOTES}`,
+  requireAuth,
+  validateParams(PostAndCommentIdParamSchema),
+  validateQuery(OptionalVotesQuerySchema),
+  commentController.getCommentVotes.bind(commentController)
 );
 
 export default commentRouter;

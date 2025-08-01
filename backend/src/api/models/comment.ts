@@ -1,6 +1,18 @@
 import { z } from 'zod';
 import { UserDetailSchema } from './user';
-import { PostDetailSchema } from './post';
+
+export const CommentVoteSchema = z.object({
+  id: z.number().int().positive(),
+  commentId: z.number().int().positive(),
+  userId: z.number().int().positive(),
+  value: z.enum(['LIKE', 'DISLIKE']),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+export const CommentVoteUpdateSchema = z.object({
+  value: z.enum(['LIKE', 'DISLIKE']),
+});
 
 export const CommentSchema = z.object({
   id: z.number().int().positive(),
@@ -16,7 +28,7 @@ export const CommentSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   author: UserDetailSchema,
-  post: PostDetailSchema,
+  votesCount: z.number().default(0),
 });
 
 export const CommentCreateSchema = z.object({
@@ -30,3 +42,5 @@ export const CommentUpdateSchema = CommentCreateSchema.partial();
 export type Comment = z.infer<typeof CommentSchema>;
 export type CommentCreate = z.infer<typeof CommentCreateSchema>;
 export type CommentUpdate = z.infer<typeof CommentUpdateSchema>;
+export type CommentVote = z.infer<typeof CommentVoteSchema>;
+export type CommentVoteUpdate = z.infer<typeof CommentVoteUpdateSchema>;

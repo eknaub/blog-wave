@@ -7,7 +7,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
-import { BlogService } from '../../services/blog-service';
+import { PostsService } from '../../services/post-service';
 import { DashboardContentWrapper } from '../../dashboard-content-wrapper/dashboard-content-wrapper';
 import { DialogAddPost } from './dialog-add-post/dialog-add-post';
 import { BlogPost } from './blog-post/blog-post';
@@ -20,12 +20,12 @@ import { BlogPost } from './blog-post/blog-post';
   imports: [DashboardContentWrapper, BlogPost, MatIcon, MatButtonModule],
 })
 export class Blog {
-  private readonly blogService = inject(BlogService);
+  private readonly postsService = inject(PostsService);
   private readonly dialog = inject(MatDialog);
 
-  protected readonly posts = computed(() => this.blogService.posts());
-  protected readonly postsLoading = this.blogService.postsLoading;
-  protected readonly postsError = this.blogService.postsError;
+  protected readonly posts = computed(() => this.postsService.posts());
+  protected readonly postsLoading = this.postsService.postsLoading;
+  protected readonly postsError = this.postsService.postsError;
 
   protected openDialog(): void {
     this.dialog.open(DialogAddPost);

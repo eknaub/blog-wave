@@ -15,9 +15,10 @@ export enum Routes {
   AI = 'ai',
   TAGS = 'tags',
   CATEGORIES = 'categories',
+  VOTES = 'votes',
 }
 
-export enum UserRoutes {
+export enum UserSubRoutes {
   FOLLOWERS = 'followers',
   FOLLOWING = 'following',
 }

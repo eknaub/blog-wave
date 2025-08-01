@@ -23,7 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { BlogService } from '../../../services/blog-service';
+import { PostsService } from '../../../services/post-service';
 import { LoggerService } from '../../../../shared/services/logger.service';
 import { NotificationService } from '../../../../shared/services/notification.service';
 import { AiService } from '../../../services/ai-service';
@@ -57,7 +57,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   ],
 })
 export class DialogAddPost {
-  private readonly blogService = inject(BlogService);
+  private readonly postsService = inject(PostsService);
   private readonly logger = inject(LoggerService);
   private readonly dialogRef = inject(MatDialogRef<DialogAddPost>);
   private readonly notificationService = inject(NotificationService);
@@ -151,7 +151,7 @@ export class DialogAddPost {
       authorId: this.currentUser()?.id ?? 0,
     };
 
-    this.blogService.uploadPost(post);
+    this.postsService.uploadPost(post);
 
     this.postForm.reset();
     this.dialogRef.close();

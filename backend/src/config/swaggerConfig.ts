@@ -16,11 +16,15 @@ import {
   postCreateSwaggerSchema,
   postSwaggerSchema,
   postUpdateSwaggerSchema,
+  postVoteBaseSwaggerSchema,
+  postVoteSwaggerSchema,
 } from '../api/models/postSwagger';
 import {
   commentCreateSwaggerSchema,
   commentSwaggerSchema,
   commentUpdateSwaggerSchema,
+  commentVoteSwaggerSchema,
+  commentVoteUpdateSwaggerSchema,
 } from '../api/models/commentSwagger';
 import { loginSwaggerSchema } from '../api/models/loginSwagger';
 import {
@@ -60,10 +64,15 @@ export const swaggerOptions = {
         Post: postSwaggerSchema.definitions?.Post,
         PostPost: postCreateSwaggerSchema.definitions?.PostPost,
         PostPut: postUpdateSwaggerSchema.definitions?.PostPut,
+        PostVote: postVoteSwaggerSchema.definitions?.PostVote,
+        PostVoteUpdate: postVoteBaseSwaggerSchema.definitions?.PostVoteUpdate,
         // Comment schemas
         Comment: commentSwaggerSchema.definitions?.Comment,
         CommentPost: commentCreateSwaggerSchema.definitions?.CommentCreatePost,
         CommentPut: commentUpdateSwaggerSchema.definitions?.CommentPut,
+        CommentVote: commentVoteSwaggerSchema.definitions?.CommentVote,
+        CommentVoteUpdate:
+          commentVoteUpdateSwaggerSchema.definitions?.CommentVoteUpdate,
         // Login schema
         Login: loginSwaggerSchema.definitions?.Login,
         // Category schemas

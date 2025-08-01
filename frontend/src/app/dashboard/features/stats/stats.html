@@ -2,9 +2,9 @@
   ><div>
     @if (hasErrors() && !stats.isLoading()) {
       <div class="error">
-        @if (stats.blogServiceError()) {
+        @if (stats.postsServiceError()) {
           <p i18n="@@stats.blog-error">
-            Error loading blog stats: {{ stats.blogServiceError() }}
+            Error loading blog stats: {{ stats.postsServiceError() }}
           </p>
         }
         @if (stats.userServiceError()) {

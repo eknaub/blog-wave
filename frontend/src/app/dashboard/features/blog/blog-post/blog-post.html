@@ -34,6 +34,29 @@
         </mat-chip>
       }
     </div>
+    <div class="vote-controls">
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="vote(VoteEnum.LIKE)"
+        [class.liked]="hasUserLikedPost()"
+        matTooltip="Upvote"
+        i18n-matTooltip="@@blog-post.upvote-tooltip"
+      >
+        <mat-icon>thumb_up</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        color="accent"
+        (click)="vote(VoteEnum.DISLIKE)"
+        [class.disliked]="hasUserDislikedPost()"
+        matTooltip="Downvote"
+        i18n-matTooltip="@@blog-post.downvote-tooltip"
+      >
+        <mat-icon>thumb_down</mat-icon>
+      </button>
+      <span class="vote-count">{{ getVotesCount() }}</span>
+    </div>
   </header>
   <div class="post-content">
     <p class="post-text" [innerHTML]="formattedContent()"></p>

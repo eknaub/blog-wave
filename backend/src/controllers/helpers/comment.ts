@@ -1,13 +1,10 @@
-import { fetchPostIfExists, mapPostToDto, PrismaReturnedPost } from './post';
+import { fetchPostIfExists } from './post';
 import prisma from '../../prisma/client';
 import { Response } from 'express';
 import { sendNotFound } from '../../utils/response';
 import { fetchUserIfExists } from './user';
-import { Post } from '../../api/models/post';
 import { UserDetail } from '../../api/models/user';
-import { Comment } from '../../api/models/comment';
-import { fetchTagsByPostId } from './tag';
-import { fetchCategoriesByPostId } from './category';
+import { Comment, CommentVote } from '../../api/models/comment';
 
 export interface PrismaReturnedComment {
   id: number;
@@ -20,8 +17,8 @@ export interface PrismaReturnedComment {
 
 export function mapCommentToDto(
   comment: PrismaReturnedComment | Comment,
-  post: PrismaReturnedPost | Post,
-  author: UserDetail
+  author: UserDetail,
+  votes: CommentVote[]
 ): Comment {
   return {
     id: comment.id,
@@ -33,14 +30,15 @@ export function mapCommentToDto(
       username: author.username,
       email: author.email,
     },
-    post: mapPostToDto(
-      post,
-      author,
-      'categories' in post ? post.categories : [],
-      'tags' in post ? post.tags : []
-    ),
+    votesCount: getTotalVotes(votes),
   };
 }
+
+const getTotalVotes = (votes: CommentVote[]): number => {
+  return votes.reduce((total, vote) => {
+    return total + (vote.value === 'LIKE' ? 1 : -1);
+  }, 0);
+};
 
 export async function fetchCommentIfExists(
   commentId: number | undefined,
@@ -80,12 +78,30 @@ export async function fetchCommentIfExists(
     return null;
   }
 
-  const categories = await fetchCategoriesByPostId(foundPost.id);
-  const tags = await fetchTagsByPostId(foundPost.id);
+  const votes = await fetchVotesByCommentId(commentId);
 
-  const post = mapPostToDto(foundPost, foundUser, categories, tags);
-
-  const comment = mapCommentToDto(foundComment, post, foundUser);
+  const comment = mapCommentToDto(foundComment, foundUser, votes);
 
   return comment as Comment;
+}
+
+export async function fetchVotesByCommentId(
+  commentId: number | undefined
+): Promise<CommentVote[]> {
+  const fetchedVotes = await prisma.commentVotes.findMany({
+    where: { commentId },
+  });
+
+  return fetchedVotes;
+}
+
+export function mapVotesToDto(votes: CommentVote[]): CommentVote[] {
+  return votes.map(vote => ({
+    id: vote.id,
+    commentId: vote.commentId,
+    userId: vote.userId,
+    value: vote.value,
+    createdAt: vote.createdAt,
+    updatedAt: vote.updatedAt,
+  }));
 }

@@ -18,3 +18,21 @@ export const OptionalUserIdQuerySchema = z.object({
       return parsed;
     }),
 });
+
+export const OptionalVotesQuerySchema = z.object({
+  type: z
+    .string()
+    .optional()
+    .transform((val, ctx) => {
+      if (!val) return undefined;
+
+      if (val !== 'LIKE' && val !== 'DISLIKE') {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Type must be either "LIKE" or "DISLIKE"',
+        });
+        return z.NEVER;
+      }
+      return val as 'LIKE' | 'DISLIKE';
+    }),
+});

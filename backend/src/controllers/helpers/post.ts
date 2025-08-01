@@ -1,13 +1,13 @@
 import prisma from '../../prisma/client';
 import { Response } from 'express';
 import { sendNotFound } from '../../utils/response';
-import { Post } from '../../api/models/post';
+import { Post, PostVote } from '../../api/models/post';
 import { fetchUserIfExists } from './user';
 import { User, UserDetail } from '../../api/models/user';
 import { Category } from '../../api/models/category';
 import { Tag } from '../../api/models/tag';
-import { fetchCategoriesByPostId, mapCategoryToDto } from './category';
-import { fetchTagsByPostId, mapTagToDto } from './tag';
+import { fetchCategoriesByPostId, mapCategoryToDetailDto } from './category';
+import { fetchTagsByPostId, mapTagToDetailsDto } from './tag';
 
 export interface PrismaReturnedPost {
   id: number;
@@ -23,7 +23,8 @@ export function mapPostToDto(
   post: PrismaReturnedPost | Post,
   author: User | UserDetail,
   categories: Category[],
-  tags: Tag[]
+  tags: Tag[],
+  votes: PostVote[]
 ): Post {
   return {
     id: post.id,
@@ -38,12 +39,22 @@ export function mapPostToDto(
     createdAt: post.createdAt ?? new Date(),
     updatedAt: post.updatedAt ?? new Date(),
     categories: [
-      mapCategoryToDto(categories[0]),
-      ...categories.slice(1).map(cat => mapCategoryToDto(cat)),
+      mapCategoryToDetailDto(categories[0]),
+      ...categories.slice(1).map(cat => mapCategoryToDetailDto(cat)),
     ],
-    tags: [mapTagToDto(tags[0]), ...tags.slice(1).map(tag => mapTagToDto(tag))],
+    tags: [
+      mapTagToDetailsDto(tags[0]),
+      ...tags.slice(1).map(tag => mapTagToDetailsDto(tag)),
+    ],
+    votesCount: getTotalVotes(votes),
   };
 }
+
+const getTotalVotes = (votes: PostVote[]): number => {
+  return votes.reduce((total, vote) => {
+    return total + (vote.value === 'LIKE' ? 1 : -1);
+  }, 0);
+};
 
 export async function fetchPostIfExists(
   postId: number | undefined,
@@ -80,12 +91,13 @@ export async function fetchPostIfExists(
     return null;
   }
 
-  // Fetch categories and tags associated with the post
+  // Fetch necessary data associated with the post
   const categories = await fetchCategoriesByPostId(postId);
   const tags = await fetchTagsByPostId(postId);
+  const votes = await fetchVotesByPostId(postId);
 
   // Return the found post with the user information
-  const post = mapPostToDto(foundPost, foundUser, categories, tags);
+  const post = mapPostToDto(foundPost, foundUser, categories, tags, votes);
 
   return post;
 }
@@ -115,4 +127,23 @@ export async function associatePostRelations(
   const tags = await fetchTagsByPostId(postId);
   const categories = await fetchCategoriesByPostId(postId);
   return { createdCategories: categories, createdTags: tags };
+}
+
+export async function fetchVotesByPostId(postId: number): Promise<PostVote[]> {
+  const fetchedVotes = await prisma.postVotes.findMany({
+    where: { postId },
+  });
+
+  return fetchedVotes;
+}
+
+export function mapVotesToDto(votes: PostVote[]): PostVote[] {
+  return votes.map(vote => ({
+    id: vote.id,
+    postId: vote.postId,
+    userId: vote.userId,
+    value: vote.value,
+    createdAt: vote.createdAt,
+    updatedAt: vote.updatedAt,
+  }));
 }

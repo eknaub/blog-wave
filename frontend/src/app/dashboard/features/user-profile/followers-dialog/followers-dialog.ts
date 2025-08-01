@@ -67,7 +67,6 @@ export class FollowersDialog {
       : $localize`:@@dialog.following.title:Following`;
 
   protected closeDialog(): void {
-    console.log('Close followers dialog');
     this.dialogRef.close();
   }
 }

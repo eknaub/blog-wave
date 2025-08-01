@@ -22,7 +22,7 @@ export class Stats {
 
   protected readonly hasErrors = computed(() => {
     return (
-      this.statsService.blogServiceError() ||
+      this.statsService.postsServiceError() ||
       this.statsService.userServiceError()
     );
   });

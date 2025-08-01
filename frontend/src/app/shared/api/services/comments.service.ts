@@ -15,11 +15,16 @@ import { apiPostsPostIdCommentsCommentIdDelete } from '../fn/comments/api-posts-
 import { ApiPostsPostIdCommentsCommentIdDelete$Params } from '../fn/comments/api-posts-post-id-comments-comment-id-delete';
 import { apiPostsPostIdCommentsCommentIdPut } from '../fn/comments/api-posts-post-id-comments-comment-id-put';
 import { ApiPostsPostIdCommentsCommentIdPut$Params } from '../fn/comments/api-posts-post-id-comments-comment-id-put';
+import { apiPostsPostIdCommentsCommentIdVotesGet } from '../fn/comments/api-posts-post-id-comments-comment-id-votes-get';
+import { ApiPostsPostIdCommentsCommentIdVotesGet$Params } from '../fn/comments/api-posts-post-id-comments-comment-id-votes-get';
+import { apiPostsPostIdCommentsCommentIdVotesPost } from '../fn/comments/api-posts-post-id-comments-comment-id-votes-post';
+import { ApiPostsPostIdCommentsCommentIdVotesPost$Params } from '../fn/comments/api-posts-post-id-comments-comment-id-votes-post';
 import { apiPostsPostIdCommentsGet } from '../fn/comments/api-posts-post-id-comments-get';
 import { ApiPostsPostIdCommentsGet$Params } from '../fn/comments/api-posts-post-id-comments-get';
 import { apiPostsPostIdCommentsPost } from '../fn/comments/api-posts-post-id-comments-post';
 import { ApiPostsPostIdCommentsPost$Params } from '../fn/comments/api-posts-post-id-comments-post';
 import { Comment } from '../models/comment';
+import { CommentVote } from '../models/comment-vote';
 
 @Injectable({ providedIn: 'root' })
 export class CommentsService extends BaseService {
@@ -155,6 +160,72 @@ export class CommentsService extends BaseService {
    */
   apiPostsPostIdCommentsCommentIdDelete(params: ApiPostsPostIdCommentsCommentIdDelete$Params, context?: HttpContext): Observable<Comment> {
     return this.apiPostsPostIdCommentsCommentIdDelete$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Comment>): Comment => r.body)
+    );
+  }
+
+  /** Path part for operation `apiPostsPostIdCommentsCommentIdVotesGet()` */
+  static readonly ApiPostsPostIdCommentsCommentIdVotesGetPath = '/api/posts/{postId}/comments/{commentId}/votes';
+
+  /**
+   * Get all votes for comments on a post (likes/dislikes).
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiPostsPostIdCommentsCommentIdVotesGet()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiPostsPostIdCommentsCommentIdVotesGet$Response(params: ApiPostsPostIdCommentsCommentIdVotesGet$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CommentVote>>> {
+    return apiPostsPostIdCommentsCommentIdVotesGet(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Get all votes for comments on a post (likes/dislikes).
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiPostsPostIdCommentsCommentIdVotesGet$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiPostsPostIdCommentsCommentIdVotesGet(params: ApiPostsPostIdCommentsCommentIdVotesGet$Params, context?: HttpContext): Observable<Array<CommentVote>> {
+    return this.apiPostsPostIdCommentsCommentIdVotesGet$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<CommentVote>>): Array<CommentVote> => r.body)
+    );
+  }
+
+  /** Path part for operation `apiPostsPostIdCommentsCommentIdVotesPost()` */
+  static readonly ApiPostsPostIdCommentsCommentIdVotesPostPath = '/api/posts/{postId}/comments/{commentId}/votes';
+
+  /**
+   * Vote (like or dislike) on a comment for a post.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiPostsPostIdCommentsCommentIdVotesPost()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  apiPostsPostIdCommentsCommentIdVotesPost$Response(params: ApiPostsPostIdCommentsCommentIdVotesPost$Params, context?: HttpContext): Observable<StrictHttpResponse<Comment>> {
+    return apiPostsPostIdCommentsCommentIdVotesPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Vote (like or dislike) on a comment for a post.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiPostsPostIdCommentsCommentIdVotesPost$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  apiPostsPostIdCommentsCommentIdVotesPost(params: ApiPostsPostIdCommentsCommentIdVotesPost$Params, context?: HttpContext): Observable<Comment> {
+    return this.apiPostsPostIdCommentsCommentIdVotesPost$Response(params, context).pipe(
       map((r: StrictHttpResponse<Comment>): Comment => r.body)
     );
   }

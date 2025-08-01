@@ -8,6 +8,11 @@ export const TagSchema = z.object({
   updatedAt: z.date(),
 });
 
+export const TagDetailsSchema = TagSchema.omit({
+  createdAt: true,
+  updatedAt: true,
+});
+
 export const TagPostSchema = TagSchema.omit({
   id: true,
   createdAt: true,
@@ -26,6 +31,7 @@ export const TagPostRelationSchema = z.object({
 });
 
 export type Tag = z.infer<typeof TagSchema>;
+export type TagDetails = z.infer<typeof TagDetailsSchema>;
 export type TagPost = z.infer<typeof TagPostSchema>;
 export type TagPut = z.infer<typeof TagPutSchema>;
 export type TagPostRelation = z.infer<typeof TagPostRelationSchema>;

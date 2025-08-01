@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BlogService } from './blog-service';
+import { BlogService } from './post-service';
 import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';

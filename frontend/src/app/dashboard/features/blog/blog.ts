@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,6 +21,7 @@ import { BlogPost } from './blog-post/blog-post';
   imports: [DashboardContentWrapper, BlogPost, MatIcon, MatButtonModule],
 })
 export class Blog {
+  private readonly loadForLoggedInUser = true;
   private readonly postsService = inject(PostsService);
   private readonly dialog = inject(MatDialog);
 
@@ -29,5 +31,13 @@ export class Blog {
 
   protected openDialog(): void {
     this.dialog.open(DialogAddPost);
+  }
+
+  constructor() {
+    effect(() => {
+      this.postsService.loadPosts({
+        loadForLoggedInUser: this.loadForLoggedInUser,
+      });
+    });
   }
 }

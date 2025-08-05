@@ -7,7 +7,7 @@ import {
 } from '../middleware/requestValidation';
 import { PostIdParamSchema } from '../middleware/requestParamValidation';
 import {
-  OptionalUserIdQuerySchema,
+  OptionalUserIdAndPublishedQuerySchema,
   OptionalVotesQuerySchema,
 } from '../middleware/requestQueryValidation';
 import { requireAuth } from '../middleware/auth';
@@ -32,6 +32,12 @@ import { RouteIds, Routes } from '../utils/enums';
  *         schema:
  *           type: integer
  *         description: Filter posts by user ID
+ *       - in: query
+ *         name: published
+ *         required: false
+ *         schema:
+ *           type: boolean
+ *         description: Filter posts by published status
  *     responses:
  *       200:
  *         description: List of posts
@@ -169,8 +175,7 @@ const postController = new PostController();
 
 postRouter.get(
   '/',
-  requireAuth,
-  validateQuery(OptionalUserIdQuerySchema),
+  validateQuery(OptionalUserIdAndPublishedQuerySchema),
   postController.getPosts.bind(postController)
 );
 postRouter.post(
@@ -201,7 +206,6 @@ postRouter.post(
 );
 postRouter.get(
   `/${RouteIds.POST_ID}/${Routes.VOTES}`,
-  requireAuth,
   validateParams(PostIdParamSchema),
   validateQuery(OptionalVotesQuerySchema),
   postController.getPostVotes.bind(postController)

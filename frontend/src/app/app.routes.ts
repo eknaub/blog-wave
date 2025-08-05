@@ -38,6 +38,12 @@ export const routes: Routes = [
       import('./user-menu/settings/settings').then((m) => m.Settings),
   },
   {
+    path: RouteNames.BLOG,
+    title: 'Blog',
+    loadComponent: () =>
+      import('./blog-home/blog-home').then((m) => m.BlogHome),
+  },
+  {
     path: RouteNames.DASHBOARD,
     title: 'Dashboard',
     loadComponent: () =>

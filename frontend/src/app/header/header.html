@@ -15,6 +15,16 @@
       <mat-icon>home</mat-icon>
       <span i18n="@@header.nav.home">Home</span>
     </a>
+    <a
+      [name]="'homeLink'"
+      matButton
+      [routerLink]="'/' + RouteNames.BLOG"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <mat-icon>article</mat-icon>
+      <span i18n="@@header.nav.blog">Blog</span>
+    </a>
     @if (isLoggedIn()) {
       <a
         [name]="'dashboardLink'"

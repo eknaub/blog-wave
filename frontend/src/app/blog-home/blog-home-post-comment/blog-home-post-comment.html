@@ -1,0 +1,134 @@
+@defer {
+  @if (comments(); as comments) {
+    <mat-accordion>
+      <mat-expansion-panel
+        (opened)="panelState.set(true)"
+        (closed)="panelState.set(false)"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title i18n="@@blog-post-comment.title">
+            Comments ({{ comments.length }})
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="comments-list">
+          @for (comment of comments; track comment.id) {
+            <div class="comment-card">
+              <div class="comment-content">
+                <p class="comment-text">{{ comment.content }}</p>
+              </div>
+              <div class="comment-meta">
+                <mat-chip disableRipple>
+                  <ng-container i18n="@@blog-post-comment.user-label"
+                    >User: {{ comment.author.username }}</ng-container
+                  >
+                </mat-chip>
+                <mat-chip disableRipple>
+                  <ng-container i18n="@@blog-post-comment.created-label"
+                    >Created:
+                    {{ comment.createdAt | date: 'medium' }}</ng-container
+                  >
+                </mat-chip>
+                @if (comment.updatedAt !== comment.createdAt) {
+                  <mat-chip disableRipple>
+                    <ng-container i18n="@@blog-post-comment.updated-label"
+                      >Updated:
+                      {{ comment.updatedAt | date: 'medium' }}</ng-container
+                    >
+                  </mat-chip>
+                }
+              </div>
+              <div class="vote-controls">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="vote(comment.id, VoteEnum.LIKE)"
+                  [class.liked]="hasUserLikedPost(comment.id)"
+                  matTooltip="Upvote"
+                  i18n-matTooltip="@@blog-post.upvote-tooltip"
+                >
+                  <mat-icon>thumb_up</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="accent"
+                  (click)="vote(comment.id, VoteEnum.DISLIKE)"
+                  [class.disliked]="hasUserDislikedPost(comment.id)"
+                  matTooltip="Downvote"
+                  i18n-matTooltip="@@blog-post.downvote-tooltip"
+                >
+                  <mat-icon>thumb_down</mat-icon>
+                </button>
+                <span class="vote-count">{{ getVotesCount(comment.id) }}</span>
+              </div>
+            </div>
+          } @empty {
+            <div class="no-comments">
+              <p i18n="@@blog-post-comment.no-comments">
+                No comments yet. Be the first to comment!
+              </p>
+            </div>
+          }
+        </div>
+        <form
+          [formGroup]="commentForm"
+          (ngSubmit)="submitComment()"
+          class="comment-form"
+        >
+          <mat-form-field appearance="outline" class="comment-input">
+            <mat-label i18n="@@blog-post-comment.add-comment-label"
+              >Add a comment</mat-label
+            >
+            <textarea
+              matInput
+              type="text"
+              formControlName="comment"
+              rows="3"
+              placeholder="Enter your comment here..."
+              i18n-placeholder="@@blog-post-comment.placeholder"
+              class="comment-textarea"
+            ></textarea>
+            <mat-icon matSuffix>comment</mat-icon>
+            @if (commentForm.get('comment')?.hasError('required')) {
+              <mat-error i18n="@@blog-post-comment.error-required">
+                Comment is required.
+              </mat-error>
+            }
+            @if (commentForm.get('comment')?.hasError('minlength')) {
+              <mat-error i18n="@@blog-post-comment.error-minlength">
+                Comment must be at least 1 character long.
+              </mat-error>
+            }
+            @if (commentForm.get('comment')?.hasError('maxlength')) {
+              <mat-error i18n="@@blog-post-comment.error-maxlength">
+                Comment cannot exceed 1000 characters.
+              </mat-error>
+            }
+            @if (commentForm.get('comment')?.hasError('pattern')) {
+              <mat-error i18n="@@blog-post-comment.error-pattern">
+                Comment must be at least 1 character long and can include any
+                characters.
+              </mat-error>
+            }
+          </mat-form-field>
+          <div class="form-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="commentForm.invalid"
+              class="submit-btn"
+              i18n="@@blog-post-comment.submit-button"
+            >
+              Submit Comment
+            </button>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  }
+} @loading {
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p i18n="@@blog-post-comment.loading">Loading comments...</p>
+  </div>
+}

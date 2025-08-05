@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const OptionalUserIdQuerySchema = z.object({
+export const OptionalUserIdAndPublishedQuerySchema = z.object({
   userId: z
     .string()
     .optional()
@@ -16,6 +16,19 @@ export const OptionalUserIdQuerySchema = z.object({
         return z.NEVER;
       }
       return parsed;
+    }),
+  published: z
+    .string()
+    .optional()
+    .transform((val, ctx) => {
+      if (val === undefined) return undefined;
+      if (val === 'true') return true;
+      if (val === 'false') return false;
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Published must be "true" or "false"',
+      });
+      return z.NEVER;
     }),
 });
 

@@ -194,7 +194,6 @@ const commentController = new CommentController();
 
 commentRouter.get(
   `/${RouteIds.POST_ID}/${Routes.COMMENTS}`,
-  requireAuth,
   validateParams(PostIdParamSchema),
   commentController.getComments.bind(commentController)
 );

@@ -20,16 +20,16 @@ import {
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { effect } from '@angular/core';
-import { NotificationService } from '../../../../shared/services/notification.service';
-import { CommentInputValidators } from '../../../../shared/utils/validators';
-import { AuthService } from '../../../../shared/services/auth.service';
-import { CommentsService } from '../../../services/comment-service';
-import { VoteEnum } from '../../../../shared/interfaces/enums';
+import { CommentsService } from '../../dashboard/services/comment-service';
+import { AuthService } from '../../shared/services/auth.service';
+import { NotificationService } from '../../shared/services/notification.service';
+import { VoteEnum } from '../../shared/interfaces/enums';
+import { CommentInputValidators } from '../../shared/utils/validators';
 
 @Component({
-  selector: 'app-blog-post-comment',
-  templateUrl: './blog-post-comment.html',
-  styleUrl: './blog-post-comment.css',
+  selector: 'app-blog-home-post-comment',
+  templateUrl: './blog-home-post-comment.html',
+  styleUrl: './blog-home-post-comment.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatExpansionModule,
@@ -87,10 +87,6 @@ export class BlogPostComment {
     );
 
     this.commentForm.reset();
-  };
-
-  protected deleteComment = (commentId: number): void => {
-    this.commentsService.deleteComment(this.postId(), commentId);
   };
 
   protected vote = (commentId: number, vote: VoteEnum) => {

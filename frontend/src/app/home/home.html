@@ -1,17 +1,19 @@
 <main class="home-container">
   <mat-card class="welcome-card">
     <mat-card-header>
-      <mat-card-title
-        ><h1 i18n="@@welcome.title">Welcome to the Blog API</h1></mat-card-title
-      >
+      <mat-card-title>
+        <h1 i18n="@@welcome.title">Welcome to Blog Wave</h1>
+      </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p i18n="@@welcome.description">
-        This is a simple blog API. You can create, read, update, and delete blog
-        posts.
+        Blog Wave is your space to discover, share, and discuss ideas. Browse
+        public blog posts, or sign in to create your own and join the
+        conversation.
       </p>
       <p i18n="@@welcome.navigation">
-        Use the navigation links to explore the API or manage your account.
+        Use the navigation links above to explore trending posts, search topics,
+        or manage your account.
       </p>
       @if (isLoggedIn()) {
         <p i18n="@@welcome.logged-in">
@@ -21,7 +23,8 @@
         </p>
       } @else {
         <p i18n="@@welcome.logged-out">
-          Please log in or register to create and manage your blog posts.
+          Ready to make waves? Log in or register to start posting and engaging
+          with the community.
         </p>
       }
     </mat-card-content>

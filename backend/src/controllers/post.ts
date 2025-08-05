@@ -22,11 +22,16 @@ import { VoteType } from '@prisma/client';
 
 class PostController {
   async getPosts(
-    req: ValidatedRequest<unknown, { userId: number | undefined }>,
+    req: ValidatedRequest<
+      unknown,
+      { userId: number | undefined; published: boolean | undefined }
+    >,
     res: Response
   ): Promise<void> {
     try {
       const userId = req.validatedQuery!.userId;
+      const published = req.validatedQuery!.published;
+
       let posts = await prisma.posts.findMany({
         where: userId ? { authorId: userId } : undefined,
         include: {
@@ -42,6 +47,10 @@ class PostController {
 
       if (userId) {
         posts = posts.filter(post => post.authorId === userId);
+      }
+
+      if (published !== undefined) {
+        posts = posts.filter(post => post.published === published);
       }
 
       const postObjects = await Promise.all(

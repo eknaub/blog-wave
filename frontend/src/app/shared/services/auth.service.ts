@@ -61,7 +61,7 @@ export class AuthService {
         map((response) => {
           if (response) {
             this.setCurrentUser(response.user);
-            this.router.navigate([RouteNames.DASHBOARD]);
+            this.router.navigate([RouteNames.HOME]);
             this.notificationService.showNotification(
               $localize`:@@auth-service.login-success:Login successful`
             );

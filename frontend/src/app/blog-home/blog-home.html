@@ -1,24 +1,9 @@
-<app-dashboard-content-wrapper
-  title="My blog posts"
-  i18n-title="@@blog.page-title"
->
-  <button
-    name="add-post"
-    mat-fab
-    color="primary"
-    class="add-comment-btn"
-    (click)="openDialog()"
-    matTooltip="Add new post"
-    i18n-matTooltip="@@blog.add-post-tooltip"
-  >
-    <mat-icon>add</mat-icon>
-  </button>
+<section class="blog-home-posts-container">
+  <h1 i18n="@@blog.home-title">Blog Posts</h1>
   @if (!postsLoading()) {
     @for (post of posts(); track post.id) {
       @defer (on viewport) {
-        <div class="blog-post-container">
-          <app-blog-post [post]="post"></app-blog-post>
-        </div>
+        <app-blog-home-post [post]="post"></app-blog-home-post>
       } @placeholder {
         <div class="loading-placeholder">
           <p i18n="@@blog.loading-post">Loading post...</p>
@@ -34,4 +19,4 @@
       <p>{{ postsError() }}</p>
     </div>
   }
-</app-dashboard-content-wrapper>
+</section>

@@ -49,27 +49,12 @@
                   </mat-chip>
                 }
               </div>
-              <div class="vote-controls">
-                <button
-                  mat-icon-button
-                  color="primary"
-                  (click)="vote(comment.id, VoteEnum.LIKE)"
-                  [class.liked]="hasUserLikedPost(comment.id)"
-                  matTooltip="Upvote"
-                  i18n-matTooltip="@@blog-post.upvote-tooltip"
-                >
-                  <mat-icon>thumb_up</mat-icon>
-                </button>
-                <button
-                  mat-icon-button
-                  color="accent"
-                  (click)="vote(comment.id, VoteEnum.DISLIKE)"
-                  [class.disliked]="hasUserDislikedPost(comment.id)"
-                  matTooltip="Downvote"
-                  i18n-matTooltip="@@blog-post.downvote-tooltip"
-                >
-                  <mat-icon>thumb_down</mat-icon>
-                </button>
+              <div
+                class="vote-controls"
+                title="Total votes"
+                i18n-title="@@blog-post-comment.vote-count-tooltip"
+              >
+                <mat-icon aria-hidden="true" color="primary">thumb_up</mat-icon>
                 <span class="vote-count">{{ getVotesCount(comment.id) }}</span>
               </div>
             </div>
@@ -81,60 +66,6 @@
             </div>
           }
         </div>
-        <form
-          [formGroup]="commentForm"
-          (ngSubmit)="submitComment()"
-          class="comment-form"
-        >
-          <mat-form-field appearance="outline" class="comment-input">
-            <mat-label i18n="@@blog-post-comment.add-comment-label"
-              >Add a comment</mat-label
-            >
-            <textarea
-              matInput
-              type="text"
-              formControlName="comment"
-              rows="3"
-              placeholder="Enter your comment here..."
-              i18n-placeholder="@@blog-post-comment.placeholder"
-              class="comment-textarea"
-            ></textarea>
-            <mat-icon matSuffix>comment</mat-icon>
-            @if (commentForm.get('comment')?.hasError('required')) {
-              <mat-error i18n="@@blog-post-comment.error-required">
-                Comment is required.
-              </mat-error>
-            }
-            @if (commentForm.get('comment')?.hasError('minlength')) {
-              <mat-error i18n="@@blog-post-comment.error-minlength">
-                Comment must be at least 1 character long.
-              </mat-error>
-            }
-            @if (commentForm.get('comment')?.hasError('maxlength')) {
-              <mat-error i18n="@@blog-post-comment.error-maxlength">
-                Comment cannot exceed 1000 characters.
-              </mat-error>
-            }
-            @if (commentForm.get('comment')?.hasError('pattern')) {
-              <mat-error i18n="@@blog-post-comment.error-pattern">
-                Comment must be at least 1 character long and can include any
-                characters.
-              </mat-error>
-            }
-          </mat-form-field>
-          <div class="form-actions">
-            <button
-              mat-raised-button
-              color="primary"
-              type="submit"
-              [disabled]="commentForm.invalid"
-              class="submit-btn"
-              i18n="@@blog-post-comment.submit-button"
-            >
-              Submit Comment
-            </button>
-          </div>
-        </form>
       </mat-expansion-panel>
     </mat-accordion>
   }

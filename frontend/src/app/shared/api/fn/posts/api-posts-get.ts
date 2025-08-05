@@ -16,12 +16,18 @@ export interface ApiPostsGet$Params {
  * Filter posts by user ID
  */
   userId?: number;
+
+/**
+ * Filter posts by published status
+ */
+  published?: boolean;
 }
 
 export function apiPostsGet(http: HttpClient, rootUrl: string, params?: ApiPostsGet$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Post>>> {
   const rb = new RequestBuilder(rootUrl, apiPostsGet.PATH, 'get');
   if (params) {
     rb.query('userId', params.userId, {});
+    rb.query('published', params.published, {});
   }
 
   return http.request(

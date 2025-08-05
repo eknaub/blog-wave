@@ -8,6 +8,11 @@ import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { VoteEnum } from '../../shared/interfaces/enums';
 
+export interface LoadPostsConfig {
+  loadForLoggedInUser?: boolean;
+  published?: boolean;
+}
+
 @Injectable({ providedIn: 'root' })
 export class PostsService {
   private readonly generatedPostsService = inject(GeneratedPostsService);
@@ -26,27 +31,30 @@ export class PostsService {
     this.authService.getLoggedInUser()
   );
 
-  constructor() {
-    this.loadPosts();
-  }
-
-  loadPosts(): Subscription {
+  loadPosts(config: LoadPostsConfig = {}): Subscription {
     this.postsLoading.set(true);
     this.postsError.set(null);
-    return this.generatedPostsService.apiPostsGet().subscribe({
-      next: (posts) => {
-        posts.forEach((post) => {
-          this.getPostVotes(post.id);
-        });
-        this.posts.set(posts);
-        this.postsLoading.set(false);
-      },
-      error: (error) => {
-        this.postsError.set(error.message);
-        this.postsLoading.set(false);
-        this.logger.error(`Failed to load posts: ${error}`);
-      },
-    });
+    return this.generatedPostsService
+      .apiPostsGet({
+        userId: config.loadForLoggedInUser
+          ? this.loggedInUser()?.id
+          : undefined,
+        published: config.published,
+      })
+      .subscribe({
+        next: (posts) => {
+          posts.forEach((post) => {
+            this.getPostVotes(post.id);
+          });
+          this.posts.set(posts);
+          this.postsLoading.set(false);
+        },
+        error: (error) => {
+          this.postsError.set(error.message);
+          this.postsLoading.set(false);
+          this.logger.error(`Failed to load posts: ${error}`);
+        },
+      });
   }
 
   uploadPost(newPost: PostPost): void {

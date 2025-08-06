@@ -20,7 +20,23 @@ import {
 } from './helpers/comment';
 import { fetchUserIfExists } from './helpers/user';
 import { fetchPostIfExists } from './helpers/post';
-import { VoteType } from '@prisma/client';
+import { VoteType } from '../utils/enums';
+
+type FetchedComment = {
+  author: {
+    id: number;
+    username: string;
+    email: string;
+  };
+} & {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  postId: number;
+  content: string;
+  votesCount: number;
+  authorId: number;
+};
 
 class CommentController {
   async getComments(
@@ -29,7 +45,7 @@ class CommentController {
   ): Promise<void> {
     try {
       const postId = req.validatedParams!.postId;
-      const comments = await prisma.comments.findMany({
+      const comments: FetchedComment[] = await prisma.comments.findMany({
         where: {
           postId: postId,
         },

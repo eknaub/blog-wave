@@ -29,5 +29,5 @@ export async function fetchUserIfExists(
     return null;
   }
 
-  return filterUserPassword(foundUser);
+  return filterUserPassword(foundUser) as Omit<User, 'password'>;
 }

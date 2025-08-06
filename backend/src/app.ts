@@ -19,7 +19,7 @@ app.use(
 );
 
 //Configure Swagger UI
-app.get('/api-docs/swagger.json', (req, res) => {
+app.get('/api-docs/swagger.json', (_req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });

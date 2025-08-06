@@ -13,7 +13,7 @@ import {
 
 class TagController {
   async getTags(
-    req: ValidatedRequest<Tag, unknown, unknown>,
+    _req: ValidatedRequest<Tag, unknown, unknown>,
     res: Response
   ): Promise<void> {
     try {

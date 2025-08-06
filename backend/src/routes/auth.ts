@@ -4,7 +4,7 @@ import { validateBody } from '../middleware/requestValidation';
 import { requireAuth } from '../middleware/auth';
 import { UserCreateSchema } from '../api/models/user';
 import { LoginSchema } from '../api/models/login';
-import { AuthRoutes } from '../utils/enums';
+import { AuthRoutes } from '../utils/routeEnums';
 
 /**
  * @openapi

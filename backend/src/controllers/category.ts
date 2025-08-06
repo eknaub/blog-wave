@@ -14,7 +14,7 @@ import {
 
 class CategoryController {
   async getCategories(
-    req: ValidatedRequest<Category, unknown, unknown>,
+    _req: ValidatedRequest<Category, unknown, unknown>,
     res: Response
   ): Promise<void> {
     try {

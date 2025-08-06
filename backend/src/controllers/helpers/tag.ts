@@ -1,6 +1,19 @@
 import { Tag, TagDetails } from '../../api/models/tag';
 import prisma from '../../prisma/client';
 
+type FetchedTag = {
+  tag: {
+    id: number;
+    name: string;
+    description: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+} & {
+  postId: number;
+  tagId: number;
+};
+
 export function mapTagToDto(tag: Tag): Tag {
   return {
     id: tag.id,
@@ -20,7 +33,7 @@ export function mapTagToDetailsDto(tag: Tag): TagDetails {
 }
 
 export async function fetchTagsByPostId(postId: number): Promise<Tag[]> {
-  const fetchedTags = await prisma.postTags.findMany({
+  const fetchedTags: FetchedTag[] = await prisma.postTags.findMany({
     where: { postId },
     include: { tag: true },
   });

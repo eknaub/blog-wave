@@ -17,6 +17,14 @@ export const requireAuth = (
   }
 
   const token = authHeader.split(' ')[1];
+
+  if (!token) {
+    sendError(res, 'Authentication token is missing or invalid', 401, [
+      'You must be logged in to access this resource.',
+    ]);
+    return;
+  }
+
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;

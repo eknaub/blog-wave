@@ -8,27 +8,29 @@ import {
   sendSuccess,
   sendUpdated,
 } from '../utils/response';
-import { fetchUserIfExists } from './helpers/user';
+import { fetchUserIfExists, filterUserPassword } from './helpers/user';
 import { FollowerCreate } from '../api/models/follower';
 import { User, UserUpdate } from '../api/models/user';
 
-class UserController {
-  async getUsers(req: ValidatedRequest, res: Response): Promise<void> {
-    try {
-      const data = await prisma.users.findMany();
+type FetchedUser = {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  username: string;
+  email: string;
+  password: string;
+  followersCount: number;
+  followingCount: number;
+};
 
-      //Omits sensitive information like password
+class UserController {
+  async getUsers(_req: ValidatedRequest, res: Response): Promise<void> {
+    try {
+      const fetchedUsers: FetchedUser[] = await prisma.users.findMany();
+
       const sendData: User[] = await Promise.all(
-        data.map(async user => {
-          return {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-            followersCount: user.followersCount,
-            followingCount: user.followingCount,
-          };
+        fetchedUsers.map(async user => {
+          return filterUserPassword(user);
         })
       );
 

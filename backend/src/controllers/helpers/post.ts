@@ -4,8 +4,8 @@ import { sendNotFound } from '../../utils/response';
 import { Post, PostVote } from '../../api/models/post';
 import { fetchUserIfExists } from './user';
 import { User, UserDetail } from '../../api/models/user';
-import { Category } from '../../api/models/category';
-import { Tag } from '../../api/models/tag';
+import { Category, CategoryDetails } from '../../api/models/category';
+import { Tag, TagDetails } from '../../api/models/tag';
 import { fetchCategoriesByPostId, mapCategoryToDetailDto } from './category';
 import { fetchTagsByPostId, mapTagToDetailsDto } from './tag';
 
@@ -26,6 +26,15 @@ export function mapPostToDto(
   tags: Tag[],
   votes: PostVote[]
 ): Post {
+  const mappedCategoryDetails: CategoryDetails[] = categories.map(cat =>
+    mapCategoryToDetailDto(cat)
+  );
+  const mappedTags: TagDetails[] = tags.map(tag => mapTagToDetailsDto(tag));
+
+  if (mappedCategoryDetails.length === 0 || mappedTags.length === 0) {
+    throw new Error('Post must have at least one category and one tag.');
+  }
+
   return {
     id: post.id,
     title: post.title,
@@ -38,14 +47,11 @@ export function mapPostToDto(
     },
     createdAt: post.createdAt ?? new Date(),
     updatedAt: post.updatedAt ?? new Date(),
-    categories: [
-      mapCategoryToDetailDto(categories[0]),
-      ...categories.slice(1).map(cat => mapCategoryToDetailDto(cat)),
+    categories: mappedCategoryDetails as [
+      CategoryDetails,
+      ...CategoryDetails[],
     ],
-    tags: [
-      mapTagToDetailsDto(tags[0]),
-      ...tags.slice(1).map(tag => mapTagToDetailsDto(tag)),
-    ],
+    tags: mappedTags as [TagDetails, ...TagDetails[]],
     votesCount: getTotalVotes(votes),
   };
 }

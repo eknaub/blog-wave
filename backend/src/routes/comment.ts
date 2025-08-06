@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { RouteIds, Routes } from '../utils/enums';
+import { RouteIds, Routes } from '../utils/routeEnums';
 import CommentController from '../controllers/comment';
 import {
   validateBody,

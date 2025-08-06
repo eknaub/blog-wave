@@ -18,7 +18,24 @@ import {
 } from './helpers/post';
 import { fetchCategoriesByPostId } from './helpers/category';
 import { fetchTagsByPostId } from './helpers/tag';
-import { VoteType } from '@prisma/client';
+import { VoteType } from '../utils/enums';
+
+type FetchedPost = {
+  author: {
+    id: number;
+    username: string;
+    email: string;
+  };
+} & {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  content: string;
+  authorId: number;
+  votesCount: number;
+  title: string;
+  published: boolean | null;
+};
 
 class PostController {
   async getPosts(
@@ -32,7 +49,7 @@ class PostController {
       const userId = req.validatedQuery!.userId;
       const published = req.validatedQuery!.published;
 
-      let posts = await prisma.posts.findMany({
+      let posts: FetchedPost[] = await prisma.posts.findMany({
         where: userId ? { authorId: userId } : undefined,
         include: {
           author: {

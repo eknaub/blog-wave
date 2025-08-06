@@ -6,7 +6,7 @@ import {
   UnfollowIdParamSchema,
 } from '../middleware/requestParamValidation';
 import { requireAuth } from '../middleware/auth';
-import { RouteIds, UserSubRoutes } from '../utils/enums';
+import { RouteIds, UserSubRoutes } from '../utils/routeEnums';
 import { FollowerCreateSchema } from '../api/models/follower';
 import { UserUpdateSchema } from '../api/models/user';
 

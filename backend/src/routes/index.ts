@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { Routes } from '../utils/enums';
+import { Routes } from '../utils/routeEnums';
 import authRouter from './auth';
 import commentRouter from './comment';
 import userRouter from './user';

@@ -16,7 +16,7 @@ import {
   PostUpdateSchema,
   PostVoteUpdateSchema,
 } from '../api/models/post';
-import { RouteIds, Routes } from '../utils/enums';
+import { RouteIds, Routes } from '../utils/routeEnums';
 
 /**
  * @openapi

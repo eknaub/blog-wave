@@ -17,6 +17,7 @@ import {
 } from '../api/models/comment';
 import { requireAuth } from '../middleware/auth';
 import { OptionalVotesQuerySchema } from '../middleware/requestQueryValidation';
+import { moderateContent } from '../middleware/moderateContent';
 
 /**
  * @openapi
@@ -200,6 +201,7 @@ commentRouter.get(
 commentRouter.post(
   `/${RouteIds.POST_ID}/${Routes.COMMENTS}`,
   requireAuth,
+  moderateContent,
   validateParams(PostIdParamSchema),
   validateBody(CommentCreateSchema),
   commentController.postComment.bind(commentController)
@@ -207,6 +209,7 @@ commentRouter.post(
 commentRouter.put(
   `/${RouteIds.POST_ID}/${Routes.COMMENTS}/${RouteIds.COMMENT_ID}`,
   requireAuth,
+  moderateContent,
   validateParams(PostAndCommentIdParamSchema),
   validateBody(CommentUpdateSchema),
   commentController.putComment.bind(commentController)

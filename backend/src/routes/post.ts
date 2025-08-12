@@ -17,6 +17,7 @@ import {
   PostVoteUpdateSchema,
 } from '../api/models/post';
 import { RouteIds, Routes } from '../utils/routeEnums';
+import { moderateContent } from '../middleware/moderateContent';
 
 /**
  * @openapi
@@ -181,12 +182,14 @@ postRouter.get(
 postRouter.post(
   '/',
   requireAuth,
+  moderateContent,
   validateBody(PostCreateSchema),
   postController.postPost.bind(postController)
 );
 postRouter.put(
   `/${RouteIds.POST_ID}`,
   requireAuth,
+  moderateContent,
   validateParams(PostIdParamSchema),
   validateBody(PostUpdateSchema),
   postController.putPost.bind(postController)

@@ -3,7 +3,10 @@ import prisma from '../prisma/client';
 import { sendError } from '../utils/response';
 import ai from '../prisma/ai';
 import { inappropriateWords } from '@prisma/client';
-import { InappropriateWordsResponse } from '../api/models/inappropriateWords';
+import {
+  InappropriateWordsResponse,
+  InappropriateWordsResponseSchema,
+} from '../api/models/inappropriateWords';
 
 export async function moderateContent(
   req: Request,
@@ -17,7 +20,7 @@ export async function moderateContent(
     // Check against existing inappropriate words
     const inappropriateWords: inappropriateWords[] =
       await prisma.inappropriateWords.findMany({
-        where: { word: { in: content.split(' ') } },
+        where: { word: { in: content.toLowerCase().split(' ') } },
       });
 
     if (inappropriateWords.length > 0) {
@@ -42,13 +45,15 @@ export async function moderateContent(
     });
 
     if (moderationResponse.text) {
-      const response: InappropriateWordsResponse = JSON.parse(
-        moderationResponse.text
-      );
+      const response: InappropriateWordsResponse =
+        InappropriateWordsResponseSchema.parse(
+          JSON.parse(moderationResponse.text)
+        );
       if (response.inappropriate) {
         // Add new words to DB
         await prisma.inappropriateWords.createMany({
           data: response.words.map(word => ({ word })),
+          skipDuplicates: true,
         });
         sendError(res, 'Inappropriate content detected', 400, [
           'Your content contains inappropriate language.',

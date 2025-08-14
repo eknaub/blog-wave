@@ -39,17 +39,17 @@
   </nav>
 
   <div>
-    <button
-      matIconButton
-      [matMenuTriggerFor]="userMenu"
-      i18n-aria-label="@@header.user-menu.aria"
-      aria-label="User menu"
-      class="user-menu-button"
-    >
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #userMenu="matMenu">
-      @if (isLoggedIn()) {
+    @if (isLoggedIn()) {
+      <button
+        matIconButton
+        [matMenuTriggerFor]="userMenu"
+        i18n-aria-label="@@header.user-menu.aria"
+        aria-label="User menu"
+        class="user-menu-button"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
         <button
           [name]="'menuProfile'"
           mat-menu-item
@@ -58,22 +58,20 @@
           <mat-icon>person</mat-icon>
           <span i18n="@@header.menu.profile">Profile</span>
         </button>
-      }
-      <button
-        [name]="'menuSettings'"
-        mat-menu-item
-        (click)="navigateTo(RouteNames.SETTINGS)"
-      >
-        <mat-icon>settings</mat-icon>
-        <span i18n="@@header.menu.settings">Settings</span>
-      </button>
-      @if (isLoggedIn()) {
+        <button
+          [name]="'menuSettings'"
+          mat-menu-item
+          (click)="navigateTo(RouteNames.SETTINGS)"
+        >
+          <mat-icon>settings</mat-icon>
+          <span i18n="@@header.menu.settings">Settings</span>
+        </button>
         <mat-divider></mat-divider>
         <button [name]="'menuLogout'" mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>
           <span i18n="@@header.menu.logout">Logout</span>
         </button>
-      }
-    </mat-menu>
+      </mat-menu>
+    }
   </div>
 </mat-toolbar>

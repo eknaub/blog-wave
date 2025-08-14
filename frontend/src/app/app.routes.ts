@@ -8,7 +8,7 @@ import { GuestGuard } from './core/guest-guard';
 export const routes: Routes = [
   {
     path: '',
-    title: 'Home',
+    title: 'BlogWave',
     component: Home,
   },
   {

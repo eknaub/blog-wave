@@ -3,6 +3,7 @@ import AiController from '../controllers/ai';
 import { validateQuery } from '../middleware/requestValidation';
 import { AiContentParamSchema } from '../middleware/requestParamValidation';
 import { requireAuth } from '../middleware/auth';
+import { moderateContent } from '../middleware/moderateContent';
 
 const aiRouter = Router();
 const aiController = new AiController();
@@ -33,6 +34,7 @@ const aiController = new AiController();
 aiRouter.get(
   '/',
   requireAuth,
+  moderateContent,
   validateQuery(AiContentParamSchema),
   aiController.getGeneratedPostContent.bind(aiController)
 );

@@ -14,7 +14,8 @@ export async function moderateContent(
   next: NextFunction
 ): Promise<void> {
   try {
-    const content: string = req.body.content;
+    const content: string = req.body.content || (req.query.content as string);
+
     if (!content) return next();
 
     // Check against existing inappropriate words
